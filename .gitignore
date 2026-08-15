@@ -74,3 +74,5 @@ pnpm-debug.log*
 # Next.js generated file
 # =====================================================
 next-env.d.ts
+# Turbo cache
+.turbo/

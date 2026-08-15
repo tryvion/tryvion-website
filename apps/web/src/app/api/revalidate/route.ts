@@ -1,53 +1,67 @@
-import { revalidateTag } from 'next/cache'
-import { NextRequest, NextResponse } from 'next/server'
+import { revalidateTag } from 'next/cache';
+import { NextRequest, NextResponse } from 'next/server';
 
 // Called by the Payload afterChange hook in apps/cms/src/collections/Insights.ts
 // to trigger on-demand ISR when content is published or updated.
 //
 // Security: validate the shared secret set in both:
-//   apps/cms  env: REVALIDATE_SECRET
-//   apps/web  env: REVALIDATE_SECRET
+//   apps/cms env: REVALIDATE_SECRET
+//   apps/web env: REVALIDATE_SECRET
+
+type RevalidateBody = {
+  collection?: string;
+  slug?: string;
+};
 
 export async function POST(req: NextRequest) {
-  const secret = req.headers.get('x-revalidate-secret')
+  const secret = req.headers.get('x-revalidate-secret');
 
   if (!process.env.REVALIDATE_SECRET || secret !== process.env.REVALIDATE_SECRET) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  let body: { collection?: string; slug?: string } = {}
+  let body: RevalidateBody = {};
+
   try {
-    body = await req.json()
+    body = await req.json();
   } catch {
-    return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 })
+    return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 });
   }
 
-  const { collection, slug } = body
+  const { collection, slug } = body;
 
   switch (collection) {
     case 'insights':
-      revalidateTag('insights')
-      if (slug) revalidateTag(`insight:${slug}`)
-      break
+      revalidateTag('insights', 'max');
+
+      if (slug) {
+        revalidateTag(`insight:${slug}`, 'max');
+      }
+
+      break;
 
     case 'site-settings':
-      // Revalidate all pages that might use site settings
-      revalidateTag('site-settings')
-      break
+      revalidateTag('site-settings', 'max');
+      break;
 
     case 'team':
-      // Team changes affect article author blocks
-      revalidateTag('insights')
-      break
+      // Team changes affect article author blocks.
+      revalidateTag('insights', 'max');
+      break;
 
     default:
-      return NextResponse.json({ error: `Unknown collection: ${collection}` }, { status: 400 })
+      return NextResponse.json(
+        {
+          error: `Unknown collection: ${collection}`,
+        },
+        { status: 400 },
+      );
   }
 
   return NextResponse.json({
     revalidated: true,
     collection,
-    slug:        slug ?? null,
-    ts:          Date.now(),
-  })
+    slug: slug ?? null,
+    ts: Date.now(),
+  });
 }

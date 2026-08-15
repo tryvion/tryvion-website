@@ -43,7 +43,7 @@ function FooterLogo({ height = 42 }: { height?: number }) {
             fontFamily:
               "var(--font-manrope,'Manrope','Neue Haas Grotesk','Helvetica Neue',Arial,sans-serif)",
             letterSpacing: '11.9062px',
-            writingMode: 'lr-tb',
+            writingMode: 'horizontal-tb',
             direction: 'ltr',
             textAnchor: 'start',
             fill: '#ffffff',
@@ -64,7 +64,7 @@ function FooterLogo({ height = 42 }: { height?: number }) {
               fontFamily:
                 "var(--font-manrope,'Manrope','Neue Haas Grotesk','Helvetica Neue',Arial,sans-serif)",
               letterSpacing: '11.9062px',
-              writingMode: 'lr-tb',
+              writingMode: 'horizontal-tb',
               direction: 'ltr',
               textAnchor: 'start',
               fill: '#ffffff',
