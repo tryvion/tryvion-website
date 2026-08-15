@@ -1,0 +1,83 @@
+/* ============================================================
+   TRYVION → SAP UI5 theming bridge
+
+   OPTIONAL. Only load this if you are rendering UI5 / Fiori
+   controls and want them to inherit TRYVION colour.
+
+   Load order matters:
+     1. the UI5 theme (Horizon or your Theme Designer theme)
+     2. tryvion-tokens.css
+     3. this file
+
+   ── Read before using ─────────────────────────────────────────
+   This is a STARTER SUBSET, not a complete theme. UI5 exposes
+   several hundred theming parameters; roughly thirty of the most
+   visible ones are mapped here. Verify each against your UI5
+   version before relying on it — parameter names do change
+   between releases, and any name that no longer exists will
+   simply be ignored by the browser rather than erroring.
+
+   For a production Fiori theme, SAP Theme Designer remains the
+   supported route. Treat this as a fast path for custom UI5
+   controls and CAP/BTP app shells, not a replacement for it.
+   ============================================================ */
+
+:root {
+  /* brand + shell */
+  --sapBrandColor: var(--brand-secondary);
+  --sapHighlightColor: var(--brand-secondary);
+  --sapShellColor: var(--surface-inverse);
+  --sapBackgroundColor: var(--surface-canvas);
+  --sapGroup_ContentBackground: var(--surface-default);
+  --sapTile_Background: var(--surface-raised);
+
+  /* content */
+  --sapTextColor: var(--content-primary);
+  --sapTitleColor: var(--content-primary);
+  --sapContent_LabelColor: var(--content-secondary);
+  --sapContent_ForegroundColor: var(--surface-subtle);
+  --sapContent_FocusColor: var(--focus-ring-default);
+  --sapLinkColor: var(--content-link-default);
+
+  /* semantic — UI5 keeps two naming families; map both */
+  --sapPositiveColor: var(--status-success-text);
+  --sapNegativeColor: var(--status-error-text);
+  --sapCriticalColor: var(--status-warning-text);
+  --sapInformativeColor: var(--status-info-text);
+  --sapNeutralColor: var(--content-secondary);
+  --sapSuccessColor: var(--status-success-text);
+  --sapErrorColor: var(--status-error-text);
+  --sapWarningColor: var(--status-warning-text);
+
+  /* buttons */
+  --sapButton_Background: var(--button-secondary-background-hover);
+  --sapButton_TextColor: var(--button-secondary-label-default);
+  --sapButton_BorderColor: var(--button-secondary-border-default);
+  --sapButton_Emphasized_Background: var(--button-primary-background-default);
+  --sapButton_Emphasized_TextColor: var(--button-primary-label-default);
+  --sapButton_Emphasized_BorderColor: var(--button-primary-background-default);
+
+  /* fields */
+  --sapField_Background: var(--input-background-default);
+  --sapField_BorderColor: var(--input-border-default);
+  --sapField_TextColor: var(--input-value);
+  --sapField_PlaceholderTextColor: var(--input-placeholder);
+
+  /* lists and tables — these follow the density theme */
+  --sapList_Background: var(--table-row-background-default);
+  --sapList_HeaderBackground: var(--table-header-background);
+  --sapList_HeaderTextColor: var(--table-header-label);
+  --sapList_BorderColor: var(--table-row-border);
+  --sapList_Hover_Background: var(--table-row-background-hover);
+  --sapList_SelectionBackgroundColor: var(--table-row-background-selected);
+}
+
+/* UI5 has its own compact mode. Keep the two density systems aligned
+   so a TRYVION dense table and a UI5 compact table agree. */
+[data-density="compact"],
+[data-density="dense"] {
+  --sapContent_Space_S: var(--density-padding-y-sm);
+  --sapContent_Space_M: var(--density-padding-y-md);
+  --sapElement_Height: var(--density-control-md);
+  --sapElement_Compact_Height: var(--density-control-sm);
+}

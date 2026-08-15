@@ -7,6 +7,7 @@
     "github.vscode-github-actions",
     "ms-vscode.vscode-typescript-next",
     "ms-azuretools.vscode-docker",
-    "mongodb.mongodb-vscode"
+    "mongodb.mongodb-vscode",
+    "saoudrizwan.claude-dev"
   ]
 }

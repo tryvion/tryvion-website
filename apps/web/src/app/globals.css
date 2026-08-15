@@ -1,26 +1,309 @@
+/*
+ * TRYVION Web — Global Styles
+ *
+ * Design tokens: @tryvion/design-tokens v2 (TTK — 933 tokens, 2 themes × 3 densities)
+ * Tailwind v4 utilities are generated from the @theme block in tailwind.tryvion.css.
+ *
+ * Import order matters for Tailwind v4:
+ *  1. tailwindcss
+ *  2. design-tokens/css  (custom properties in :root)
+ *  3. design-tokens/tailwind  (@theme block that maps tokens to Tailwind classes)
+ *
+ * Font loading: see apps/web/src/app/layout.tsx
+ * Fonts loaded: Manrope (next/font/google) — all font roles resolve to Manrope
+ * Neue Haas Grotesk and Optima require commercial licenses before production.
+ */
+
 @import "tailwindcss";
+@import "@tryvion/design-tokens/css";
+@import "@tryvion/design-tokens/tailwind";
+
+/*
+ * Ensure Tailwind v4 scans the shared UI package for class names.
+ * Without this, utility classes used only in packages/ui would be
+ * purged from the web app's production CSS bundle.
+ */
+@source "../../../../packages/ui/src";
+
+/*
+ * GridCol uses template literals (`col-span-${span}`, `lg:col-span-${lg}`, etc.)
+ * which Tailwind v4's static scanner cannot resolve. Explicitly generate every
+ * col-span variant and responsive row-span used across ServiceDetailLayout and
+ * other Grid consumers.
+ */
+@source inline("{,sm:,md:,lg:,xl:}col-span-{1,2,3,4,5,6,7,8,9,10,11,12}");
+@source inline("{,sm:,md:,lg:,xl:}row-span-{1,2,3,4,5,6}");
+
+/*
+ * Connect next/font CSS variable (set by layout.tsx) to the design token system.
+ * @theme inline defers resolution to runtime so the HTML-element variable
+ * loaded by next/font/google is used instead of the static fallback in the tokens.
+ */
+@theme inline {
+  --font-secondary: var(--font-manrope), "Manrope", system-ui, -apple-system, sans-serif;
+}
+
+/* =============================================================================
+   BACKWARDS-COMPAT ALIASES
+   Maps TTK v1 variable names → TTK v2 names.
+   Allows components still referencing old names to resolve without modification.
+   Remove after all components are migrated to v2 names.
+   ============================================================================= */
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Typography — font families */
+  --tryvion-font-primary:   var(--family-display), Manrope, system-ui, sans-serif;
+  --tryvion-font-secondary: var(--family-text), Manrope, system-ui, sans-serif;
+  --tryvion-font-tertiary:  var(--family-editorial), Manrope, system-ui, sans-serif;
+
+  /* Typography — text sizes */
+  --text-display: var(--size-display);
+  --text-h1: var(--size-h1);
+  --text-h2: var(--size-h2);
+  --text-h3: var(--size-h3);
+  --text-h4: var(--size-h4);
+  --text-h5: var(--size-h5);
+  --text-h6: var(--size-h6);
+  --text-body-lg: var(--size-body-large);
+  --text-body-md: var(--size-body);
+  --text-body-sm: var(--size-body-small);
+  --text-ui-md:   var(--size-label);
+  --text-ui-sm:   var(--size-label-small);
+
+  /* Action colours */
+  --color-action-primary:       var(--action-primary-default);
+  --color-action-primary-hover: var(--action-primary-hover);
+
+  /* Focus ring */
+  --tryvion-focus-ring-width:  var(--border-focus-width);
+  --tryvion-focus-ring-offset: var(--border-focus-offset);
+  --color-border-focus:        var(--focus-ring-default);
+
+  /* Z-index — no direct TTK v2 equivalent for skip-nav; use overlay */
+  --z-skip-nav: var(--z-overlay);
+
+  /* Brand extras */
+  --color-choice:          var(--brand-accent);
+  --color-momentum-subtle: var(--surface-brand-subtle);
+
+  /* Motion */
+  --tryvion-duration-fast:   var(--motion-duration-fast);
+  --tryvion-duration-normal: var(--motion-duration-default);
+  --tryvion-ease-out:        var(--motion-easing-decelerate);
+  --tryvion-ease-inout:      var(--motion-easing-standard);
+  --transition-button:       color var(--motion-duration-fast) var(--motion-easing-standard),
+                             background-color var(--motion-duration-fast) var(--motion-easing-standard);
+
+  /* Container max-widths (not in TTK v2 layout tokens, defined explicitly) */
+  --container-sm:      720px;
+  --container-md:      960px;
+  --container-lg:      var(--layout-content-max);
+  --container-xl:      var(--layout-content-wide);
+  --container-2xl:     var(--layout-container-max);
+  --container-3xl:     1600px;
+  --container-reading: var(--layout-reading-max);
+
+  /* Section padding (maps to spacing scale) */
+  --section-sm:  var(--space-64);
+  --section-md:  var(--density-section);
+  --section-lg:  var(--space-128);
+  --section-xl:  var(--space-160);
+  --section-2xl: var(--space-192);
+
+  /* Elevation / box-shadow (v1 shadow-* → TTK v2 elevation-*) */
+  --shadow-1: var(--elevation-01);
+  --shadow-2: var(--elevation-02);
+  --shadow-3: var(--elevation-03);
+  --shadow-4: var(--elevation-04);
+  --shadow-5: var(--elevation-05);
+
+  /* Header height — used by MegaMenu fixed positioning */
+  --header-height: var(--layout-header-height-desktop); /* 80px */
+
+  /* Dark surface tokens — required by Header dark variant and custom dark nav */
+  --color-surface-dark: var(--ink-950);   /* #0B1E3D */
+  --color-content-inverse: #ffffff;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+/* =============================================================================
+   BASE LAYER — semantic defaults using design tokens
+   ============================================================================= */
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+
+  *, *::before, *::after {
+    box-sizing: border-box;
   }
+
+  html {
+    font-family: var(--tryvion-font-secondary);
+    font-size: 1rem;
+    color: var(--content-primary);
+    background-color: var(--surface-default);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* Focus ring — 2px solid Momentum Blue, 2px offset */
+  :focus-visible {
+    outline: var(--border-focus-width) solid var(--focus-ring-default);
+    outline-offset: var(--border-focus-offset);
+    border-radius: var(--radius-xs);
+  }
+
+  /* Skip navigation link */
+  .skip-nav {
+    position: absolute;
+    top: -100%;
+    left: 1rem;
+    z-index: var(--z-overlay);
+    padding: 0.75rem 1.5rem;
+    background: var(--action-primary-default);
+    color: var(--content-inverse);
+    font-family: var(--tryvion-font-secondary);
+    font-size: var(--size-label);
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: var(--radius-md);
+    transition: top var(--motion-duration-fast) var(--motion-easing-decelerate);
+  }
+
+  .skip-nav:focus {
+    top: 1rem;
+  }
+
+  /* Heading defaults */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--tryvion-font-primary);
+    color: var(--content-primary);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    text-wrap: balance;
+  }
+
+  h1 { font-size: var(--size-h1); letter-spacing: var(--tracking-h1); }
+  h2 { font-size: var(--size-h2); letter-spacing: var(--tracking-h2); }
+  h3 { font-size: var(--size-h3); letter-spacing: var(--tracking-h3); }
+  h4 { font-size: var(--size-h4); font-weight: 500; letter-spacing: 0; }
+  h5 { font-size: var(--size-h5); font-weight: 500; letter-spacing: 0; }
+  h6 { font-size: var(--size-h6); font-weight: 500; letter-spacing: 0; }
+
+  /* Body defaults */
+  p, li, dd, dt, blockquote {
+    font-family: var(--tryvion-font-secondary);
+    font-size: var(--size-body);
+    line-height: var(--line-height-body);
+    color: var(--content-primary);
+  }
+
+  p { text-wrap: pretty; }
+
+  /* Links */
+  a {
+    color: var(--content-link-default);
+    text-underline-offset: 0.2em;
+    text-decoration-skip-ink: auto;
+    transition: color var(--motion-duration-fast) var(--motion-easing-decelerate);
+  }
+
+  a:hover {
+    color: var(--content-link-hover);
+  }
+
+  /* Blockquote */
+  blockquote {
+    font-family: var(--tryvion-font-tertiary);
+    font-style: italic;
+    font-size: var(--size-body-large);
+    border-left: 3px solid var(--brand-accent);
+    padding-left: 1.5rem;
+    margin-left: 0;
+    color: var(--content-primary);
+  }
+
+  /* Selection */
+  ::selection {
+    background-color: var(--surface-brand-subtle);
+    color: var(--content-primary);
+  }
+
+  /* Images */
+  img, video {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* Lists */
+  ul, ol {
+    padding-left: 1.5rem;
+  }
+
+  /* Mobile nav dialog — slide-in from right */
+  @keyframes slideInRight {
+    from { transform: translateX(100%); }
+    to   { transform: translateX(0); }
+  }
+
+  /* MobileNav backdrop via native dialog ::backdrop */
+  dialog::backdrop {
+    background-color: var(--translucency-scrim-default);
+    backdrop-filter: blur(var(--blur-sm));
+  }
+
+  /* Suppress default dialog border/outline */
+  dialog {
+    border: none;
+    outline: none;
+  }
+
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* =============================================================================
+   UTILITIES — custom container widths and layout helpers
+   ============================================================================= */
+
+@layer utilities {
+
+  /* Container max-width utilities — used by <Container size="…" /> */
+  .max-w-container-sm      { max-width: var(--container-sm); }
+  .max-w-container-md      { max-width: var(--container-md); }
+  .max-w-container-lg      { max-width: var(--container-lg); }
+  .max-w-container-xl      { max-width: var(--container-xl); }
+  .max-w-container-2xl     { max-width: var(--container-2xl); }
+  .max-w-container-3xl     { max-width: var(--container-3xl); }
+  .max-w-container-reading { max-width: var(--container-reading); }
+
+  /* Section spacing helpers */
+  .section-sm  { padding-block: var(--section-sm); }
+  .section-md  { padding-block: var(--section-md); }
+  .section-lg  { padding-block: var(--section-lg); }
+  .section-xl  { padding-block: var(--section-xl); }
+  .section-2xl { padding-block: var(--section-2xl); }
+
+  /* Motion-safe wrappers */
+  .motion-safe-transition  { transition: var(--transition-button); }
+  .motion-safe-fade        { transition: opacity var(--motion-duration-default) var(--motion-easing-decelerate); }
+  .motion-safe-slide       { transition: transform var(--motion-duration-default) var(--motion-easing-standard); }
+
+  /* Elevation utilities */
+  .elevation-1 { box-shadow: var(--elevation-01); }
+  .elevation-2 { box-shadow: var(--elevation-02); }
+  .elevation-3 { box-shadow: var(--elevation-03); }
+  .elevation-4 { box-shadow: var(--elevation-04); }
+  .elevation-5 { box-shadow: var(--elevation-05); }
+
 }

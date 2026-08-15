@@ -1,0 +1,47 @@
+{
+  "name": "@tryvion/ui",
+  "version": "1.0.0",
+  "description": "TRYVION React component library",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./foundations": {
+      "types": "./src/foundations/index.ts",
+      "default": "./src/foundations/index.ts"
+    },
+    "./foundations/layout": {
+      "types": "./src/foundations/layout/index.ts",
+      "default": "./src/foundations/layout/index.ts"
+    },
+    "./foundations/accessibility": {
+      "types": "./src/foundations/accessibility/index.ts",
+      "default": "./src/foundations/accessibility/index.ts"
+    },
+    "./components": {
+      "types": "./src/components/index.ts",
+      "default": "./src/components/index.ts"
+    }
+  },
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "next": ">=15",
+    "react": "^19",
+    "react-dom": "^19"
+  },
+  "dependencies": {
+    "@tryvion/utils": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.4",
+    "typescript": "^5"
+  }
+}

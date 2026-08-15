@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="250"
+   height="60"
+   viewBox="0 0 66.145833 15.875"
+   version="1.1"
+   id="svg1"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <g
+     id="layer1">
+    <rect
+       style="fill:#f9f9f9;fill-rule:evenodd;stroke-width:1.0026;stroke-linejoin:round;fill-opacity:0"
+       id="rect1"
+       width="66.145836"
+       height="15.875"
+       x="0"
+       y="0" />
+    <g
+       id="g2"
+       transform="matrix(0.28144253,0,0,0.28144253,-29.083686,-23.526215)">
+      <g
+         id="g3">
+        <text
+           xml:space="preserve"
+           style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:25.8872px;line-height:0;font-family:Manrope;-inkscape-font-specification:'Manrope, Medium';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;letter-spacing:11.9062px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#0b1e3d;fill-opacity:1;fill-rule:evenodd;stroke:#ecc47d;stroke-width:0;stroke-linejoin:round;stroke-dasharray:none"
+           x="104.0646"
+           y="99.207306"
+           id="text5"
+           transform="matrix(1.0816175,0,0,0.92454124,5.6310486,27.676106)"><tspan
+             id="tspan5"
+             style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-size:25.8872px;line-height:0;font-family:Manrope;-inkscape-font-specification:'Manrope, Semi-Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;letter-spacing:11.9062px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#0b1e3d;fill-opacity:1;stroke-width:0"
+             x="104.0646"
+             y="99.207306">T    VION</tspan></text>
+        <path
+           style="fill:#0b1e3d;fill-opacity:1;fill-rule:evenodd;stroke:#ecc47d;stroke-width:0;stroke-linejoin:round;stroke-dasharray:none"
+           d="m 144.38441,92.106922 2.52419,0.008 -0.0532,-5.8759 h 8.23688 l 5.71091,5.87564 3.95189,-0.0108 -5.81892,-5.53536 c -0.13749,-0.21512 -0.0826,-0.46647 0.16474,-0.54914 2.1313,-0.10049 4.64388,-0.62081 4.6729,-2.76866 l -0.0602,-5.19365 c -0.21808,-1.89365 -2.48783,-3.12787 -3.29476,-3.23984 l -16.25411,0.005 v 2.6311 l 15.37552,0.10983 c 0.97542,0.0293 1.52341,0.81823 1.59246,1.37281 l 0.0376,3.04232 c -0.0104,0.83483 -0.2454,1.38413 -1.46527,1.68016 H 144.2746 Z"
+           id="path5"
+           transform="translate(5.6310486,27.676106)" />
+        <path
+           style="fill:#0b1e3d;fill-opacity:1;fill-rule:evenodd;stroke:#ecc47d;stroke-width:0;stroke-linejoin:round;stroke-dasharray:none"
+           d="m 192.47942,111.73544 1.15021,1.90095 c 0.25242,0.38747 0.33347,0.75319 0.39706,1.11669 0.70809,4.70842 0.85125,13.30213 1.20687,17.20271 l 1.18925,-17.16276 c 0.0282,-0.36958 0.1041,-0.73395 0.28686,-1.08662 l 1.14798,-2.05561 c -1.80623,1.16418 -3.59697,1.02363 -5.37823,0.0846 z"
+           id="path9" />
+        <path
+           style="fill:#0b1e3d;fill-opacity:1;fill-rule:evenodd;stroke:#ecc47d;stroke-width:0;stroke-linejoin:round;stroke-dasharray:none"
+           d="m 190.99903,105.63046 c 0.37963,-0.92479 1.01944,-1.42214 1.74884,-1.77231 L 181.69294,92.844422 c -0.97384,-0.185287 -1.82618,-0.603441 -2.57955,-1.211294 0.39143,0.764508 0.95306,1.394018 0.96849,2.509882 z"
+           id="path6" />
+        <path
+           style="fill:#0b1e3d;fill-opacity:1;fill-rule:evenodd;stroke:#ecc47d;stroke-width:0;stroke-linejoin:round;stroke-dasharray:none"
+           d="m 199.58316,105.63046 c -0.37963,-0.92479 -1.01944,-1.42214 -1.74884,-1.77231 l 11.05493,-11.013728 c 0.97384,-0.185287 1.82618,-0.603441 2.57955,-1.211294 -0.39143,0.764508 -0.95306,1.394018 -0.96849,2.509882 z"
+           id="path7" />
+        <circle
+           style="fill:#cf9045;fill-opacity:1;fill-rule:evenodd;stroke:#ecc47d;stroke-width:0;stroke-linejoin:round;stroke-dasharray:none"
+           id="path8"
+           cx="195.20119"
+           cy="107.73849"
+           r="2.9662728" />
+      </g>
+    </g>
+  </g>
+</svg>

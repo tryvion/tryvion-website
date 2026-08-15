@@ -1,0 +1,24 @@
+{
+  "name": "@tryvion/design-tokens",
+  "version": "2.0.0",
+  "description": "TRYVION Design Tokens v2 — 933 tokens, 2 themes × 3 densities",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./js/tryvion-tokens.d.ts",
+      "default": "./js/tryvion-tokens.mjs"
+    },
+    "./css": "./css/tryvion-tokens.css",
+    "./tailwind": "./tailwind/tailwind.tryvion.css",
+    "./json": "./dist/json/tokens.json"
+  },
+  "files": ["css", "tailwind", "js", "src", "dist"],
+  "scripts": {
+    "generate": "tsx scripts/generate.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5",
+    "tsx": "^4"
+  }
+}
