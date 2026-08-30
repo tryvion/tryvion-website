@@ -1,366 +1,772 @@
-import type { Metadata } from 'next';
-import Link from 'next/link';
+'use client';
 
-export const metadata: Metadata = {
-  title: 'Industries — TRYVION',
-  description:
-    'TRYVION delivers SAP, AI and enterprise transformation across Financial Services, Professional Services, Manufacturing, Consumer, Public Sector and Energy industries.',
-  alternates: { canonical: 'https://thetryvion.com/industries' },
+import React, { useState } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
+import {
+  ArrowRight,
+  BriefcaseBusiness,
+  Building2,
+  CarFront,
+  ChevronDown,
+  ChevronRight,
+  CircleDollarSign,
+  Compass,
+  Cpu,
+  Database,
+  Dna,
+  Factory,
+  FlaskConical,
+  Flame,
+  GraduationCap,
+  HeartPulse,
+  Landmark,
+  Layers3,
+  Pickaxe,
+  Plane,
+  Radio,
+  RefreshCw,
+  Shield,
+  ShieldCheck,
+  ShoppingBag,
+  Sprout,
+  Store,
+  Trophy,
+  Tv,
+  Truck,
+  Users,
+  Zap,
+} from 'lucide-react';
+import { useSiteTheme } from '@/providers/SiteThemeProvider';
+
+/* -------------------------------------------------------------------------- */
+/*  DATA & TYPES                                                              */
+/* -------------------------------------------------------------------------- */
+
+type IconType = React.ComponentType<{
+  size?: number;
+  className?: string;
+  strokeWidth?: number;
+}>;
+
+type SubIndustry = {
+  name: string;
+  href: string;
+  icon: IconType;
 };
 
-const INDUSTRIES = [
+type IndustryGroup = {
+  id: string;
+  number: string;
+  title: string;
+  description: string;
+  subIndustries: SubIndustry[];
+};
+
+const INDUSTRIES: IndustryGroup[] = [
   {
-    slug: 'financial-services',
-    label: 'Financial Services',
-    group: 'Financial',
-    description:
-      'SAP S/4HANA and AI transformation for banks, capital markets firms, insurers and wealth managers — from regulatory compliance and core modernisation to intelligent operations and customer experience.',
-    accent: '#1458F2',
-    icon: 'M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z',
+    id: 'service-industries',
+    number: '01',
+    title: 'SERVICE INDUSTRIES',
+    description: 'Transform the business behind the service.',
+    subIndustries: [
+      {
+        name: 'Professional Services',
+        href: '/industries/professional-services',
+        icon: BriefcaseBusiness,
+      },
+      { name: 'Media', href: '/industries/media', icon: Tv },
+      { name: 'Telco', href: '/industries/telecom', icon: Radio },
+      {
+        name: 'Transportation & Logistics',
+        href: '/industries/transportation-logistics',
+        icon: Truck,
+      },
+      {
+        name: 'Engineering, Construction & Operations',
+        href: '/industries/engineering-construction',
+        icon: Building2,
+      },
+      { name: 'Sports & Entertainment', href: '/industries/sports-entertainment', icon: Trophy },
+      {
+        name: 'Commercial Real Estate',
+        href: '/industries/commercial-real-estate',
+        icon: Landmark,
+      },
+      { name: 'Travel & Leisure', href: '/industries/travel-leisure', icon: Compass },
+    ],
   },
   {
-    slug: 'professional-services',
-    label: 'Professional Services',
-    group: 'Service',
-    description:
-      'Enterprise technology transformation for consulting, legal, accounting and technology services firms — connecting financial management, workforce, project systems and client operations through SAP S/4HANA and AI.',
-    accent: '#C9A24B',
-    icon: 'M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21',
+    id: 'consumer-industries',
+    number: '02',
+    title: 'CONSUMER INDUSTRIES',
+    description: 'Connect the business to the customer.',
+    subIndustries: [
+      { name: 'Consumer Products', href: '/industries/consumer-products', icon: ShoppingBag },
+      { name: 'Retail', href: '/industries/retail', icon: Store },
+      { name: 'Fashion', href: '/industries/fashion', icon: ShoppingBag },
+      { name: 'Wholesale Distribution', href: '/industries/wholesale-distribution', icon: Layers3 },
+      { name: 'Life Sciences', href: '/industries/life-sciences', icon: Dna },
+      { name: 'Agribusiness', href: '/industries/agribusiness', icon: Sprout },
+    ],
   },
   {
-    slug: 'manufacturing',
-    label: 'Manufacturing & Engineering',
-    group: 'Discrete',
-    description:
-      'SAP S/4HANA transformation, supply chain digitisation, and AI-powered operations for discrete manufacturers, industrial equipment producers and engineering organisations operating at global scale.',
-    accent: '#F59E0B',
-    icon: 'M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 004.486-6.336l-3.276 3.277a3.004 3.004 0 01-2.25-2.25l3.276-3.276a4.5 4.5 0 00-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437l1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008z',
+    id: 'financial-services',
+    number: '03',
+    title: 'FINANCIAL SERVICES',
+    description: 'Build trusted, intelligent financial enterprises.',
+    subIndustries: [
+      { name: 'Banking', href: '/industries/banking', icon: CircleDollarSign },
+      { name: 'Insurance', href: '/industries/insurance', icon: ShieldCheck },
+    ],
   },
   {
-    slug: 'retail-consumer',
-    label: 'Retail & Consumer',
-    group: 'Consumer',
-    description:
-      'Unified commerce, demand forecasting and AI-driven customer intelligence for retailers and consumer goods companies connecting physical and digital channels through SAP S/4HANA and SAP Business AI.',
-    accent: '#10B981',
-    icon: 'M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z',
+    id: 'public-services',
+    number: '04',
+    title: 'PUBLIC SERVICES',
+    description: 'Technology that creates better outcomes for society.',
+    subIndustries: [
+      { name: 'Public Sector', href: '/industries/public-sector', icon: Building2 },
+      { name: 'Health Care', href: '/industries/health-care', icon: HeartPulse },
+      { name: 'Education & Research', href: '/industries/education-research', icon: GraduationCap },
+      { name: 'Defence & Security', href: '/industries/defence-security', icon: Shield },
+    ],
   },
   {
-    slug: 'public-sector',
-    label: 'Public Sector',
-    group: 'Public',
-    description:
-      'Citizen services transformation, legacy modernisation and SAP public sector solutions for central government, local authorities and public services organisations navigating digital transformation.',
-    accent: '#0891B2',
-    icon: 'M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z',
+    id: 'discrete-industries',
+    number: '05',
+    title: 'DISCRETE INDUSTRIES',
+    description: 'Engineer the next generation of industry.',
+    subIndustries: [
+      {
+        name: 'Industrial Manufacturing',
+        href: '/industries/industrial-manufacturing',
+        icon: Factory,
+      },
+      { name: 'High Tech', href: '/industries/high-tech', icon: Cpu },
+      { name: 'Automotive', href: '/industries/automotive', icon: CarFront },
+      { name: 'Aerospace & Defence', href: '/industries/aerospace-defence', icon: Plane },
+    ],
   },
   {
-    slug: 'healthcare-life-sciences',
-    label: 'Healthcare & Life Sciences',
-    group: 'Public',
-    description:
-      'SAP ERP, AI and data transformation for healthcare providers, pharmaceutical companies and life sciences organisations — from financial and supply chain operations to regulatory compliance and intelligent process automation.',
-    accent: '#EC4899',
-    icon: 'M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z',
-  },
-  {
-    slug: 'energy-resources',
-    label: 'Energy & Resources',
-    group: 'Public',
-    description:
-      'SAP transformation and AI-powered operations for energy producers, utilities and resources companies — asset management, supply chain, finance and workforce connected through one intelligent digital core.',
-    accent: '#F97316',
-    icon: 'M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z',
-  },
-  {
-    slug: 'technology-media',
-    label: 'Technology & Media',
-    group: 'Service',
-    description:
-      'Enterprise finance, HR and operational transformation for technology companies and media organisations — enabling scale, agility and global operations through SAP S/4HANA, SuccessFactors and Business AI.',
-    accent: '#7C3AED',
-    icon: 'M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z',
+    id: 'energy-natural-resources',
+    number: '06',
+    title: 'ENERGY & NATURAL RESOURCES',
+    description: 'Transform the enterprise behind the resource.',
+    subIndustries: [
+      { name: 'Utilities', href: '/industries/utilities', icon: Zap },
+      { name: 'Mill Products', href: '/industries/mill-products', icon: Layers3 },
+      { name: 'Mining', href: '/industries/mining', icon: Pickaxe },
+      { name: 'Chemicals', href: '/industries/chemicals', icon: FlaskConical },
+      { name: 'Oil & Gas & Energy', href: '/industries/oil-gas-energy', icon: Flame },
+    ],
   },
 ];
 
-export default function IndustriesPage() {
+const CAPABILITIES = [
+  {
+    step: '01',
+    title: 'BUSINESS',
+    description: 'Understand the operating model.',
+    icon: BriefcaseBusiness,
+  },
+  {
+    step: '02',
+    title: 'ENTERPRISE',
+    description: 'Modernise the systems that run the organisation.',
+    icon: Layers3,
+  },
+  {
+    step: '03',
+    title: 'DATA',
+    description: 'Create trusted information foundations.',
+    icon: Database,
+  },
+  { step: '04', title: 'AI', description: 'Apply intelligence where it creates value.', icon: Cpu },
+  {
+    step: '05',
+    title: 'PEOPLE',
+    description: 'Enable adoption and new ways of working.',
+    icon: Users,
+  },
+  {
+    step: '06',
+    title: 'CHANGE',
+    description: 'Build an organisation capable of continuous evolution.',
+    icon: RefreshCw,
+  },
+];
+
+/* -------------------------------------------------------------------------- */
+/*  MOTION COMPONENTS                                                         */
+/* -------------------------------------------------------------------------- */
+
+function Reveal({
+  children,
+  delay = 0,
+  className = '',
+}: {
+  children: React.ReactNode;
+  delay?: number;
+  className?: string;
+}) {
+  const reduce = useReducedMotion();
   return (
-    <main style={{ background: '#050A18', minHeight: '100vh', color: '#fff' }}>
-      <section
+    <motion.div
+      className={className}
+      initial={reduce ? false : { opacity: 0, y: 22 }}
+      whileInView={reduce ? undefined : { opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-60px' }}
+      transition={{ duration: 0.62, delay, ease: [0.16, 1, 0.3, 1] }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/*  HERO SECTION - FULL IMAGE BACKGROUND, NO CSS GRADIENTS OR OVERLAYS            */
+/* -------------------------------------------------------------------------- */
+
+function IndustriesHero() {
+  const reduce = useReducedMotion();
+
+  return (
+    <section
+      className="relative overflow-hidden"
+      style={{
+        minHeight: 'clamp(400px, 50vh, 600px)',
+        height: 'clamp(400px, 50vh, 600px)',
+        background: '#03050C',
+        color: '#FFFFFF',
+      }}
+    >
+      {/* Pure Background Image - No CSS Glows or Grids */}
+      <div className="absolute inset-0 z-0 w-full h-full">
+        <Image
+          src="/images/industries-banner.png"
+          alt=""
+          fill
+          priority
+          className="object-cover object-center"
+          sizes="100vw"
+        />
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background:
+              'linear-gradient(90deg, rgba(3,5,12,0.68) 0%, rgba(3,5,12,0.42) 50%, rgba(3,5,12,0.12) 90%, rgba(3,5,12,0) 100%)',
+          }}
+        />
+      </div>
+
+      <div
+        className="relative z-10 mx-auto flex min-h-[400px] items-end px-6 pb-16 pt-24 sm:px-8 lg:min-h-[50vh] lg:px-12 lg:pb-20"
+        style={{ maxWidth: 1320 }}
+      >
+        <div className="max-w-3xl">
+          <Reveal>
+            <nav
+              aria-label="Breadcrumb"
+              className="mb-6 flex items-center gap-2 text-xs font-semibold"
+              style={{ color: '#94A3B8' }}
+            >
+              <Link
+                href="/"
+                className="transition-colors hover:text-white"
+                style={{ color: 'inherit', textDecoration: 'none' }}
+              >
+                Home
+              </Link>
+              <ChevronRight size={16} style={{ opacity: 0.5 }} />
+              <span style={{ color: '#FFFFFF' }}>Industries</span>
+            </nav>
+          </Reveal>
+
+          <Reveal delay={0.06}>
+            <span
+              className="mb-4 block text-[11px] font-extrabold tracking-[.22em]"
+              style={{ color: '#C9A24B' }}
+            >
+              INDUSTRIES
+            </span>
+          </Reveal>
+
+          <Reveal delay={0.12}>
+            <h1
+              className="m-0 font-extrabold tracking-[-.055em]"
+              style={{ color: '#FFFFFF', fontSize: 'clamp(3.1rem, 7vw, 6.3rem)', lineHeight: 0.94 }}
+            >
+              Industries
+            </h1>
+          </Reveal>
+
+          <Reveal delay={0.2}>
+            <p
+              className="mt-6 max-w-2xl text-base leading-7 sm:text-lg"
+              style={{ color: '#CBD5E1' }}
+            >
+              Industry context meets enterprise transformation, technology and intelligence.
+              <br className="hidden sm:block" />
+              We help organisations navigate complexity and build what comes next.
+            </p>
+            <br />
+          </Reveal>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/*  INDUSTRY CARD                                                             */
+/* -------------------------------------------------------------------------- */
+
+function IndustryCard({
+  group,
+  expanded,
+  onToggle,
+  isDark,
+}: {
+  group: IndustryGroup;
+  expanded: boolean;
+  onToggle: () => void;
+  isDark: boolean;
+}) {
+  const reduce = useReducedMotion();
+  const regionId = `industry-panel-${group.id}`;
+
+  return (
+    <motion.article
+      layout={!reduce}
+      className="overflow-hidden rounded-2xl"
+      style={{
+        background: isDark ? '#0B1220' : '#FFFFFF',
+        border: expanded
+          ? '1px solid rgba(37,99,235,.55)'
+          : isDark
+            ? '1px solid rgba(15,23,42,.08)'
+            : '1px solid #E2E8F0',
+        boxShadow: expanded ? '0 24px 65px rgba(15,23,42,.10)' : '0 8px 30px rgba(15,23,42,.045)',
+        transition: 'border-color .25s ease, box-shadow .25s ease',
+      }}
+    >
+      <button
+        type="button"
+        aria-expanded={expanded}
+        aria-controls={regionId}
+        onClick={onToggle}
+        className="group flex w-full items-center justify-between gap-6 text-left"
         style={{
-          padding: 'clamp(8rem, 14vw, 11rem) clamp(1.5rem, 5vw, 3.5rem) clamp(6rem, 8vw, 9rem)',
-          maxWidth: '82rem',
-          margin: '0 auto',
-          position: 'relative',
-          overflow: 'hidden',
+          minHeight: 116,
+          padding: 'clamp(1.35rem, 2.8vw, 2rem) clamp(1.35rem, 3vw, 2.25rem)',
+          border: 0,
+          background: 'transparent',
+          color: 'inherit',
+          cursor: 'pointer',
         }}
       >
-        <div
-          style={{
-            position: 'absolute',
-            top: '-200px',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            width: '900px',
-            height: '900px',
-            background: 'radial-gradient(circle, rgba(20,88,242,0.12) 0%, transparent 65%)',
-            pointerEvents: 'none',
-          }}
-        />
-        <div
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundImage: 'radial-gradient(rgba(255,255,255,0.025) 1px, transparent 1px)',
-            backgroundSize: '32px 32px',
-            pointerEvents: 'none',
-          }}
-        />
-        <p
-          style={{
-            color: '#C9A24B',
-            fontSize: '0.8125rem',
-            fontWeight: 600,
-            letterSpacing: '0.15em',
-            textTransform: 'uppercase',
-            marginBottom: '1.75rem',
-            position: 'relative',
-          }}
-        >
-          Industries
-        </p>
-        <h1
-          style={{
-            fontSize: 'clamp(3.5rem, 7vw, 5.5rem)',
-            fontWeight: 800,
-            letterSpacing: '-0.03em',
-            lineHeight: 1.05,
-            marginBottom: '2rem',
-            maxWidth: '52rem',
-            position: 'relative',
-          }}
-        >
-          Transformation expertise across{' '}
+        <span className="flex min-w-0 items-center gap-5 sm:gap-7">
           <span
+            className="shrink-0 font-mono text-xl font-extrabold sm:text-2xl"
+            style={{ color: '#C9A24B' }}
+          >
+            {group.number}
+          </span>
+          <span className="min-w-0">
+            <span
+              className="block text-[clamp(1.05rem,2vw,1.5rem)] font-extrabold tracking-[-.02em]"
+              style={{ color: isDark ? '#FFFFFF' : '#0F172A' }}
+            >
+              {group.title}
+            </span>
+            <span
+              className="mt-1 block text-sm leading-6"
+              style={{ color: isDark ? '#94A3B8' : '#64748B' }}
+            >
+              {group.description}
+            </span>
+          </span>
+        </span>
+        <span className="flex shrink-0 items-center gap-3">
+          <span
+            className="hidden text-[10px] font-extrabold uppercase tracking-[.14em] sm:block"
+            style={{ color: expanded ? '#2563EB' : isDark ? '#CBD5E1' : '#475569' }}
+          >
+            {expanded ? 'Collapse' : 'Explore'}
+          </span>
+          <motion.span
+            animate={{ rotate: expanded ? 180 : 0 }}
+            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+            className="flex h-12 w-12 items-center justify-center rounded-full"
             style={{
-              background: 'linear-gradient(90deg, #1458F2 0%, #C9A24B 60%, #1458F2 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
+              background: expanded ? '#2563EB' : isDark ? 'rgba(255,255,255,.06)' : '#F1F5F9',
+              color: expanded ? '#FFFFFF' : isDark ? '#FFFFFF' : '#0F172A',
             }}
           >
-            every sector
-          </span>
-        </h1>
-        <p
-          style={{
-            fontSize: 'clamp(1.125rem, 1.5vw, 1.3125rem)',
-            color: 'rgba(255,255,255,0.6)',
-            maxWidth: '48rem',
-            lineHeight: 1.7,
-            position: 'relative',
-          }}
-        >
-          TRYVION brings deep SAP, AI and enterprise technology expertise to Financial Services,
-          Professional Services, Manufacturing, Consumer, Public Sector and Energy industries —
-          combining solution knowledge with real sector understanding.
-        </p>
-      </section>
+            <ChevronDown size={24} strokeWidth={2.2} />
+          </motion.span>
+        </span>
+      </button>
 
-      <section
-        style={{
-          padding: '0 clamp(1.5rem, 5vw, 3.5rem) clamp(6rem, 8vw, 9rem)',
-          maxWidth: '82rem',
-          margin: '0 auto',
-        }}
-      >
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))',
-            gap: '2rem',
-          }}
-        >
-          {INDUSTRIES.map((ind) => (
-            <Link
-              key={ind.slug}
-              href={`/industries/${ind.slug}`}
-              style={{ textDecoration: 'none', display: 'block' }}
+      <AnimatePresence initial={false}>
+        {expanded && (
+          <motion.div
+            id={regionId}
+            role="region"
+            aria-label={`${group.title} sub-industries`}
+            initial={reduce ? false : { height: 0, opacity: 0 }}
+            animate={reduce ? undefined : { height: 'auto', opacity: 1 }}
+            exit={reduce ? undefined : { height: 0, opacity: 0 }}
+            transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
+            style={{
+              overflow: 'hidden',
+              borderTop: isDark ? '1px solid rgba(255,255,255,.07)' : '1px solid #E2E8F0',
+              background: isDark ? '#080F1C' : '#F8FAFC',
+            }}
+          >
+            <div
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"
+              style={{ padding: 'clamp(1.25rem, 3vw, 2rem)', columnGap: '1rem', rowGap: '1rem' }}
             >
-              <div
+              {group.subIndustries.map((sub, index) => {
+                const Icon = sub.icon;
+                return (
+                  <motion.div
+                    key={sub.name}
+                    initial={reduce ? false : { opacity: 0, y: 12 }}
+                    animate={reduce ? undefined : { opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: index * 0.035, ease: [0.16, 1, 0.3, 1] }}
+                    className="min-w-0"
+                  >
+                    <Link
+                      href={sub.href}
+                      className="group/sub flex min-h-[88px] items-center justify-between gap-4 rounded-xl"
+                      style={{
+                        padding: '1.25rem 1.35rem',
+                        textDecoration: 'none',
+                        background: isDark ? '#0D1727' : '#FFFFFF',
+                        border: isDark ? '1px solid rgba(255,255,255,.07)' : '1px solid #E2E8F0',
+                        color: isDark ? '#FFFFFF' : '#0F172A',
+                        boxShadow: '0 4px 18px rgba(15,23,42,.025)',
+                        transition:
+                          'transform .22s ease, border-color .22s ease, box-shadow .22s ease, background .22s ease',
+                      }}
+                    >
+                      <span className="flex min-w-0 items-center gap-4">
+                        <span
+                          className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl"
+                          style={{
+                            background: isDark ? 'rgba(37,99,235,.12)' : '#F1F5F9',
+                            color: '#2563EB',
+                          }}
+                        >
+                          <Icon size={28} strokeWidth={1.75} />
+                        </span>
+                        <span
+                          className="text-[14px] font-bold leading-[1.35]"
+                          style={{ color: isDark ? '#F8FAFC' : '#172033' }}
+                        >
+                          {sub.name}
+                        </span>
+                      </span>
+                      <ArrowRight
+                        size={20}
+                        strokeWidth={2}
+                        className="shrink-0 transition-transform duration-200 group-hover/sub:translate-x-1"
+                        style={{ color: '#C9A24B' }}
+                      />
+                    </Link>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.article>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/*  INDUSTRY EXPLORER                                                         */
+/* -------------------------------------------------------------------------- */
+
+function IndustryExplorer({ isDark }: { isDark: boolean }) {
+  const [expanded, setExpanded] = useState('service-industries');
+
+  return (
+    <section
+      style={{
+        padding: 'clamp(5rem, 8vw, 7rem) 1.5rem',
+        background: isDark ? '#070B14' : '#F8FAFC',
+      }}
+    >
+      <div className="mx-auto" style={{ maxWidth: 1320 }}>
+        <Reveal>
+          <div
+            className="flex flex-col justify-between gap-6 md:flex-row md:items-end"
+            style={{
+              marginBottom: '2.5rem',
+              paddingBottom: '1.75rem',
+              borderBottom: isDark ? '1px solid rgba(255,255,255,.08)' : '1px solid #E2E8F0',
+            }}
+          >
+            <div>
+              <span
+                className="text-[11px] font-extrabold tracking-[.2em]"
+                style={{ color: '#2563EB' }}
+              >
+                SECTOR COVERAGE
+              </span>
+              <h2
+                className="mt-2 m-0 font-extrabold tracking-[-.04em]"
                 style={{
-                  background: 'rgba(255,255,255,0.035)',
-                  border: '1px solid rgba(255,255,255,0.09)',
-                  borderRadius: '1.5rem',
-                  padding: '2.5rem',
-                  transition: 'border-color 0.2s, background 0.2s',
-                  cursor: 'pointer',
-                  height: '100%',
+                  color: isDark ? '#FFFFFF' : '#0F172A',
+                  fontSize: 'clamp(2rem, 4vw, 3.2rem)',
+                  lineHeight: 1.05,
                 }}
               >
-                <div
-                  style={{
-                    width: '3rem',
-                    height: '3rem',
-                    borderRadius: '0.875rem',
-                    background: `${ind.accent}18`,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    marginBottom: '1.5rem',
-                  }}
-                >
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke={ind.accent}
-                    strokeWidth={1.5}
-                    style={{ width: '1.375rem', height: '1.375rem' }}
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" d={ind.icon} />
-                  </svg>
-                </div>
-                <h2
-                  style={{
-                    fontSize: '1.0625rem',
-                    fontWeight: 700,
-                    color: '#fff',
-                    marginBottom: '0.875rem',
-                  }}
-                >
-                  {ind.label}
-                </h2>
-                <p
-                  style={{ fontSize: '0.9375rem', color: 'rgba(255,255,255,0.5)', lineHeight: 1.7 }}
-                >
-                  {ind.description}
-                </p>
-                <div
-                  style={{
-                    marginTop: '2rem',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.375rem',
-                    color: ind.accent,
-                    fontSize: '0.8125rem',
-                    fontWeight: 600,
-                  }}
-                >
-                  Explore
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                    style={{ width: '0.875rem', height: '0.875rem' }}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-                    />
-                  </svg>
-                </div>
-              </div>
-            </Link>
+                Explore Our Expertise
+              </h2>
+            </div>
+            <p
+              className="m-0 max-w-md text-sm leading-6"
+              style={{ color: isDark ? '#94A3B8' : '#64748B' }}
+            >
+              Explore the sectors where TRYVION brings business and technology together.
+            </p>
+          </div>
+        </Reveal>
+        <div style={{ display: 'grid', gap: '1.25rem' }}>
+          {INDUSTRIES.map((group, index) => (
+            <Reveal key={group.id} delay={index * 0.035}>
+              <IndustryCard
+                group={group}
+                expanded={expanded === group.id}
+                onToggle={() => setExpanded((current) => (current === group.id ? '' : group.id))}
+                isDark={isDark}
+              />
+            </Reveal>
           ))}
         </div>
-      </section>
+      </div>
+    </section>
+  );
+}
 
-      <section
-        style={{
-          padding: 'clamp(6rem, 8vw, 8rem) clamp(1.5rem, 5vw, 3.5rem)',
-          background: 'rgba(20,88,242,0.06)',
-          borderTop: '1px solid rgba(255,255,255,0.07)',
-        }}
-      >
-        <div style={{ maxWidth: '52rem', margin: '0 auto', textAlign: 'center' }}>
-          <p
-            style={{
-              color: '#C9A24B',
-              fontSize: '0.8125rem',
-              fontWeight: 600,
-              letterSpacing: '0.15em',
-              textTransform: 'uppercase',
-              marginBottom: '1.25rem',
-            }}
-          >
-            Work With Us
-          </p>
-          <h2
-            style={{
-              fontSize: 'clamp(2rem, 3.5vw, 3rem)',
-              fontWeight: 800,
-              letterSpacing: '-0.025em',
-              marginBottom: '1.25rem',
-            }}
-          >
-            Your industry. Our expertise.
-          </h2>
-          <p
-            style={{
-              color: 'rgba(255,255,255,0.55)',
-              fontSize: '1rem',
-              lineHeight: 1.75,
-              marginBottom: '3rem',
-            }}
-          >
-            Tell us about your transformation objectives and we will connect you with SAP and AI
-            specialists who bring real industry depth to every engagement.
-          </p>
-          <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Link
-              href="/contact"
+/* -------------------------------------------------------------------------- */
+/*  INDUSTRY + TECHNOLOGY                                                     */
+/* -------------------------------------------------------------------------- */
+
+function IndustryTechnology({ isDark }: { isDark: boolean }) {
+  const [hovered, setHovered] = useState<number | null>(null);
+
+  return (
+    <section
+      style={{
+        padding: 'clamp(5rem, 8vw, 7rem) 1.5rem',
+        background: isDark ? '#0A0F1D' : '#FFFFFF',
+        borderTop: isDark ? '1px solid rgba(255,255,255,.07)' : '1px solid #E2E8F0',
+      }}
+    >
+      <div className="mx-auto" style={{ maxWidth: 1320 }}>
+        <Reveal>
+          <div style={{ marginBottom: '2.5rem' }}>
+            <span
+              className="text-[11px] font-extrabold tracking-[.2em]"
+              style={{ color: '#C9A24B' }}
+            >
+              INTEGRATED CAPABILITIES
+            </span>
+            <h2
+              className="mt-2 m-0 font-extrabold tracking-[-.04em]"
               style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                background: 'linear-gradient(135deg, #1458F2, #0B1E3D)',
-                color: '#fff',
-                padding: '1rem 2.25rem',
-                borderRadius: '0.75rem',
-                textDecoration: 'none',
-                fontWeight: 600,
-                fontSize: '0.9375rem',
+                color: isDark ? '#FFFFFF' : '#0F172A',
+                fontSize: 'clamp(2rem, 4vw, 3.2rem)',
+                lineHeight: 1.05,
               }}
             >
-              Talk to an industry expert
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={2}
-                style={{ width: '1rem', height: '1rem' }}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-                />
-              </svg>
+              Industry + Technology
+            </h2>
+            <p
+              className="mt-3 m-0 text-sm leading-6"
+              style={{ color: isDark ? '#94A3B8' : '#64748B' }}
+            >
+              The right technology starts with the right context.
+            </p>
+          </div>
+        </Reveal>
+        <div
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6"
+          onMouseLeave={() => setHovered(null)}
+          style={{ columnGap: '1rem', rowGap: '1rem' }}
+        >
+          {CAPABILITIES.map((item, index) => {
+            const Icon = item.icon;
+            const active = hovered === index;
+            return (
+              <Reveal key={item.title} delay={index * 0.035}>
+                <motion.div
+                  onMouseEnter={() => setHovered(index)}
+                  whileHover={useReducedMotion() ? undefined : { y: -4 }}
+                  transition={{ duration: 0.2 }}
+                  style={{
+                    minHeight: 240,
+                    height: '100%',
+                    padding: '1.6rem',
+                    borderRadius: 16,
+                    background: isDark
+                      ? active
+                        ? 'rgba(37,99,235,.12)'
+                        : 'rgba(255,255,255,.035)'
+                      : active
+                        ? '#F8FAFC'
+                        : '#FFFFFF',
+                    border: active
+                      ? '1px solid rgba(201,162,75,.7)'
+                      : isDark
+                        ? '1px solid rgba(255,255,255,.08)'
+                        : '1px solid #E2E8F0',
+                    boxShadow: active ? '0 18px 45px rgba(15,23,42,.08)' : 'none',
+                    transition:
+                      'background .25s ease, border-color .25s ease, box-shadow .25s ease',
+                  }}
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-xs font-extrabold" style={{ color: '#C9A24B' }}>
+                      {item.step}
+                    </span>
+                    <Icon
+                      size={36}
+                      strokeWidth={1.5}
+                      style={{
+                        color: active ? '#C9A24B' : '#2563EB',
+                        transition: 'color .2s ease',
+                      }}
+                    />
+                  </div>
+                  <h3
+                    className="mt-10 m-0 text-base font-extrabold tracking-[.02em]"
+                    style={{ color: isDark ? '#FFFFFF' : '#0F172A' }}
+                  >
+                    {item.title}
+                  </h3>
+                  <p
+                    className="mt-2 m-0 text-xs leading-5"
+                    style={{ color: isDark ? '#94A3B8' : '#64748B' }}
+                  >
+                    {item.description}
+                  </p>
+                </motion.div>
+              </Reveal>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/*  CTA SECTION - FULL IMAGE BACKGROUND, NO CSS GRADIENTS OR OVERLAYS             */
+/* -------------------------------------------------------------------------- */
+
+function IndustriesCTA() {
+  return (
+    <section
+      className="relative overflow-hidden"
+      style={{
+        padding: 'clamp(5rem, 9vw, 8rem) 1.5rem',
+        color: '#FFFFFF',
+        textAlign: 'center',
+        minHeight: '500px',
+        height: 'auto',
+      }}
+    >
+      {/* CTA image is the actual visible background */}
+      <div className="absolute inset-0 z-0 w-full h-full">
+        <Image
+          src="/images/industries-cta.png"
+          alt=""
+          fill
+          className="object-cover object-center"
+          sizes="100vw"
+        />
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background:
+              'linear-gradient(90deg, rgba(3,5,12,0.68) 0%, rgba(3,5,12,0.42) 32%, rgba(3,5,12,0.12) 68%, rgba(3,5,12,0) 100%)',
+          }}
+        />
+      </div>
+
+      <div className="relative z-10 mx-auto" style={{ maxWidth: 900 }}>
+        <Reveal>
+          <span className="text-[11px] font-extrabold tracking-[.2em]" style={{ color: '#C9A24B' }}>
+            THE NEXT MOVE
+          </span>
+          <h2
+            className="mt-3 m-0 font-extrabold tracking-[-.045em]"
+            style={{
+              color: '#FFFFFF',
+              fontSize: 'clamp(2.25rem, 5.2vw, 4.7rem)',
+              lineHeight: 1.02,
+            }}
+          >
+            Your Industry Is Changing.
+            <span className="mt-2 block" style={{ color: '#FFFFFF' }}>
+              Is Your Enterprise Ready For What Comes Next?
+            </span>
+          </h2>
+          <br />
+          <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+            <Link
+              href="/contact"
+              className="inline-flex items-center justify-center gap-2 rounded-md px-6 py-3.5 font-bold text-white no-underline transition hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-[#03050C]"
+              style={{ background: '#2563EB' }}
+            >
+              Talk to an Expert <ArrowRight size={20} />
             </Link>
             <Link
               href="/services"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                color: 'rgba(255,255,255,0.65)',
-                padding: '1rem 2.25rem',
-                borderRadius: '0.75rem',
-                textDecoration: 'none',
-                fontWeight: 600,
-                fontSize: '0.9375rem',
-                border: '1px solid rgba(255,255,255,0.15)',
-              }}
+              className="inline-flex items-center justify-center gap-2 rounded-md border border-white/20 bg-white/5 px-6 py-3.5 font-bold text-white no-underline transition hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-[#03050C]"
             >
-              Explore our services
+              Explore TRYVION Services <ArrowRight size={20} />
             </Link>
           </div>
-        </div>
-      </section>
-    </main>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/*  PAGE                                                                      */
+/* -------------------------------------------------------------------------- */
+
+export default function TryvionIndustriesPage() {
+  const { theme } = useSiteTheme();
+  const isDark = theme === 'dark';
+
+  return (
+    <div
+      className="min-h-screen overflow-x-hidden"
+      style={{
+        backgroundColor: isDark ? '#070B14' : '#FFFFFF',
+        color: isDark ? '#F8FAFC' : '#0F172A',
+        fontFamily:
+          'var(--family-text, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif)',
+      }}
+    >
+      <main>
+        <IndustriesHero />
+        <IndustryExplorer isDark={isDark} />
+        <IndustryTechnology isDark={isDark} />
+        <IndustriesCTA />
+      </main>
+    </div>
   );
 }

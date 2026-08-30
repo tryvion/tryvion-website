@@ -1,8 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   ArrowRight,
@@ -22,43 +21,46 @@ import {
   Search,
   PenTool,
   Rocket,
+  Sparkles,
+  Activity,
+  Terminal,
 } from 'lucide-react';
 import { useSiteTheme } from '@/providers/SiteThemeProvider';
 
-// ── DATA ──
+// ── DATA DEFINITIONS ──
 const AGENDA_PILLARS = [
   {
-    id: 'business',
+    id: '01',
     icon: Briefcase,
     title: 'Business Alignment',
     desc: 'Mapping AI initiatives directly to core strategic objectives and P&L drivers.',
   },
   {
-    id: 'data',
+    id: '02',
     icon: Database,
     title: 'Data Readiness',
     desc: 'Structuring enterprise data assets for secure, scalable model consumption.',
   },
   {
-    id: 'tech',
+    id: '03',
     icon: Cpu,
     title: 'Technology Architecture',
     desc: 'Building composable infrastructure to deploy and monitor LLMs securely.',
   },
   {
-    id: 'people',
+    id: '04',
     icon: Users,
     title: 'People & Change',
     desc: 'Upskilling workforce and managing organizational transformation.',
   },
   {
-    id: 'gov',
+    id: '05',
     icon: ShieldCheck,
     title: 'Governance & Risk',
     desc: 'Establishing guardrails for ethics, compliance, and IP protection.',
   },
   {
-    id: 'value',
+    id: '06',
     icon: TrendingUp,
     title: 'Value Realization',
     desc: 'Continuous measurement of ROI, adoption rates, and operational efficiency.',
@@ -71,7 +73,7 @@ const FRAMEWORK_STAGES = [
     title: 'Discovery & Audit',
     icon: Search,
     focus:
-      'We assess your current operational baseline, data readiness, and technical infrastructure. Identifying friction points where AI can deliver immediate impact without compromising security.',
+      'We assess your current operational baseline, data readiness, and technical infrastructure to identify friction points where AI delivers immediate impact without compromising security.',
     outcomes: [
       'Enterprise Data Estate Evaluation',
       'Existing AI/ML Infrastructure Audit',
@@ -83,11 +85,11 @@ const FRAMEWORK_STAGES = [
     title: 'Value Mapping',
     icon: Target,
     focus:
-      'We identify high-impact use cases that align with business strategy. We prioritize initiatives based on feasibility, value, and risk.',
+      'We identify high-impact use cases aligned with business strategy, prioritizing initiatives based on feasibility, value, and risk profiles.',
     outcomes: [
       'Use Case Identification Workshop',
-      'Feasibility & Value Scoring',
-      'Roadmap Prioritization',
+      'Feasibility & Value Scoring Matrix',
+      'Strategic Roadmap Prioritization',
     ],
   },
   {
@@ -95,10 +97,10 @@ const FRAMEWORK_STAGES = [
     title: 'Architecture Design',
     icon: PenTool,
     focus:
-      'We design the target state architecture, integration patterns, and governance models required to support scalable AI operations.',
+      'We design target-state architecture, integration patterns, and governance models required to support scalable AI operations.',
     outcomes: [
       'Target Architecture Blueprint',
-      'Data Pipeline Design',
+      'Data Pipeline & Vector DB Design',
       'Governance Framework Definition',
     ],
   },
@@ -107,113 +109,147 @@ const FRAMEWORK_STAGES = [
     title: 'Pilot & Prove',
     icon: Rocket,
     focus:
-      'We move through Explore → Prototype → Industrialize → Deploy using reusable AI services and agent lifecycle management.',
-    outcomes: ['MVP Development', 'Pilot Deployment', 'Impact Measurement & Refinement'],
+      'We move through Explore → Prototype → Industrialize using reusable AI microservices and agent lifecycle management.',
+    outcomes: [
+      'MVP Agentic System',
+      'Pilot Deployment in Sandbox',
+      'Impact Measurement & Fine-tuning',
+    ],
   },
   {
     id: '05',
     title: 'Enterprise Scale',
     icon: Layers,
     focus:
-      'We industrialize the solution, establishing MLOps practices and scaling the solution across the enterprise with full governance.',
-    outcomes: ['MLOps Implementation', 'Enterprise Rollout', 'Continuous Optimization'],
+      'We industrialize the solution, establishing enterprise MLOps/LLMOps practices and expanding across business units with full governance.',
+    outcomes: [
+      'LLMOps Pipeline Implementation',
+      'Enterprise-wide Rollout',
+      'Continuous Autonomous Optimization',
+    ],
+  },
+];
+
+const VALUE_PORTFOLIO_QUADRANTS = [
+  {
+    title: 'Strategic Transformations',
+    tag: 'High Value / High Complexity',
+    desc: 'Multi-system autonomous workflows & proprietary fine-tuned foundation models.',
+    bgLight: 'rgba(37, 99, 235, 0.06)',
+    bgDark: 'rgba(20, 88, 242, 0.12)',
+    borderLight: 'rgba(37, 99, 235, 0.3)',
+    borderDark: 'rgba(59, 130, 246, 0.5)',
+  },
+  {
+    title: 'Quick Wins',
+    tag: 'High Value / Low Complexity',
+    desc: 'Generative search, automated doc extraction & Copilot augmentations.',
+    bgLight: 'rgba(16, 185, 129, 0.06)',
+    bgDark: 'rgba(16, 185, 129, 0.12)',
+    borderLight: 'rgba(16, 185, 129, 0.3)',
+    borderDark: 'rgba(16, 185, 129, 0.5)',
+  },
+  {
+    title: 'Long-Term Experiments',
+    tag: 'Low Value / High Complexity',
+    desc: 'Custom foundational model research and bleeding-edge autonomous R&D.',
+    bgLight: 'var(--surface-subtle, #F8FAFC)',
+    bgDark: 'rgba(255, 255, 255, 0.03)',
+    borderLight: 'var(--border-subtle, #E2E8F0)',
+    borderDark: 'rgba(255, 255, 255, 0.1)',
+  },
+  {
+    title: 'Task Automations',
+    tag: 'Low Value / Low Complexity',
+    desc: 'Basic script automation & off-the-shelf single-utility AI widgets.',
+    bgLight: 'var(--surface-subtle, #F8FAFC)',
+    bgDark: 'rgba(255, 255, 255, 0.03)',
+    borderLight: 'var(--border-subtle, #E2E8F0)',
+    borderDark: 'rgba(255, 255, 255, 0.1)',
   },
 ];
 
 const WHY_TRYVION = [
   {
-    title: 'Business-First',
-    desc: 'We start with the outcome that needs to change—not an AI tool looking for a problem.',
+    title: 'Business-First Focus',
+    desc: 'We start with the business outcome that needs to move—not an AI model looking for a problem.',
+    badge: 'ROI Centric',
   },
   {
     title: 'Strategy to Execution',
-    desc: 'We bridge high-level strategy with execution-ready architecture and delivery.',
+    desc: 'We bridge executive vision with execution-ready architecture, production code, and delivery.',
+    badge: 'Full Lifecycle',
   },
   {
     title: 'GenAI + Agentic AI',
-    desc: 'Progress from basic copilots to autonomous agents capable of reasoning and executing complex workflows.',
+    desc: 'Progress from basic copilots to autonomous agents capable of reasoning across enterprise workflows.',
+    badge: 'Next-Gen Native',
   },
   {
     title: 'SAP + Enterprise AI',
-    desc: 'Deep expertise connecting SAP, BTP, and enterprise data with cutting-edge AI models.',
+    desc: 'Deep expertise connecting SAP BTP and core enterprise ERP data with state-of-the-art LLMs.',
+    badge: 'ERP Integrated',
   },
   {
     title: 'Technology Agnostic',
-    desc: 'Unbiased selection of the optimal technology, model, and platform mix for your specific needs.',
+    desc: 'Unbiased selection of optimal model providers, vector storage, and hardware platforms tailored to you.',
+    badge: 'Unbiased Stack',
   },
   {
     title: 'Built for Scale & Control',
-    desc: 'Embed FinOps for cloud cost control and reusable patterns that eliminate siloed work.',
+    desc: 'Embed FinOps for cost discipline alongside enterprise reusable guardrails and latency optimization.',
+    badge: 'Governance Built-in',
   },
 ];
 
 const RESPONSIBLE_AI = [
   {
     icon: Lock,
-    title: 'Enterprise Security & IP',
-    desc: 'Safeguard proprietary IP with enterprise-grade access controls and data protection.',
+    title: 'Enterprise Security & IP Protection',
+    desc: 'Safeguard proprietary data assets with role-based access control, encryption, and zero-data-retention model guarantees.',
   },
   {
     icon: ShieldCheck,
-    title: 'Compliance & Governance',
-    desc: 'Align with evolving regulatory standards while maintaining clear ownership structures.',
+    title: 'Regulatory Compliance & Auditability',
+    desc: 'Align with evolving EU AI Act and global governance standards while maintaining complete lineage and logging.',
   },
   {
     icon: Eye,
-    title: 'Human Oversight & Fairness',
-    desc: 'Ensure active human-in-the-loop approvals, continuous monitoring, and bias mitigation.',
+    title: 'Human-in-the-Loop Safeguards',
+    desc: 'Ensure active human approval steps, real-time hallucination scoring, and continuous toxicity monitoring.',
   },
 ];
 
 const METRICS = [
   {
-    category: 'Productivity & Speed',
-    metrics: 'Task Completion Time, Automation Rate',
-    impact: '+40% Efficiency',
+    category: 'Productivity & Throughput',
+    metrics: 'Task Completion Time, Automation Coverage',
+    impact: '+42% Operational Speed',
     icon: Clock,
   },
   {
-    category: 'Financial Outcomes',
-    metrics: 'Cost per Transaction, Revenue Lift',
-    impact: '-25% OpEx',
+    category: 'Financial Efficiency',
+    metrics: 'Cost per Transaction, OpEx Reduction',
+    impact: '-28% Expense Reduction',
     icon: TrendingUp,
   },
   {
-    category: 'Quality & Risk',
-    metrics: 'Error Rate Reduction, Compliance Score',
-    impact: '99.9% Accuracy',
+    category: 'Accuracy & Compliance',
+    metrics: 'Hallucination Mitigation, Audit Accuracy',
+    impact: '99.9% Compliance Score',
     icon: ShieldCheck,
   },
 ];
 
-// ── HERO SLIDER DATA ──
-const HERO_SLIDES = [
-  {
-    headline: (
-      <>
-        From AI Strategy
-        <br />
-        To Enterprise Impact.
-      </>
-    ),
-    subtitle: (
-      <>
-        Build an <span style={{ color: 'var(--brand-accent)' }}>AI-Ready</span> Enterprise.
-      </>
-    ),
-    description:
-      'TRYVION moves organizations beyond AI experiments to practical, business-led capabilities across strategy, automation, and value realization.',
-  },
-];
-
-// ── COMPONENTS ──
-const Reveal = ({ children, delay = 0, className = '' }: any) => (
+// ── REUSABLE ANIMATION COMPONENT ──
+const Reveal = ({ children, delay = 0, className = '', style = {} }: any) => (
   <motion.div
-    initial={{ opacity: 1, y: 30 }}
-    whileInView={{ y: 0 }}
-    viewport={{ once: true, margin: '-100px' }}
-    transition={{ duration: 0.8, delay, ease: [0.2, 0, 0, 1] }}
+    initial={{ opacity: 0, y: 30 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true, margin: '-60px' }}
+    transition={{ duration: 0.7, delay: delay / 1000, ease: [0.16, 1, 0.3, 1] }}
     className={className}
+    style={style}
   >
     {children}
   </motion.div>
@@ -221,36 +257,79 @@ const Reveal = ({ children, delay = 0, className = '' }: any) => (
 
 export default function EnterpriseAIStrategyPage() {
   const { theme } = useSiteTheme();
+  const isDark = theme === 'dark';
   const [activeStage, setActiveStage] = useState(0);
-  const [activeSlide, setActiveSlide] = useState(0);
 
-  // Auto-advance hero slider
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveSlide((prev) => (prev + 1) % HERO_SLIDES.length);
-    }, 6000);
-    return () => clearInterval(interval);
-  }, []);
+  const currentStageData = FRAMEWORK_STAGES[activeStage];
+  const StageIcon = currentStageData.icon;
 
   return (
     <div
       style={{
-        backgroundColor: 'var(--surface-canvas)',
-        color: 'var(--content-primary)',
-        fontFamily: 'var(--family-text), system-ui, sans-serif',
+        backgroundColor: isDark ? '#070B14' : 'var(--surface-canvas, #FFFFFF)',
+        color: isDark ? '#F8FAFC' : 'var(--content-primary, #0F172A)',
+        fontFamily: 'var(--family-text, system-ui, -apple-system, sans-serif)',
         minHeight: '100vh',
+        overflowX: 'hidden',
+        transition: 'background-color 0.3s ease, color 0.3s ease',
       }}
     >
-      {/* CSS RESPONSIVE RULES */}
       <style>{`
         * { box-sizing: border-box; }
-        body { overflow-x: hidden; width: 100%; margin: 0; }
+
+        .hero-cyber-grid-bg {
+          background-color: #050811 !important;
+          background-image:
+            radial-gradient(rgba(59, 130, 246, 0.12) 1px, transparent 1px),
+            linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(5, 8, 17, 0.75), rgba(5, 8, 17, 0.92)),
+            url('/images/planetary-wave.png');
+          background-size: 32px 32px, 64px 64px, cover, cover;
+          background-position: center, center, center, center;
+          background-repeat: repeat, repeat, no-repeat, no-repeat;
+        }
+
+        .glass-panel {
+          background: ${isDark ? 'rgba(15, 23, 42, 0.65)' : 'rgba(255, 255, 255, 0.85)'};
+          backdrop-filter: blur(16px);
+          -webkit-backdrop-filter: blur(16px);
+          border: 1px solid ${isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(15, 23, 42, 0.08)'};
+          box-shadow: ${isDark ? 'none' : '0 10px 30px -10px rgba(0,0,0,0.05)'};
+        }
+
+        .hero-glass-panel {
+          background: rgba(15, 23, 42, 0.65) !important;
+          backdrop-filter: blur(16px);
+          -webkit-backdrop-filter: blur(16px);
+          border: 1px solid rgba(255, 255, 255, 0.12) !important;
+        }
+
+        .glass-panel-interactive {
+          transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .glass-panel-interactive:hover {
+          border-color: ${isDark ? 'rgba(59, 130, 246, 0.4)' : 'rgba(37, 99, 235, 0.3)'};
+          transform: translateY(-4px);
+          box-shadow: ${
+            isDark
+              ? '0 12px 30px -10px rgba(20, 88, 242, 0.25)'
+              : '0 12px 30px -10px rgba(37, 99, 235, 0.12)'
+          };
+        }
+
+        /* Hero Layout & Responsive Header Spacing */
+        .hero-section {
+          padding-top: clamp(8.5rem, 14vw, 11rem) !important;
+          padding-bottom: clamp(5rem, 8vw, 8rem);
+          padding-left: clamp(1.5rem, 5vw, 3rem);
+          padding-right: clamp(1.5rem, 5vw, 3rem);
+        }
 
         .hero-grid {
           display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 3rem;
-          align-items: left;
+          grid-template-columns: 1.2fr 0.8fr;
+          gap: 4rem;
+          align-items: center;
           max-width: 1440px;
           margin: 0 auto;
           width: 100%;
@@ -259,13 +338,7 @@ export default function EnterpriseAIStrategyPage() {
         .agenda-grid {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
-          gap: 1.5rem;
-        }
-
-        .framework-container {
-          display: flex;
-          flex-direction: row;
-          gap: 2rem;
+          gap: 1.75rem;
         }
 
         .why-grid {
@@ -277,539 +350,496 @@ export default function EnterpriseAIStrategyPage() {
         .responsible-grid {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: 3rem;
+          gap: 3.5rem;
           align-items: center;
         }
 
-        .metrics-table-wrapper {
+        /* Horizontal Tab Scroller for Stages */
+        .framework-horizontal-scroller {
+          display: flex;
+          gap: 1rem;
           overflow-x: auto;
-          border-radius: 8px;
-          box-shadow: var(--elevation-01);
-          border: 1px solid var(--border-default);
+          padding-bottom: 1rem;
+          margin-bottom: 2rem;
+          scrollbar-width: thin;
+          scrollbar-color: ${isDark ? 'rgba(59, 130, 246, 0.3) transparent' : '#CBD5E1 transparent'};
+          -webkit-overflow-scrolling: touch;
         }
 
-        /* ── VALUE PORTFOLIO: DESKTOP & TABLET BASE LAYOUT (GLOBAL 2x2 GRID) ── */
-        .value-portfolio-wrapper {
-          position: relative;
-          max-width: 896px;
-          margin: 3rem auto 0;
-          aspect-ratio: 16/9;
-          border-left: 1px solid var(--border-default);
-          border-bottom: 1px solid var(--border-default);
-          padding: 1rem;
+        .framework-horizontal-scroller::-webkit-scrollbar {
+          height: 6px;
         }
-        .value-portfolio-grid {
+        .framework-horizontal-scroller::-webkit-scrollbar-thumb {
+          background: ${isDark ? 'rgba(59, 130, 246, 0.3)' : '#CBD5E1'};
+          border-radius: 4px;
+        }
+
+        .framework-tab-item {
+          flex: 0 0 240px;
+          text-align: left;
+          padding: 1.25rem 1.5rem;
+          border-radius: 12px;
+          border: 1px solid;
+          cursor: pointer;
+          transition: all 0.25s ease;
+          position: relative;
+        }
+
+        /* Value Matrix HUD */
+        .value-matrix-wrapper {
+          position: relative;
+          max-width: 960px;
+          margin: 3.5rem auto 0;
+          padding: 1.5rem;
+          border-left: 2px solid ${isDark ? 'rgba(59, 130, 246, 0.4)' : 'rgba(37, 99, 235, 0.3)'};
+          border-bottom: 2px solid ${isDark ? 'rgba(59, 130, 246, 0.4)' : 'rgba(37, 99, 235, 0.3)'};
+          background: ${isDark ? 'rgba(10, 16, 30, 0.6)' : 'rgba(248, 250, 252, 0.8)'};
+          border-radius: 0 16px 0 16px;
+        }
+
+        .value-matrix-grid {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          grid-template-rows: 1fr 1fr;
-          height: 100%;
-          gap: 1rem;
+          gap: 1.25rem;
         }
-        .value-portfolio-labels-y {
+
+        .matrix-axis-y {
           position: absolute;
-          left: -6rem; /* Outside the border line */
+          left: -4.5rem;
           top: 50%;
           transform: translateY(-50%) rotate(-90deg);
           font-size: 0.75rem;
           font-weight: 700;
+          letter-spacing: 0.15em;
           text-transform: uppercase;
-          letter-spacing: 0.1em;
-          color: var(--content-tertiary);
-          white-space: nowrap;
-          z-index: 10;
+          color: #64748B;
         }
-        .value-portfolio-labels-x {
+
+        .matrix-axis-x {
           position: absolute;
-          bottom: -2.5rem; /* Outside the border line */
+          bottom: -2.5rem;
           left: 50%;
           transform: translateX(-50%);
           font-size: 0.75rem;
           font-weight: 700;
+          letter-spacing: 0.15em;
           text-transform: uppercase;
-          letter-spacing: 0.1em;
-          color: var(--content-tertiary);
-          white-space: nowrap;
-          z-index: 10;
+          color: #64748B;
         }
 
-        /* Tablet & Small Laptop */
+        .metrics-table-container {
+          overflow-x: auto;
+          border-radius: 12px;
+          border: 1px solid ${isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(15, 23, 42, 0.08)'};
+          background: ${isDark ? 'rgba(15, 23, 42, 0.5)' : '#FFFFFF'};
+        }
+
+        /* Responsive Breakpoints */
         @media (max-width: 1024px) {
-          .hero-grid { grid-template-columns: 1fr; text-align: left; padding: 0 1rem; margin-top: 50px; }
-          .hero-content { width: 100% !important; }
-          .hero-right { display: none; }
+          .hero-section { padding-top: 8.5rem !important; }
+          .hero-grid { grid-template-columns: 1fr; }
+          .hero-visual-host { display: none; }
           .agenda-grid { grid-template-columns: repeat(2, 1fr); }
           .why-grid { grid-template-columns: repeat(2, 1fr); }
+          .responsible-grid { grid-template-columns: 1fr; }
         }
 
-        /* Mobile Devices */
         @media (max-width: 768px) {
           .agenda-grid { grid-template-columns: 1fr; }
-          
-          /* Framework Sections - Equal Width Horizontal Scroll */
-          .framework-container { flex-direction: column !important; }
-          .framework-left {
-            flex: 1 1 auto !important;
-            display: flex !important;
-            flex-direction: row !important;
-            overflow-x: auto !important;
-            flex-wrap: nowrap !important;
-            width: 100% !important;
-            gap: 0.25rem !important;
-            padding-bottom: 0.5rem !important;
-          }
-          .framework-left > button {
-            flex: 1 1 0% !important; 
-            min-width: 0 !important; 
-            width: auto !important;
-            border-left: none !important;
-            border-bottom: 3px solid transparent !important;
-            border-radius: 0 !important;
-            padding: 0.5rem 0.25rem !important;
-            text-align: center !important;
-            margin-bottom: 0 !important;
-            box-shadow: none !important;
-            background-color: transparent !important;
-          }
-          .framework-left > button div {
-            font-size: 0.7rem !important;
-            white-space: normal !important;
-            text-align: center !important;
-          }
-          .framework-left > button span {
-            font-size: 0.6rem !important;
-            display: block !important;
-          }
-          .framework-left > button.active-tab {
-            border-bottom-color: var(--brand-secondary) !important;
-            background-color: transparent !important;
-          }
-          .framework-right { 
-            flex: 1 1 100% !important; 
-            padding: 1.5rem !important; 
-            margin-top: 0.5rem;
-          }
-
-          /* ── VALUE PORTFOLIO: MOBILE 2x2 GRID (Forcefully Maintained) ── */
-          .value-portfolio-wrapper {
-            aspect-ratio: 16/12 !important; /* Gives slight more height for text to fit */
-            margin: 2rem auto 6rem auto !important;
-            padding: 0.5rem !important;
-            width: 100% !important;
-            max-width: 100% !important;
-            border-left: 1px solid var(--border-default) !important;
-            border-bottom: 1px solid var(--border-default) !important;
-            position: relative !important;
-          }
-          .value-portfolio-grid {
-            grid-template-columns: 1fr 1fr !important; 
-            grid-template-rows: 1fr 1fr !important;
-            gap: 0.25rem !important;
-            height: 100% !important;
-          }
-          .value-portfolio-grid > div {
-            padding: 0.5rem 0.3rem !important;
-            border-radius: 4px !important;
-            overflow: hidden !important;
-            display: flex !important;
-            flex-direction: column !important;
-            justify-content: center !important;
-          }
-          /* Dynamic Font Scaling to prevent collisions */
-          .value-portfolio-grid > div span {
-            font-size: clamp(0.4rem, 1.5vw, 0.55rem) !important;
-            letter-spacing: 0.05em !important;
-            display: block !important;
-            margin-bottom: 0.1rem !important;
-            line-height: 1 !important;
-          }
-          .value-portfolio-grid > div h4 {
-            font-size: clamp(0.7rem, 2.5vw, 0.9rem) !important;
-            margin: 0.1rem 0 !important;
-            word-break: break-word !important;
-            line-height: 1.1 !important;
-          }
-          .value-portfolio-grid > div p {
-            font-size: clamp(0.5rem, 1.8vw, 0.65rem) !important;
-            line-height: 1.1 !important;
-            margin-top: 0 !important;
-            word-break: break-word !important;
-          }
-          
-          /* Move Axis Labels outside the line to avoid overlapping texts */
-          .value-portfolio-labels-y {
-            left: -2rem !important; 
-            top: 50% !important;
-            font-size: 0.5rem !important;
-            letter-spacing: 0.05em !important;
-            white-space: nowrap !important;
-            z-index: 20 !important;
-          }
-          .value-portfolio-labels-x {
-            bottom: -1.5rem !important; 
-            left: 50% !important;
-            font-size: 0.5rem !important;
-            letter-spacing: 0.05em !important;
-            white-space: nowrap !important;
-            z-index: 20 !important;
-          }
-
-          .responsible-grid { grid-template-columns: 1fr; }
-          .metrics-table-wrapper { overflow-x: auto; }
-          .metrics-table td, .metrics-table th { padding: 1rem !important; white-space: nowrap; }
-          .hero-right { display: none; }
-        }
-
-        /* Small Phones */
-        @media (max-width: 480px) {
           .why-grid { grid-template-columns: 1fr; }
+          .value-matrix-grid { grid-template-columns: 1fr; }
+          .matrix-axis-y, .matrix-axis-x { display: none; }
+          .value-matrix-wrapper { border-left: none; border-bottom: none; padding: 0; background: transparent; }
+          .framework-tab-item { flex: 0 0 200px; }
         }
       `}</style>
 
-      <main style={{ paddingTop: 0 }}>
-        {/* ── HERO WITH SLIDER ── */}
+      <main>
+        {/* ── HERO SECTION (ALWAYS DARK IN ALL THEMES) ── */}
         <section
+          className="hero-section hero-cyber-grid-bg"
           style={{
-            backgroundColor: 'var(--ink-950)',
-            minHeight: '100vh',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            padding: 'clamp(6rem, 10vw, 10rem) clamp(1.5rem, 5vw, 3rem)',
             position: 'relative',
+            minHeight: '88vh',
+            display: 'flex',
+            alignItems: 'center',
+            backgroundColor: '#050811',
+            borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
             overflow: 'hidden',
           }}
         >
-          {/* Background Image */}
+          {/* Dynamic Ambient Glow Effects */}
           <div
             style={{
               position: 'absolute',
-              inset: 0,
+              top: '15%',
+              left: '8%',
+              width: '420px',
+              height: '420px',
+              background: 'radial-gradient(circle, rgba(20,88,242,0.22) 0%, transparent 70%)',
+              filter: 'blur(70px)',
               pointerEvents: 'none',
-              zIndex: 0,
             }}
-          >
-            <Image
-              src="/images/hero-enterprise-ai-strategy.png"
-              alt="Enterprise AI strategy background"
-              fill
-              style={{ objectFit: 'cover' }}
-              priority
-            />
-          </div>
-
-          {/* Gradient overlay */}
+          />
           <div
             style={{
               position: 'absolute',
-              inset: 0,
+              bottom: '10%',
+              right: '12%',
+              width: '450px',
+              height: '450px',
+              background: 'radial-gradient(circle, rgba(16,185,129,0.15) 0%, transparent 70%)',
+              filter: 'blur(80px)',
               pointerEvents: 'none',
-              zIndex: 1,
-              background:
-                'linear-gradient(to right, var(--ink-950) 0%, var(--ink-950) 60%, transparent 100%)',
             }}
           />
 
-          <div className="hero-grid" style={{ position: 'relative', zIndex: 10 }}>
-            {/* Left content – Slider */}
-            <div className="hero-content" style={{ width: '95%', position: 'relative' }}>
+          <div className="hero-grid" style={{ position: 'relative', zIndex: 2 }}>
+            <div>
+              {/* Breadcrumbs - High Contrast for Dark Background */}
               <Reveal>
                 <nav
+                  aria-label="Breadcrumb"
                   style={{
                     display: 'flex',
                     alignItems: 'center',
                     gap: '0.5rem',
-                    fontSize: '0.75rem',
-                    fontFamily: 'monospace',
-                    textTransform: 'uppercase',
-                    color: 'rgba(255,255,255,0.7)',
+                    fontSize: '0.8125rem',
+                    fontWeight: 600,
+                    color: '#94A3B8',
+                    marginBottom: '1.5rem',
                     flexWrap: 'wrap',
                   }}
                 >
-                  <Link href="/services" style={{ color: 'inherit', textDecoration: 'none' }}>
+                  <Link
+                    href="/services"
+                    style={{
+                      color: 'inherit',
+                      textDecoration: 'none',
+                      transition: 'color 0.2s',
+                    }}
+                  >
                     Services
                   </Link>
-                  <ChevronRight size={12} />
+                  <ChevronRight size={14} style={{ opacity: 0.6 }} />
                   <Link
                     href="/services/artificial-intelligence"
-                    style={{ color: 'inherit', textDecoration: 'none' }}
+                    style={{
+                      color: 'inherit',
+                      textDecoration: 'none',
+                      transition: 'color 0.2s',
+                    }}
                   >
                     Artificial Intelligence
                   </Link>
-                  <ChevronRight size={12} />
-                  <span style={{ color: 'white' }}>Enterprise AI Strategy</span>
+                  <ChevronRight size={14} style={{ opacity: 0.6 }} />
+                  <span style={{ color: '#FFFFFF', fontWeight: 700 }}>Enterprise AI Strategy</span>
                 </nav>
               </Reveal>
 
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeSlide}
-                  initial={{ opacity: 0, y: 40 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -40 }}
-                  transition={{ duration: 0.7, ease: [0.2, 0, 0, 1] }}
+              <Reveal delay={80}>
+                <div
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.6rem',
+                    padding: '0.4rem 0.9rem',
+                    borderRadius: '20px',
+                    background: 'rgba(59, 130, 246, 0.15)',
+                    border: '1px solid rgba(59, 130, 246, 0.35)',
+                    fontSize: '0.75rem',
+                    fontWeight: 700,
+                    color: '#60A5FA',
+                    letterSpacing: '0.08em',
+                    textTransform: 'uppercase',
+                    marginBottom: '1.25rem',
+                  }}
                 >
+                  <Sparkles size={14} /> Enterprise AI Transformation Architecture
+                </div>
+              </Reveal>
+
+              <Reveal delay={160}>
+                <h1
+                  style={{
+                    fontSize: 'clamp(2.75rem, 5.2vw, 4.25rem)',
+                    fontWeight: 800,
+                    lineHeight: 1.08,
+                    letterSpacing: '-0.02em',
+                    color: '#FFFFFF',
+                    marginBottom: '1.25rem',
+                  }}
+                >
+                  From AI Strategy <br />
                   <span
                     style={{
-                      display: 'inline-block',
-                      fontSize: '0.75rem',
-                      fontWeight: 700,
-                      letterSpacing: '0.2em',
-                      textTransform: 'uppercase',
-                      color: 'var(--momentum-300)',
-                      marginBottom: '1.5rem',
+                      background: 'linear-gradient(135deg, #3B82F6 0%, #60A5FA 50%, #10B981 100%)',
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
                     }}
                   >
-                    TRYVION AI
+                    To Scalable Enterprise Impact.
                   </span>
+                </h1>
+              </Reveal>
 
-                  <h1
+              <Reveal delay={240}>
+                <p
+                  style={{
+                    fontSize: '1.1875rem',
+                    lineHeight: 1.75,
+                    color: '#94A3B8',
+                    maxWidth: '54ch',
+                    marginBottom: '2.5rem',
+                  }}
+                >
+                  TRYVION moves organizations beyond isolated proof-of-concepts to high-performing,
+                  secure enterprise capabilities with disciplined ROI and agentic automation.
+                </p>
+              </Reveal>
+
+              <Reveal delay={320}>
+                <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+                  <Link
+                    href="/contact"
                     style={{
-                      fontFamily: 'var(--family-display)',
-                      fontWeight: 800,
-                      fontSize: 'clamp(2.75rem, 8vw, 4.5rem)',
-                      lineHeight: 1.1,
-                      color: 'var(--neutral-0)',
-                      letterSpacing: 'var(--tracking-display)',
-                      marginBottom: '0.5rem',
-                    }}
-                  >
-                    {HERO_SLIDES[activeSlide].headline}
-                  </h1>
-                  <h2
-                    style={{
-                      fontFamily: 'var(--family-display)',
+                      backgroundColor: '#2563EB',
+                      color: '#FFFFFF',
+                      padding: '0.95rem 2.25rem',
                       fontWeight: 700,
-                      fontSize: 'clamp(1.5rem, 4vw, 2.5rem)',
-                      color: 'var(--neutral-0)',
-                      marginBottom: '1rem',
+                      borderRadius: '6px',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.6rem',
+                      textDecoration: 'none',
+                      boxShadow: '0 8px 20px -4px rgba(37, 99, 235, 0.5)',
+                      transition: 'all 0.2s ease',
                     }}
                   >
-                    {HERO_SLIDES[activeSlide].subtitle}
-                  </h2>
-                  <p
+                    Talk to an AI Expert <ArrowRight size={18} />
+                  </Link>
+
+                  <Link
+                    href="#framework"
                     style={{
-                      fontSize: '1.125rem',
-                      lineHeight: 1.7,
-                      color: 'var(--neutral-100)',
-                      maxWidth: '45ch',
-                      marginBottom: '1.5rem',
+                      backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                      border: '1px solid rgba(255, 255, 255, 0.2)',
+                      color: '#FFFFFF',
+                      padding: '0.95rem 2.25rem',
+                      fontWeight: 600,
+                      borderRadius: '6px',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.6rem',
+                      textDecoration: 'none',
                     }}
                   >
-                    {HERO_SLIDES[activeSlide].description}
-                  </p>
-                </motion.div>
-              </AnimatePresence>
-
-              {/* Dot navigation */}
-              <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1.5rem' }}>
-                {HERO_SLIDES.map((_, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => setActiveSlide(idx)}
-                    style={{
-                      width: '12px',
-                      height: '12px',
-                      borderRadius: '50%',
-                      border: 'none',
-                      background:
-                        idx === activeSlide ? 'var(--brand-accent)' : 'rgba(255,255,255,0.3)',
-                      cursor: 'pointer',
-                      transition: 'background 0.3s',
-                    }}
-                    aria-label={`Slide ${idx + 1}`}
-                  />
-                ))}
-              </div>
-
-              {/* CTAs remain static, outside the slider */}
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', marginTop: '1.5rem' }}>
-                <Link
-                  href="/contact"
-                  style={{
-                    backgroundColor: 'var(--brand-accent)',
-                    color: 'var(--ink-950)',
-                    padding: '0.75rem 2rem',
-                    fontWeight: 700,
-                    borderRadius: '4px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.5rem',
-                    textDecoration: 'none',
-                    transition: 'transform 0.2s, box-shadow 0.2s',
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'scale(1.05)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = 'scale(1)';
-                  }}
-                >
-                  Talk to an AI Expert <ArrowRight size={18} />
-                </Link>
-                <Link
-                  href="#framework"
-                  style={{
-                    backgroundColor: 'rgba(255,255,255,0.08)',
-                    border: '1px solid rgba(255,255,255,0.25)',
-                    color: 'var(--neutral-0)',
-                    padding: '0.75rem 2rem',
-                    fontWeight: 600,
-                    borderRadius: '4px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.5rem',
-                    textDecoration: 'none',
-                    transition: 'transform 0.2s, box-shadow 0.2s',
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'scale(1.05)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = 'scale(1)';
-                  }}
-                >
-                  Explore Your AI Journey <ArrowRight size={18} />
-                </Link>
-              </div>
+                    Explore Framework <ChevronRight size={18} />
+                  </Link>
+                </div>
+              </Reveal>
             </div>
 
-            {/* Right visual – CPU animation */}
-            <div className="hero-right">
-              <Reveal
-                delay={600}
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  height: '600px',
-                }}
-              >
-                <div style={{ position: 'relative', width: '320px', height: '320px' }}>
+            {/* Visual Futuristic HUD Node */}
+            <div className="hero-visual-host">
+              <Reveal delay={250}>
+                <div
+                  style={{
+                    width: '380px',
+                    height: '380px',
+                    margin: '0 auto',
+                    position: 'relative',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  {/* Orbit Rings */}
                   <motion.div
                     animate={{ rotate: 360 }}
-                    transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+                    transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
                     style={{
                       position: 'absolute',
                       inset: 0,
                       borderRadius: '50%',
-                      border: '1px solid rgba(20,88,242,0.2)',
+                      border: '1px dashed rgba(59, 130, 246, 0.35)',
                     }}
                   />
                   <motion.div
                     animate={{ rotate: -360 }}
-                    transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
+                    transition={{ duration: 45, repeat: Infinity, ease: 'linear' }}
                     style={{
                       position: 'absolute',
-                      inset: '2rem',
+                      inset: '28px',
                       borderRadius: '50%',
-                      border: '1px solid rgba(20,88,242,0.15)',
+                      border: '1px solid rgba(16, 185, 129, 0.25)',
                     }}
                   />
+
+                  {/* Core Glass HUD Node */}
                   <div
+                    className="hero-glass-panel"
                     style={{
-                      position: 'absolute',
-                      inset: 0,
+                      width: '160px',
+                      height: '160px',
+                      borderRadius: '24px',
                       display: 'flex',
+                      flexDirection: 'column',
                       alignItems: 'center',
                       justifyContent: 'center',
+                      boxShadow: '0 0 40px rgba(37, 99, 235, 0.35)',
+                      zIndex: 2,
                     }}
                   >
-                    <motion.div
-                      whileHover={{ scale: 1.1, rotate: 5 }}
-                      transition={{ type: 'spring', stiffness: 200 }}
+                    <Cpu size={56} style={{ color: '#3B82F6', marginBottom: '0.5rem' }} />
+                    <span
                       style={{
-                        width: '128px',
-                        height: '128px',
-                        borderRadius: '16px',
-                        background:
-                          'linear-gradient(135deg, rgba(20,88,242,0.25), rgba(20,88,242,0.1))',
-                        backdropFilter: 'blur(16px)',
-                        border: '1px solid rgba(255,255,255,0.08)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        boxShadow: 'var(--elevation-05)',
+                        fontSize: '0.7rem',
+                        fontFamily: 'monospace',
+                        color: '#10B981',
+                        fontWeight: 700,
                       }}
                     >
-                      <Cpu size={48} style={{ color: 'var(--momentum-300)' }} />
-                    </motion.div>
+                      CORE ACTIVE
+                    </span>
                   </div>
+
+                  {/* Satellite Floating Badges */}
+                  <motion.div
+                    animate={{ y: [-6, 6, -6] }}
+                    transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+                    className="hero-glass-panel"
+                    style={{
+                      position: 'absolute',
+                      top: '10px',
+                      right: '0px',
+                      padding: '0.6rem 1rem',
+                      borderRadius: '8px',
+                      fontSize: '0.75rem',
+                      fontWeight: 600,
+                      color: '#FFFFFF',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                    }}
+                  >
+                    <Activity size={14} style={{ color: '#10B981' }} />
+                    LLMOps Active
+                  </motion.div>
+
+                  <motion.div
+                    animate={{ y: [6, -6, 6] }}
+                    transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+                    className="hero-glass-panel"
+                    style={{
+                      position: 'absolute',
+                      bottom: '20px',
+                      left: '-10px',
+                      padding: '0.6rem 1rem',
+                      borderRadius: '8px',
+                      fontSize: '0.75rem',
+                      fontWeight: 600,
+                      color: '#FFFFFF',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                    }}
+                  >
+                    <Terminal size={14} style={{ color: '#60A5FA' }} />
+                    Agentic Flow v4
+                  </motion.div>
                 </div>
               </Reveal>
             </div>
           </div>
         </section>
 
-        {/* ── AGENDA ── */}
-        <section style={{ padding: '5rem 2rem', backgroundColor: 'var(--surface-default)' }}>
+        {/* ── ENTERPRISE AI AGENDA PILLARS ── */}
+        <section style={{ padding: '7rem 2rem', backgroundColor: isDark ? '#070B14' : '#FFFFFF' }}>
           <div style={{ maxWidth: '1440px', margin: '0 auto' }}>
             <Reveal>
-              <div style={{ textAlign: 'center', maxWidth: '672px', margin: '0 auto 3rem' }}>
-                <p
+              <div style={{ textAlign: 'center', maxWidth: '700px', margin: '0 auto 4.5rem' }}>
+                <span
                   style={{
                     fontSize: '0.75rem',
                     fontWeight: 700,
                     letterSpacing: '0.2em',
+                    color: '#2563EB',
                     textTransform: 'uppercase',
-                    color: 'var(--content-accent)',
-                    marginBottom: '1rem',
                   }}
                 >
-                  The Core Foundation
-                </p>
+                  Systemic Architecture
+                </span>
                 <h2
                   style={{
-                    fontSize: 'clamp(2rem, 4vw, 2.75rem)',
-                    fontWeight: 700,
-                    color: 'var(--content-primary)',
-                    marginBottom: '0.5rem',
+                    fontSize: 'clamp(2.25rem, 4vw, 3rem)',
+                    fontWeight: 800,
+                    color: isDark ? '#FFFFFF' : '#0F172A',
+                    marginTop: '0.5rem',
                   }}
                 >
                   The Enterprise AI Agenda
                 </h2>
-                <p style={{ fontSize: '1.125rem', color: 'var(--content-secondary)' }}>
-                  A holistic strategy requires addressing six foundational pillars simultaneously to
-                  ensure scalable, sustainable AI adoption.
+                <p
+                  style={{
+                    fontSize: '1.1rem',
+                    color: isDark ? '#94A3B8' : '#64748B',
+                    marginTop: '0.75rem',
+                  }}
+                >
+                  Sustainable AI transformation requires synchronizing six foundational pillars
+                  across enterprise technology and culture.
                 </p>
               </div>
             </Reveal>
 
             <div className="agenda-grid">
               {AGENDA_PILLARS.map((pillar, idx) => (
-                <Reveal key={pillar.id} delay={idx * 80}>
-                  <motion.div
-                    whileHover={{ y: -8, boxShadow: 'var(--elevation-03)' }}
-                    transition={{ type: 'spring', stiffness: 300 }}
+                <Reveal key={pillar.id} delay={idx * 70}>
+                  <div
+                    className="glass-panel glass-panel-interactive"
                     style={{
-                      padding: '2.5rem',
-                      backgroundColor: 'var(--surface-subtle)',
-                      border: '1px solid var(--border-subtle)',
-                      borderRadius: '8px',
-                      transition: 'all 0.2s',
+                      padding: '2.25rem',
+                      borderRadius: '12px',
+                      height: '100%',
+                      position: 'relative',
                     }}
                   >
-                    <motion.div
-                      whileHover={{ scale: 1.1, rotate: 5 }}
-                      transition={{ type: 'spring', stiffness: 400 }}
+                    <span
                       style={{
-                        width: '64px',
-                        height: '64px',
-                        backgroundColor: 'var(--surface-default)',
-                        border: '1px solid var(--border-default)',
-                        borderRadius: '8px',
+                        position: 'absolute',
+                        top: '1.5rem',
+                        right: '1.5rem',
+                        fontSize: '0.85rem',
+                        fontWeight: 700,
+                        fontFamily: 'monospace',
+                        color: isDark ? 'rgba(255,255,255,0.2)' : 'rgba(15,23,42,0.2)',
+                      }}
+                    >
+                      {pillar.id}
+                    </span>
+                    <div
+                      style={{
+                        width: '52px',
+                        height: '52px',
+                        borderRadius: '10px',
+                        backgroundColor: isDark
+                          ? 'rgba(59, 130, 246, 0.12)'
+                          : 'rgba(37, 99, 235, 0.08)',
+                        border: `1px solid ${isDark ? 'rgba(59, 130, 246, 0.3)' : 'rgba(37, 99, 235, 0.2)'}`,
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        marginBottom: '2rem',
+                        marginBottom: '1.5rem',
                       }}
                     >
-                      <pillar.icon size={32} style={{ color: 'var(--content-primary)' }} />
-                    </motion.div>
+                      <pillar.icon size={26} style={{ color: '#2563EB' }} />
+                    </div>
                     <h3
                       style={{
-                        fontSize: '1.375rem',
-                        fontWeight: 600,
-                        color: 'var(--content-primary)',
+                        fontSize: '1.25rem',
+                        fontWeight: 700,
+                        color: isDark ? '#FFFFFF' : '#0F172A',
                         marginBottom: '0.75rem',
                       }}
                     >
@@ -817,672 +847,644 @@ export default function EnterpriseAIStrategyPage() {
                     </h3>
                     <p
                       style={{
-                        fontSize: '0.875rem',
-                        color: 'var(--content-secondary)',
-                        lineHeight: 1.6,
+                        fontSize: '0.95rem',
+                        color: isDark ? '#94A3B8' : '#64748B',
+                        lineHeight: 1.65,
+                        margin: 0,
                       }}
                     >
                       {pillar.desc}
                     </p>
-                  </motion.div>
+                  </div>
                 </Reveal>
               ))}
             </div>
           </div>
         </section>
 
-        {/* ── FRAMEWORK ── */}
+        {/* ── FRAMEWORK STAGES (HORIZONTAL TAB SCROLLER) ── */}
         <section
           id="framework"
-          style={{ padding: '5rem 2rem', backgroundColor: 'var(--surface-subtle)' }}
+          style={{ padding: '7rem 2rem', backgroundColor: isDark ? '#0A0F1D' : '#F8FAFC' }}
         >
           <div style={{ maxWidth: '1440px', margin: '0 auto' }}>
             <Reveal>
               <div style={{ marginBottom: '3rem' }}>
-                <p
+                <span
                   style={{
                     fontSize: '0.75rem',
                     fontWeight: 700,
                     letterSpacing: '0.2em',
+                    color: '#10B981',
                     textTransform: 'uppercase',
-                    color: 'var(--content-accent)',
-                    marginBottom: '0.5rem',
                   }}
                 >
-                  Methodology
-                </p>
+                  Execution Lifecycle
+                </span>
                 <h2
                   style={{
-                    fontSize: 'clamp(2rem, 4vw, 2.75rem)',
-                    fontWeight: 700,
-                    color: 'var(--content-primary)',
+                    fontSize: 'clamp(2.25rem, 4vw, 3rem)',
+                    fontWeight: 800,
+                    color: isDark ? '#FFFFFF' : '#0F172A',
+                    marginTop: '0.5rem',
                   }}
                 >
-                  The TRYVION AI Strategy Framework
+                  The TRYVION Strategy Framework
                 </h2>
               </div>
             </Reveal>
 
-            <div className="framework-container">
-              <div className="framework-left" style={{ flex: '1 1 30%' }}>
-                {FRAMEWORK_STAGES.map((stage, idx) => (
-                  <Reveal key={stage.id} delay={idx * 60}>
-                    <motion.button
-                      whileHover={{ x: 4 }}
-                      transition={{ type: 'spring', stiffness: 400 }}
-                      onClick={() => setActiveStage(idx)}
-                      className={activeStage === idx ? 'active-tab' : ''}
+            {/* Horizontal Tab Scroller */}
+            <div className="framework-horizontal-scroller">
+              {FRAMEWORK_STAGES.map((stage, idx) => {
+                const isActive = activeStage === idx;
+                return (
+                  <button
+                    key={stage.id}
+                    className="framework-tab-item"
+                    onClick={() => setActiveStage(idx)}
+                    style={{
+                      borderColor: isActive
+                        ? isDark
+                          ? 'rgba(59, 130, 246, 0.6)'
+                          : '#2563EB'
+                        : isDark
+                          ? 'rgba(255,255,255,0.08)'
+                          : 'rgba(15,23,42,0.08)',
+                      backgroundColor: isActive
+                        ? isDark
+                          ? 'rgba(37, 99, 235, 0.2)'
+                          : '#FFFFFF'
+                        : isDark
+                          ? 'rgba(15, 23, 42, 0.4)'
+                          : 'rgba(255, 255, 255, 0.6)',
+                      boxShadow: isActive && !isDark ? '0 4px 12px rgba(37,99,235,0.12)' : 'none',
+                    }}
+                  >
+                    <div
                       style={{
-                        display: 'block',
-                        width: '100%',
-                        textAlign: 'left',
-                        padding: '1.5rem',
-                        borderWidth: 0,
-                        borderStyle: 'solid',
-                        borderColor: 'transparent',
-                        borderLeftWidth: '4px',
-                        borderLeftStyle: 'solid',
-                        borderLeftColor:
-                          activeStage === idx ? 'var(--brand-secondary)' : 'transparent',
-                        backgroundColor:
-                          activeStage === idx ? 'var(--surface-default)' : 'transparent',
-                        boxShadow: activeStage === idx ? 'var(--elevation-01)' : 'none',
-                        transition: 'all 0.2s',
-                        cursor: 'pointer',
-                        borderRadius: '4px',
-                        marginBottom: '0.5rem',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        marginBottom: '0.25rem',
                       }}
                     >
                       <span
                         style={{
                           fontSize: '0.75rem',
-                          fontWeight: 700,
                           fontFamily: 'monospace',
-                          color:
-                            activeStage === idx
-                              ? 'var(--brand-secondary)'
-                              : 'var(--content-tertiary)',
+                          fontWeight: 700,
+                          color: isActive ? '#2563EB' : '#64748B',
                         }}
                       >
-                        STAGE {stage.id}
+                        PHASE {stage.id}
                       </span>
-                      <div
-                        style={{
-                          fontSize: '1.25rem',
-                          fontWeight: 600,
-                          color:
-                            activeStage === idx
-                              ? 'var(--content-primary)'
-                              : 'var(--content-secondary)',
-                        }}
-                      >
-                        {stage.title}
-                      </div>
-                    </motion.button>
-                  </Reveal>
-                ))}
-              </div>
-
-              <div className="framework-right" style={{ flex: '1 1 70%' }}>
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={activeStage}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
-                    transition={{ duration: 0.3, type: 'spring', stiffness: 300 }}
-                    style={{
-                      padding: '4rem',
-                      backgroundColor: 'var(--surface-default)',
-                      border: '1px solid var(--border-subtle)',
-                      borderRadius: '8px',
-                      boxShadow: 'var(--elevation-01)',
-                      position: 'relative',
-                      overflow: 'hidden',
-                    }}
-                  >
+                      {isActive && (
+                        <motion.div
+                          layoutId="activeTabDot"
+                          style={{
+                            width: '8px',
+                            height: '8px',
+                            borderRadius: '50%',
+                            backgroundColor: '#2563EB',
+                          }}
+                        />
+                      )}
+                    </div>
                     <div
                       style={{
-                        position: 'absolute',
-                        top: '2rem',
-                        right: '2rem',
-                        opacity: 0.05,
-                        pointerEvents: 'none',
+                        fontSize: '1.05rem',
+                        fontWeight: 700,
+                        color: isActive
+                          ? isDark
+                            ? '#FFFFFF'
+                            : '#0F172A'
+                          : isDark
+                            ? '#94A3B8'
+                            : '#64748B',
                       }}
                     >
-                      {(() => {
-                        const Icon = FRAMEWORK_STAGES[activeStage].icon;
-                        return <Icon size={192} style={{ color: 'var(--content-primary)' }} />;
-                      })()}
+                      {stage.title}
                     </div>
+                  </button>
+                );
+              })}
+            </div>
 
+            {/* Stage Detail Card Component */}
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeStage}
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -15 }}
+                transition={{ duration: 0.35, ease: 'easeOut' }}
+                className="glass-panel"
+                style={{
+                  padding: '3.5rem',
+                  borderRadius: '16px',
+                  border: `1px solid ${isDark ? 'rgba(59, 130, 246, 0.3)' : 'rgba(37, 99, 235, 0.2)'}`,
+                }}
+              >
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '1.25rem',
+                    marginBottom: '1.75rem',
+                  }}
+                >
+                  <div
+                    style={{
+                      padding: '1rem',
+                      borderRadius: '12px',
+                      backgroundColor: isDark
+                        ? 'rgba(59, 130, 246, 0.15)'
+                        : 'rgba(37, 99, 235, 0.1)',
+                      border: `1px solid ${isDark ? 'rgba(59, 130, 246, 0.4)' : 'rgba(37, 99, 235, 0.25)'}`,
+                      color: '#2563EB',
+                    }}
+                  >
+                    <StageIcon size={32} />
+                  </div>
+                  <div>
+                    <span
+                      style={{
+                        fontSize: '0.75rem',
+                        fontFamily: 'monospace',
+                        color: '#10B981',
+                        fontWeight: 700,
+                      }}
+                    >
+                      STAGE {currentStageData.id} OBJECTIVE
+                    </span>
                     <h3
                       style={{
                         fontSize: '2rem',
-                        fontWeight: 700,
-                        color: 'var(--content-primary)',
-                        marginBottom: '1.5rem',
+                        fontWeight: 800,
+                        color: isDark ? '#FFFFFF' : '#0F172A',
+                        margin: 0,
                       }}
                     >
-                      {FRAMEWORK_STAGES[activeStage].title}
+                      {currentStageData.title}
                     </h3>
+                  </div>
+                </div>
+
+                <p
+                  style={{
+                    fontSize: '1.15rem',
+                    color: isDark ? '#CBD5E1' : '#334155',
+                    lineHeight: 1.8,
+                    marginBottom: '2.5rem',
+                  }}
+                >
+                  {currentStageData.focus}
+                </p>
+
+                <div
+                  style={{
+                    borderTop: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(15,23,42,0.08)'}`,
+                    paddingTop: '2rem',
+                  }}
+                >
+                  <h4
+                    style={{
+                      fontSize: '0.8rem',
+                      fontWeight: 700,
+                      letterSpacing: '0.15em',
+                      color: '#64748B',
+                      textTransform: 'uppercase',
+                      marginBottom: '1.25rem',
+                    }}
+                  >
+                    Key Deliverables & Architectural Milestones
+                  </h4>
+                  <div style={{ display: 'grid', gap: '1rem' }}>
+                    {currentStageData.outcomes.map((item, idx) => (
+                      <div
+                        key={idx}
+                        style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}
+                      >
+                        <CheckCircle2 size={20} style={{ color: '#10B981', flexShrink: 0 }} />
+                        <span
+                          style={{
+                            fontSize: '1.05rem',
+                            color: isDark ? '#F8FAFC' : '#0F172A',
+                            fontWeight: 500,
+                          }}
+                        >
+                          {item}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </section>
+
+        {/* ── VALUE PORTFOLIO MATRIX SECTION ── */}
+        <section style={{ padding: '7rem 2rem', backgroundColor: isDark ? '#070B14' : '#FFFFFF' }}>
+          <div style={{ maxWidth: '1440px', margin: '0 auto' }}>
+            <Reveal>
+              <div style={{ textAlign: 'center', maxWidth: '700px', margin: '0 auto 3rem' }}>
+                <span
+                  style={{
+                    fontSize: '0.75rem',
+                    fontWeight: 700,
+                    letterSpacing: '0.2em',
+                    color: '#2563EB',
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  Prioritization Framework
+                </span>
+                <h2
+                  style={{
+                    fontSize: 'clamp(2.25rem, 4vw, 3rem)',
+                    fontWeight: 800,
+                    color: isDark ? '#FFFFFF' : '#0F172A',
+                    marginTop: '0.5rem',
+                  }}
+                >
+                  AI Value Portfolio Scoring Matrix
+                </h2>
+                <p
+                  style={{
+                    fontSize: '1.1rem',
+                    color: isDark ? '#94A3B8' : '#64748B',
+                    marginTop: '0.75rem',
+                  }}
+                >
+                  Evaluating AI initiatives on organizational complexity versus financial ROI to
+                  prioritize high-value wins.
+                </p>
+              </div>
+            </Reveal>
+
+            {/* 2x2 Matrix HUD Wrapper */}
+            <div className="value-matrix-wrapper">
+              <span className="matrix-axis-y">Business Value / ROI ↑</span>
+              <span className="matrix-axis-x">Feasibility & Ease of Execution →</span>
+
+              <div className="value-matrix-grid">
+                {VALUE_PORTFOLIO_QUADRANTS.map((quad, idx) => (
+                  <motion.div
+                    key={idx}
+                    whileHover={{ scale: 1.02 }}
+                    style={{
+                      backgroundColor: isDark ? quad.bgDark : quad.bgLight,
+                      border: `1px solid ${isDark ? quad.borderDark : quad.borderLight}`,
+                      borderRadius: '12px',
+                      padding: '2rem',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontSize: '0.75rem',
+                        fontWeight: 700,
+                        textTransform: 'uppercase',
+                        color: '#64748B',
+                        marginBottom: '0.5rem',
+                      }}
+                    >
+                      {quad.tag}
+                    </span>
+                    <h4
+                      style={{
+                        fontSize: '1.35rem',
+                        fontWeight: 700,
+                        color: isDark ? '#FFFFFF' : '#0F172A',
+                        marginBottom: '0.5rem',
+                      }}
+                    >
+                      {quad.title}
+                    </h4>
                     <p
                       style={{
-                        fontSize: '1.125rem',
-                        lineHeight: 1.7,
-                        color: 'var(--content-secondary)',
-                        maxWidth: '60ch',
-                        marginBottom: '2.5rem',
+                        fontSize: '0.95rem',
+                        color: isDark ? '#CBD5E1' : '#475569',
+                        margin: 0,
+                        lineHeight: 1.6,
                       }}
                     >
-                      {FRAMEWORK_STAGES[activeStage].focus}
+                      {quad.desc}
                     </p>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                      {FRAMEWORK_STAGES[activeStage].outcomes.map((outcome, i) => (
-                        <motion.div
-                          key={i}
-                          initial={{ opacity: 0, x: -10 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: i * 0.1 }}
-                          style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}
-                        >
-                          <CheckCircle2
-                            size={20}
-                            style={{ color: 'var(--brand-secondary)', flexShrink: 0 }}
-                          />
-                          <span style={{ fontWeight: 500, color: 'var(--content-primary)' }}>
-                            {outcome}
-                          </span>
-                        </motion.div>
-                      ))}
-                    </div>
                   </motion.div>
-                </AnimatePresence>
+                ))}
               </div>
             </div>
           </div>
         </section>
 
-        {/* ── VALUE PORTFOLIO ── */}
-        <section style={{ padding: '5rem 2rem', backgroundColor: 'var(--surface-default)' }}>
+        {/* ── RESPONSIBLE AI & GOVERNANCE ── */}
+        <section style={{ padding: '7rem 2rem', backgroundColor: isDark ? '#0A0F1D' : '#F8FAFC' }}>
+          <div style={{ maxWidth: '1440px', margin: '0 auto' }}>
+            <div className="responsible-grid">
+              <Reveal>
+                <div>
+                  <span
+                    style={{
+                      fontSize: '0.75rem',
+                      fontWeight: 700,
+                      letterSpacing: '0.2em',
+                      color: '#10B981',
+                      textTransform: 'uppercase',
+                    }}
+                  >
+                    Enterprise Safeguards
+                  </span>
+                  <h2
+                    style={{
+                      fontSize: 'clamp(2.25rem, 4vw, 3rem)',
+                      fontWeight: 800,
+                      color: isDark ? '#FFFFFF' : '#0F172A',
+                      marginTop: '0.5rem',
+                      marginBottom: '1.5rem',
+                    }}
+                  >
+                    Responsible AI & Enterprise Governance
+                  </h2>
+                  <p
+                    style={{
+                      fontSize: '1.15rem',
+                      color: isDark ? '#94A3B8' : '#475569',
+                      lineHeight: 1.8,
+                    }}
+                  >
+                    Rapid innovation requires robust governance. TRYVION integrates enterprise risk
+                    frameworks, audit trails, and human-in-the-loop control systems into every layer
+                    of deployment.
+                  </p>
+                </div>
+              </Reveal>
+
+              <div style={{ display: 'grid', gap: '1.5rem' }}>
+                {RESPONSIBLE_AI.map((item, idx) => (
+                  <Reveal key={idx} delay={idx * 100}>
+                    <div
+                      className="glass-panel"
+                      style={{
+                        display: 'flex',
+                        gap: '1.5rem',
+                        padding: '1.75rem',
+                        borderRadius: '12px',
+                      }}
+                    >
+                      <div
+                        style={{
+                          padding: '0.85rem',
+                          borderRadius: '10px',
+                          backgroundColor: 'rgba(16, 185, 129, 0.12)',
+                          border: '1px solid rgba(16, 185, 129, 0.3)',
+                          color: '#10B981',
+                          height: 'fit-content',
+                        }}
+                      >
+                        <item.icon size={26} />
+                      </div>
+                      <div>
+                        <h3
+                          style={{
+                            fontSize: '1.2rem',
+                            fontWeight: 700,
+                            color: isDark ? '#FFFFFF' : '#0F172A',
+                            marginBottom: '0.4rem',
+                          }}
+                        >
+                          {item.title}
+                        </h3>
+                        <p
+                          style={{
+                            fontSize: '0.95rem',
+                            color: isDark ? '#94A3B8' : '#64748B',
+                            margin: 0,
+                            lineHeight: 1.6,
+                          }}
+                        >
+                          {item.desc}
+                        </p>
+                      </div>
+                    </div>
+                  </Reveal>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ── WHY TRYVION SECTION ── */}
+        <section style={{ padding: '7rem 2rem', backgroundColor: isDark ? '#070B14' : '#FFFFFF' }}>
           <div style={{ maxWidth: '1440px', margin: '0 auto' }}>
             <Reveal>
-              <div style={{ textAlign: 'center', maxWidth: '672px', margin: '0 auto 3rem' }}>
-                <p
+              <div style={{ textAlign: 'center', maxWidth: '700px', margin: '0 auto 4.5rem' }}>
+                <span
                   style={{
                     fontSize: '0.75rem',
                     fontWeight: 700,
                     letterSpacing: '0.2em',
+                    color: '#2563EB',
                     textTransform: 'uppercase',
-                    color: 'var(--content-accent)',
-                    marginBottom: '1rem',
                   }}
                 >
-                  Prioritization
-                </p>
+                  Competitive Advantage
+                </span>
                 <h2
                   style={{
-                    fontSize: 'clamp(2rem, 4vw, 2.75rem)',
-                    fontWeight: 700,
-                    color: 'var(--content-primary)',
-                    marginBottom: '0.5rem',
+                    fontSize: 'clamp(2.25rem, 4vw, 3rem)',
+                    fontWeight: 800,
+                    color: isDark ? '#FFFFFF' : '#0F172A',
+                    marginTop: '0.5rem',
                   }}
                 >
-                  The AI Value Portfolio
+                  Why Partner With TRYVION
                 </h2>
-                <p style={{ fontSize: '1.125rem', color: 'var(--content-secondary)' }}>
-                  Balancing immediate productivity gains with long-term strategic transformation.
-                </p>
               </div>
             </Reveal>
 
-            <Reveal delay={200}>
-              <div
-                className="value-portfolio-wrapper"
-                style={{
-                  position: 'relative',
-                  maxWidth: '896px',
-                  margin: '3rem auto 0',
-                  aspectRatio: '16/9',
-                  borderLeft: '1px solid var(--border-default)',
-                  borderBottom: '1px solid var(--border-default)',
-                  padding: '1rem',
-                }}
-              >
-                {/* Y Axis Label (Outside Border) */}
-                <div className="value-portfolio-labels-y">BUSINESS VALUE →</div>
-
-                {/* X Axis Label (Outside Border) */}
-                <div className="value-portfolio-labels-x">
-                  FEASIBILITY (DATA & TECH READINESS) →
-                </div>
-
-                <div className="value-portfolio-grid">
-                  <div
-                    style={{
-                      padding: '2rem',
-                      backgroundColor: 'var(--surface-subtle)',
-                      border: '1px solid var(--border-subtle)',
-                      borderRadius: '8px',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'space-between',
-                    }}
-                  >
-                    <div>
-                      <span
-                        style={{
-                          fontSize: '0.6875rem',
-                          fontWeight: 700,
-                          textTransform: 'uppercase',
-                          letterSpacing: '0.05em',
-                          color: 'var(--brand-secondary)',
-                        }}
-                      >
-                        HIGH VALUE / HARD
-                      </span>
-                      <h4
-                        style={{
-                          fontSize: '1.25rem',
-                          fontWeight: 700,
-                          color: 'var(--content-primary)',
-                          margin: '0.5rem 0',
-                        }}
-                      >
-                        Strategic Bets
-                      </h4>
-                      <p style={{ fontSize: '0.875rem', color: 'var(--content-secondary)' }}>
-                        Transformative initiatives requiring significant infrastructure upgrades.
-                      </p>
-                    </div>
-                  </div>
-                  <div
-                    style={{
-                      padding: '2rem',
-                      backgroundColor: 'var(--surface-subtle)',
-                      border: '1px solid var(--border-subtle)',
-                      borderRadius: '8px',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'space-between',
-                    }}
-                  >
-                    <div>
-                      <span
-                        style={{
-                          fontSize: '0.6875rem',
-                          fontWeight: 700,
-                          textTransform: 'uppercase',
-                          letterSpacing: '0.05em',
-                          color: 'var(--teal-500)',
-                        }}
-                      >
-                        HIGH VALUE / EASY
-                      </span>
-                      <h4
-                        style={{
-                          fontSize: '1.25rem',
-                          fontWeight: 700,
-                          color: 'var(--content-primary)',
-                          margin: '0.5rem 0',
-                        }}
-                      >
-                        Quick Wins
-                      </h4>
-                      <p style={{ fontSize: '0.875rem', color: 'var(--content-secondary)' }}>
-                        High ROI use cases utilizing existing structured data and ready APIs.
-                      </p>
-                    </div>
-                  </div>
-                  <div
-                    style={{
-                      padding: '2rem',
-                      backgroundColor: 'var(--surface-subtle)',
-                      border: '1px solid var(--border-subtle)',
-                      borderRadius: '8px',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'space-between',
-                    }}
-                  >
-                    <div>
-                      <span
-                        style={{
-                          fontSize: '0.6875rem',
-                          fontWeight: 700,
-                          textTransform: 'uppercase',
-                          letterSpacing: '0.05em',
-                          color: 'var(--content-tertiary)',
-                        }}
-                      >
-                        LOW VALUE / HARD
-                      </span>
-                      <h4
-                        style={{
-                          fontSize: '1.25rem',
-                          fontWeight: 700,
-                          color: 'var(--content-primary)',
-                          margin: '0.5rem 0',
-                        }}
-                      >
-                        Deprioritized
-                      </h4>
-                      <p style={{ fontSize: '0.875rem', color: 'var(--content-secondary)' }}>
-                        Complex efforts with minimal strategic or financial return.
-                      </p>
-                    </div>
-                  </div>
-                  <div
-                    style={{
-                      padding: '2rem',
-                      backgroundColor: 'var(--surface-subtle)',
-                      border: '1px solid var(--border-subtle)',
-                      borderRadius: '8px',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'space-between',
-                    }}
-                  >
-                    <div>
-                      <span
-                        style={{
-                          fontSize: '0.6875rem',
-                          fontWeight: 700,
-                          textTransform: 'uppercase',
-                          letterSpacing: '0.05em',
-                          color: 'var(--content-accent)',
-                        }}
-                      >
-                        LOW VALUE / EASY
-                      </span>
-                      <h4
-                        style={{
-                          fontSize: '1.25rem',
-                          fontWeight: 700,
-                          color: 'var(--content-primary)',
-                          margin: '0.5rem 0',
-                        }}
-                      >
-                        Experiments
-                      </h4>
-                      <p style={{ fontSize: '0.875rem', color: 'var(--content-secondary)' }}>
-                        Low-risk pilots to build internal AI fluency and test new models.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </Reveal>
-          </div>
-        </section>
-
-        {/* ── WHY TRYVION ── */}
-        <section style={{ padding: '5rem 2rem', backgroundColor: 'var(--surface-subtle)' }}>
-          <div style={{ maxWidth: '1440px', margin: '0 auto' }}>
-            <Reveal>
-              <div style={{ marginBottom: '3rem' }}>
-                <h2
-                  style={{
-                    fontSize: 'clamp(1.75rem, 3vw, 2.25rem)',
-                    fontWeight: 700,
-                    color: 'var(--content-primary)',
-                  }}
-                >
-                  Why TRYVION
-                </h2>
-                <p style={{ fontSize: '1.125rem', color: 'var(--content-secondary)' }}>
-                  Business-First. AI-Powered. Built for Scale.
-                </p>
-              </div>
-            </Reveal>
             <div className="why-grid">
               {WHY_TRYVION.map((item, idx) => (
-                <Reveal key={item.title} delay={idx * 60}>
-                  <motion.div
-                    whileHover={{ y: -6, boxShadow: 'var(--elevation-02)' }}
-                    transition={{ type: 'spring', stiffness: 300 }}
+                <Reveal key={idx} delay={idx * 80}>
+                  <div
+                    className="glass-panel glass-panel-interactive"
                     style={{
-                      padding: '1.5rem',
-                      backgroundColor: 'var(--surface-default)',
-                      border: '1px solid var(--border-default)',
-                      borderRadius: '8px',
+                      padding: '2.25rem',
+                      borderRadius: '12px',
+                      height: '100%',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'space-between',
                     }}
                   >
-                    <h3
-                      style={{
-                        fontSize: '1.125rem',
-                        fontWeight: 700,
-                        color: 'var(--content-primary)',
-                        marginBottom: '0.5rem',
-                      }}
-                    >
-                      {item.title}
-                    </h3>
-                    <p
-                      style={{
-                        fontSize: '0.875rem',
-                        color: 'var(--content-secondary)',
-                        lineHeight: 1.6,
-                      }}
-                    >
-                      {item.desc}
-                    </p>
-                  </motion.div>
+                    <div>
+                      <div
+                        style={{
+                          display: 'inline-block',
+                          padding: '0.3rem 0.75rem',
+                          borderRadius: '4px',
+                          backgroundColor: isDark
+                            ? 'rgba(59, 130, 246, 0.12)'
+                            : 'rgba(37, 99, 235, 0.08)',
+                          color: '#2563EB',
+                          fontSize: '0.7rem',
+                          fontWeight: 700,
+                          textTransform: 'uppercase',
+                          marginBottom: '1.25rem',
+                        }}
+                      >
+                        {item.badge}
+                      </div>
+                      <h3
+                        style={{
+                          fontSize: '1.25rem',
+                          fontWeight: 700,
+                          color: isDark ? '#FFFFFF' : '#0F172A',
+                          marginBottom: '0.6rem',
+                        }}
+                      >
+                        {item.title}
+                      </h3>
+                      <p
+                        style={{
+                          fontSize: '0.95rem',
+                          color: isDark ? '#94A3B8' : '#64748B',
+                          lineHeight: 1.65,
+                          margin: 0,
+                        }}
+                      >
+                        {item.desc}
+                      </p>
+                    </div>
+                  </div>
                 </Reveal>
               ))}
             </div>
           </div>
         </section>
 
-        {/* ── RESPONSIBLE AI ── */}
-        <section style={{ padding: '5rem 2rem', backgroundColor: 'var(--surface-default)' }}>
-          <div style={{ maxWidth: '1440px', margin: '0 auto' }}>
-            <div className="responsible-grid">
-              <Reveal>
-                <div>
-                  <h2
-                    style={{
-                      fontSize: 'clamp(1.75rem, 3vw, 2.25rem)',
-                      fontWeight: 700,
-                      color: 'var(--content-primary)',
-                      marginBottom: '1rem',
-                    }}
-                  >
-                    Responsible AI by Design
-                  </h2>
-                  <p
-                    style={{
-                      fontSize: '1.125rem',
-                      color: 'var(--content-secondary)',
-                      marginBottom: '1rem',
-                    }}
-                  >
-                    Innovation Without Compromising Trust
-                  </p>
-                  <p style={{ fontSize: '1rem', color: 'var(--content-secondary)' }}>
-                    Responsible AI is embedded directly into the AI lifecycle, not added as a
-                    post-launch checkpoint.
-                  </p>
-                </div>
-              </Reveal>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-                {RESPONSIBLE_AI.map((item, idx) => (
-                  <Reveal key={item.title} delay={idx * 100}>
-                    <motion.div
-                      whileHover={{ x: 6 }}
-                      transition={{ type: 'spring', stiffness: 400 }}
-                      style={{
-                        display: 'flex',
-                        gap: '1.25rem',
-                        padding: '1.25rem',
-                        backgroundColor: 'var(--surface-subtle)',
-                        border: '1px solid var(--border-default)',
-                        borderRadius: '8px',
-                      }}
-                    >
-                      <div style={{ flexShrink: 0 }}>
-                        <div
-                          style={{
-                            width: '48px',
-                            height: '48px',
-                            borderRadius: '50%',
-                            backgroundColor: 'var(--surface-info-subtle)',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                          }}
-                        >
-                          <item.icon size={24} style={{ color: 'var(--brand-secondary)' }} />
-                        </div>
-                      </div>
-                      <div>
-                        <h3
-                          style={{
-                            fontSize: '1rem',
-                            fontWeight: 700,
-                            color: 'var(--content-primary)',
-                            marginBottom: '0.25rem',
-                          }}
-                        >
-                          {item.title}
-                        </h3>
-                        <p style={{ fontSize: '0.875rem', color: 'var(--content-secondary)' }}>
-                          {item.desc}
-                        </p>
-                      </div>
-                    </motion.div>
-                  </Reveal>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ── MEASURING AI VALUE ── */}
-        <section style={{ padding: '5rem 2rem', backgroundColor: 'var(--surface-subtle)' }}>
+        {/* ── MEASURABLE IMPACT TABLE ── */}
+        <section style={{ padding: '7rem 2rem', backgroundColor: isDark ? '#0A0F1D' : '#F8FAFC' }}>
           <div style={{ maxWidth: '1440px', margin: '0 auto' }}>
             <Reveal>
-              <div style={{ textAlign: 'center', maxWidth: '672px', margin: '0 auto 3rem' }}>
-                <p
+              <div style={{ textAlign: 'center', maxWidth: '700px', margin: '0 auto 3.5rem' }}>
+                <span
                   style={{
                     fontSize: '0.75rem',
                     fontWeight: 700,
                     letterSpacing: '0.2em',
+                    color: '#10B981',
                     textTransform: 'uppercase',
-                    color: 'var(--content-accent)',
-                    marginBottom: '1rem',
                   }}
                 >
-                  Outcomes
-                </p>
+                  Proven Benchmarks
+                </span>
                 <h2
                   style={{
-                    fontSize: 'clamp(2rem, 4vw, 2.75rem)',
-                    fontWeight: 700,
-                    color: 'var(--content-primary)',
+                    fontSize: 'clamp(2.25rem, 4vw, 3rem)',
+                    fontWeight: 800,
+                    color: isDark ? '#FFFFFF' : '#0F172A',
+                    marginTop: '0.5rem',
                   }}
                 >
-                  Measuring AI Value
+                  Measurable Business Impact
                 </h2>
               </div>
             </Reveal>
 
-            <Reveal delay={200}>
-              <div className="metrics-table-wrapper">
-                <table
-                  className="metrics-table"
-                  style={{ width: '100%', borderCollapse: 'collapse' }}
-                >
+            <Reveal>
+              <div className="metrics-table-container">
+                <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
                   <thead>
                     <tr
                       style={{
-                        backgroundColor: 'var(--surface-subtle)',
-                        borderBottom: '1px solid var(--border-default)',
+                        borderBottom: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(15,23,42,0.08)'}`,
+                        backgroundColor: isDark ? 'rgba(15, 23, 42, 0.8)' : '#F1F5F9',
                       }}
                     >
                       <th
                         style={{
                           padding: '1.5rem',
-                          textAlign: 'left',
-                          fontSize: '0.75rem',
+                          fontSize: '0.8rem',
                           fontWeight: 700,
+                          color: '#64748B',
                           textTransform: 'uppercase',
-                          letterSpacing: '0.05em',
-                          color: 'var(--content-secondary)',
                         }}
                       >
-                        Value Dimension
+                        Category
                       </th>
                       <th
                         style={{
                           padding: '1.5rem',
-                          textAlign: 'left',
-                          fontSize: '0.75rem',
+                          fontSize: '0.8rem',
                           fontWeight: 700,
+                          color: '#64748B',
                           textTransform: 'uppercase',
-                          letterSpacing: '0.05em',
-                          color: 'var(--content-secondary)',
                         }}
                       >
-                        Key Metrics
+                        Tracked KPI Metrics
                       </th>
                       <th
                         style={{
                           padding: '1.5rem',
-                          textAlign: 'left',
-                          fontSize: '0.75rem',
+                          fontSize: '0.8rem',
                           fontWeight: 700,
+                          color: '#64748B',
                           textTransform: 'uppercase',
-                          letterSpacing: '0.05em',
-                          color: 'var(--content-secondary)',
                         }}
                       >
-                        Target Impact
+                        Observed Impact
                       </th>
                     </tr>
                   </thead>
                   <tbody>
-                    {METRICS.map((metric, idx) => (
-                      <motion.tr
+                    {METRICS.map((row, idx) => (
+                      <tr
                         key={idx}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: idx * 0.1 }}
-                        style={{ borderBottom: '1px solid var(--border-subtle)' }}
+                        style={{
+                          borderBottom:
+                            idx !== METRICS.length - 1
+                              ? `1px solid ${isDark ? 'rgba(255,255,255,0.05)' : 'rgba(15,23,42,0.05)'}`
+                              : 'none',
+                        }}
                       >
                         <td
                           style={{
                             padding: '1.5rem',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '0.75rem',
-                            fontWeight: 500,
-                            color: 'var(--content-primary)',
-                          }}
-                        >
-                          <metric.icon size={24} style={{ color: 'var(--brand-secondary)' }} />
-                          {metric.category}
-                        </td>
-                        <td
-                          style={{
-                            padding: '1.5rem',
-                            fontFamily: 'monospace',
-                            fontSize: '0.875rem',
-                            color: 'var(--content-secondary)',
-                          }}
-                        >
-                          {metric.metrics}
-                        </td>
-                        <td
-                          style={{
-                            padding: '1.5rem',
+                            fontSize: '1.05rem',
                             fontWeight: 700,
-                            color: 'var(--brand-secondary)',
+                            color: isDark ? '#FFFFFF' : '#0F172A',
                           }}
                         >
-                          {metric.impact}
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                            <row.icon size={20} style={{ color: '#2563EB' }} />
+                            {row.category}
+                          </div>
                         </td>
-                      </motion.tr>
+                        <td
+                          style={{
+                            padding: '1.5rem',
+                            fontSize: '0.95rem',
+                            color: isDark ? '#94A3B8' : '#64748B',
+                          }}
+                        >
+                          {row.metrics}
+                        </td>
+                        <td
+                          style={{
+                            padding: '1.5rem',
+                            fontSize: '1.1rem',
+                            fontWeight: 800,
+                            color: '#10B981',
+                          }}
+                        >
+                          {row.impact}
+                        </td>
+                      </tr>
                     ))}
                   </tbody>
                 </table>
@@ -1491,78 +1493,92 @@ export default function EnterpriseAIStrategyPage() {
           </div>
         </section>
 
-        {/* ── FINAL CTA ── */}
-        <section style={{ padding: '5rem 2rem', backgroundColor: 'var(--surface-default)' }}>
-          <div style={{ maxWidth: '1440px', margin: '0 auto' }}>
+        {/* ── FINAL CTA BANNER (CRISP WHITE HEADLINE) ── */}
+        <section
+          style={{
+            padding: '8rem 2rem',
+            backgroundColor: '#050811',
+            backgroundImage: `linear-gradient(to bottom, rgba(5, 8, 17, 0.85), rgba(5, 8, 17, 0.95)), url('/images/enterprise-ai-strategy.webp')`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+            position: 'relative',
+            overflow: 'hidden',
+            borderTop: '1px solid rgba(255,255,255,0.08)',
+          }}
+        >
+          {/* Radial Light Aura */}
+          <div
+            style={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              width: '600px',
+              height: '600px',
+              background: 'radial-gradient(circle, rgba(37,99,235,0.25) 0%, transparent 70%)',
+              filter: 'blur(80px)',
+              pointerEvents: 'none',
+            }}
+          />
+
+          <div
+            style={{
+              maxWidth: '850px',
+              margin: '0 auto',
+              textAlign: 'center',
+              position: 'relative',
+              zIndex: 2,
+            }}
+          >
             <Reveal>
-              <motion.div
-                whileHover={{ scale: 1.01 }}
-                transition={{ type: 'spring', stiffness: 200 }}
+              <h2
                 style={{
-                  backgroundColor: 'var(--brand-secondary)',
-                  padding: '5rem 2rem',
-                  borderRadius: '8px',
-                  textAlign: 'center',
-                  position: 'relative',
-                  overflow: 'hidden',
+                  fontSize: 'clamp(2.5rem, 5vw, 3.75rem)',
+                  fontWeight: 800,
+                  color: '#FFFFFF !important',
+                  marginBottom: '1.25rem',
+                  lineHeight: 1.15,
+                  letterSpacing: '-0.02em',
                 }}
               >
-                <div
+                Ready to accelerate your enterprise AI roadmap?
+              </h2>
+
+              <p
+                style={{
+                  fontSize: '1.25rem',
+                  color: '#94A3B8',
+                  marginBottom: '3rem',
+                  lineHeight: 1.7,
+                }}
+              >
+                Schedule an executive strategy session to evaluate your current data estate and
+                build an execution-ready AI deployment roadmap.
+              </p>
+
+              <div
+                style={{ display: 'flex', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap' }}
+              >
+                <Link
+                  href="/contact"
                   style={{
-                    position: 'absolute',
-                    inset: 0,
-                    opacity: 0.1,
-                    backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
-                    backgroundSize: '24px 24px',
+                    backgroundColor: '#2563EB',
+                    color: '#FFFFFF',
+                    padding: '1.1rem 2.75rem',
+                    fontWeight: 700,
+                    borderRadius: '6px',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.75rem',
+                    textDecoration: 'none',
+                    fontSize: '1.1rem',
+                    boxShadow: '0 12px 30px -6px rgba(37, 99, 235, 0.6)',
                   }}
-                />
-                <div
-                  style={{ position: 'relative', zIndex: 10, maxWidth: '768px', margin: '0 auto' }}
                 >
-                  <h2
-                    style={{
-                      fontSize: 'clamp(2rem, 4vw, 3rem)',
-                      fontWeight: 700,
-                      color: 'var(--neutral-0)',
-                      marginBottom: '1.5rem',
-                    }}
-                  >
-                    From AI Strategy to an AI-Powered Enterprise.
-                  </h2>
-                  <p
-                    style={{
-                      fontSize: '1.25rem',
-                      color: 'var(--neutral-100)',
-                      marginBottom: '2.5rem',
-                    }}
-                  >
-                    Stop experimenting in silos. Build a comprehensive strategy that connects data,
-                    technology, and business outcomes.
-                  </p>
-                  <motion.div
-                    whileHover={{ scale: 1.05 }}
-                    transition={{ type: 'spring', stiffness: 400 }}
-                  >
-                    <Link
-                      href="/contact"
-                      style={{
-                        backgroundColor: 'var(--surface-default)',
-                        color: 'var(--brand-secondary)',
-                        padding: '1rem 2.5rem',
-                        fontWeight: 700,
-                        borderRadius: '4px',
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '0.75rem',
-                        textDecoration: 'none',
-                        boxShadow: 'var(--elevation-02)',
-                      }}
-                    >
-                      Schedule a Strategy Briefing <ArrowRight size={18} />
-                    </Link>
-                  </motion.div>
-                </div>
-              </motion.div>
+                  Schedule Executive Session <ArrowRight size={20} />
+                </Link>
+              </div>
             </Reveal>
           </div>
         </section>

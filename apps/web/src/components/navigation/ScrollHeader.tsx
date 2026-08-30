@@ -396,6 +396,7 @@ export function ScrollHeader({ theme: themeProp }: ScrollHeaderProps) {
   const [activeLang, setActiveLang] = useState('en');
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [drawerSection, setDrawerSection] = useState('industries');
+  const [mobileDrawerSubmenuOpen, setMobileDrawerSubmenuOpen] = useState(false);
 
   const openTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -425,6 +426,7 @@ export function ScrollHeader({ theme: themeProp }: ScrollHeaderProps) {
         setSearchOpen(false);
         setUtilPanel(null);
         setDrawerOpen(false);
+        setMobileDrawerSubmenuOpen(false);
       }
     };
     document.addEventListener('keydown', onKey);
@@ -648,6 +650,211 @@ export function ScrollHeader({ theme: themeProp }: ScrollHeaderProps) {
 
   return (
     <>
+      <style>{`
+        /* ─────────────────────────────────────────────────────────────
+           TRYVION HEADER — responsive layout only.
+           Existing components, data, routes, state and interactions
+           remain unchanged.
+        ───────────────────────────────────────────────────────────── */
+
+        .tryvion-header-utility-left,
+        .tryvion-header-utility-right,
+        .tryvion-header-main-container,
+        .tryvion-header-primary-nav,
+        .tryvion-header-main-actions {
+          min-width: 0;
+        }
+
+        @media (max-width: 1199px) {
+          /* Tablet + mobile: primary navigation moves into the existing drawer. */
+          .tryvion-header-primary-nav {
+            display: none !important;
+          }
+
+          .tryvion-header-main-container {
+            position: relative !important;
+            width: 100% !important;
+            max-width: none !important;
+            margin: 0 !important;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+            gap: 0 !important;
+          }
+
+          /* The logo and menu action are deliberately anchored to the two
+             outer edges of the viewport on tablet/mobile.  The centre is
+             intentionally left empty, matching the desktop composition. */
+          .tryvion-header-logo {
+            position: absolute !important;
+            left: clamp(1rem, 3vw, 2.5rem) !important;
+            top: 50% !important;
+            transform: translateY(-50%) !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            z-index: 3 !important;
+          }
+
+          .tryvion-header-nav-region {
+            position: absolute !important;
+            inset: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            min-width: 0 !important;
+            pointer-events: none !important;
+          }
+
+          .tryvion-header-nav-region > div:first-child {
+            position: absolute !important;
+            inset: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            pointer-events: none !important;
+          }
+
+          .tryvion-header-main-actions {
+            position: absolute !important;
+            right: clamp(1rem, 3vw, 2.5rem) !important;
+            top: 50% !important;
+            transform: translateY(-50%) !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            gap: 0 !important;
+            flex: 0 0 auto !important;
+            z-index: 4 !important;
+            pointer-events: auto !important;
+          }
+
+          .tryvion-header-main-actions > :not(:last-child) {
+            display: none !important;
+          }
+
+          .tryvion-header-main-actions > :last-child {
+            display: flex !important;
+            margin: 0 !important;
+            padding: 4px !important;
+          }
+
+          .tryvion-header-search-layer {
+            display: none !important;
+          }
+
+          /* Tablet utility: Offices · Media Center · Contact | Light · Dark */
+          .tryvion-header-utility-left {
+            gap: clamp(0.875rem, 2vw, 1.5rem) !important;
+          }
+
+          .tryvion-header-utility-right {
+            gap: 0.5rem !important;
+          }
+
+          .tryvion-header-utility-left > :nth-child(3) {
+            display: none !important;
+          }
+
+          .tryvion-header-utility-left > :nth-child(4) {
+            display: inline-flex !important;
+          }
+
+          .tryvion-header-utility-right > :nth-child(1),
+          .tryvion-header-utility-right > :nth-child(2),
+          .tryvion-header-utility-right > :nth-child(4),
+          .tryvion-header-utility-right > :nth-child(5) {
+            display: none !important;
+          }
+        }
+
+        @media (max-width: 767px) {
+          /* Mobile utility: Offices · Contact | Light · Dark */
+          .tryvion-header-utility-left {
+            gap: clamp(0.75rem, 3vw, 1rem) !important;
+            flex: 1 1 auto !important;
+            overflow: hidden !important;
+          }
+
+          .tryvion-header-utility-left > :nth-child(2),
+          .tryvion-header-utility-left > :nth-child(3) {
+            display: none !important;
+          }
+
+          .tryvion-header-utility-left > :nth-child(1),
+          .tryvion-header-utility-left > :nth-child(4) {
+            display: inline-flex !important;
+          }
+
+          .tryvion-header-utility-right {
+            flex: 0 0 auto !important;
+            margin-left: auto !important;
+          }
+
+          .tryvion-header-logo {
+            left: 1rem !important;
+          }
+
+          .tryvion-header-main-actions {
+            right: 1rem !important;
+          }
+
+          /* Mobile drawer: one full-width rail at a time. The existing
+             desktop two-panel drawer is preserved for larger screens. */
+          .tryvion-mobile-drawer-shell {
+            width: 100% !important;
+            max-width: none !important;
+            overflow: hidden !important;
+          }
+
+          .tryvion-mobile-drawer-content {
+            position: absolute !important;
+            inset: 0 !important;
+            width: 100% !important;
+            max-width: none !important;
+            overflow-y: auto !important;
+            transform: translateX(100%);
+            transition: transform var(--motion-duration-slow) var(--motion-easing-emphasized);
+            z-index: 2 !important;
+          }
+
+          .tryvion-mobile-drawer-content.is-active {
+            transform: translateX(0);
+          }
+
+          .tryvion-mobile-drawer-content > a {
+            margin-bottom: 1.5rem !important;
+          }
+
+          .tryvion-mobile-drawer-rail {
+            width: 100% !important;
+            max-width: none !important;
+            flex: 0 0 100% !important;
+            z-index: 1 !important;
+            transform: translateX(0);
+            transition: transform var(--motion-duration-slow) var(--motion-easing-emphasized);
+          }
+
+          .tryvion-mobile-drawer-rail.is-submenu-open {
+            transform: translateX(-100%);
+          }
+
+          .tryvion-mobile-drawer-back {
+            display: inline-flex !important;
+          }
+
+          .tryvion-mobile-drawer-content-grid {
+            grid-template-columns: 1fr !important;
+            gap: 0 !important;
+          }
+
+          .tryvion-mobile-drawer-rail > div:first-child {
+            padding-left: 1rem !important;
+            padding-right: 1rem !important;
+          }
+
+          .tryvion-mobile-drawer-rail nav button {
+            padding-left: 1rem !important;
+            padding-right: 1rem !important;
+          }
+        }
+
+      `}</style>
       {/* ═══ HEADER WRAPPER — fixed, transparent until approached ═══ */}
       <div style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 200 /* Z/Sticky */ }}>
         {/* ── Utility bar — collapses on scroll, identical layout in both states ── */}
@@ -679,6 +886,7 @@ export function ScrollHeader({ theme: themeProp }: ScrollHeaderProps) {
           >
             {/* Left: corporate links — Offices opens the offices panel */}
             <nav
+              className="tryvion-header-utility-left"
               aria-label="Corporate navigation"
               style={{
                 display: 'flex',
@@ -745,7 +953,10 @@ export function ScrollHeader({ theme: themeProp }: ScrollHeaderProps) {
             </nav>
 
             {/* Right: locale · theme toggle · saved items */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.875rem', flexShrink: 0 }}>
+            <div
+              className="tryvion-header-utility-right"
+              style={{ display: 'flex', alignItems: 'center', gap: '0.875rem', flexShrink: 0 }}
+            >
               <button
                 type="button"
                 aria-expanded={utilPanel === 'lang'}
@@ -1143,6 +1354,7 @@ export function ScrollHeader({ theme: themeProp }: ScrollHeaderProps) {
 
         {/* ── Main header bar ── */}
         <header
+          className="tryvion-header-main"
           style={{
             height: HEADER_H,
             background: headerBg,
@@ -1158,6 +1370,7 @@ export function ScrollHeader({ theme: themeProp }: ScrollHeaderProps) {
           }}
         >
           <div
+            className="tryvion-header-main-container"
             style={{
               maxWidth: 'var(--layout-content-wide)',
               margin: '0 auto',
@@ -1170,6 +1383,7 @@ export function ScrollHeader({ theme: themeProp }: ScrollHeaderProps) {
           >
             {/* Logo */}
             <NextLink
+              className="tryvion-header-logo"
               href="/"
               aria-label="TRYVION — Return to homepage"
               style={{
@@ -1191,7 +1405,10 @@ export function ScrollHeader({ theme: themeProp }: ScrollHeaderProps) {
             </NextLink>
 
             {/* Nav ↔ Search crossfade/slide region */}
-            <div style={{ position: 'relative', flex: 1, height: '100%', minWidth: 0 }}>
+            <div
+              className="tryvion-header-nav-region"
+              style={{ position: 'relative', flex: 1, height: '100%', minWidth: 0 }}
+            >
               {/* Layer 1 — primary nav + right actions (slides out left) */}
               <div
                 style={{
@@ -1208,6 +1425,7 @@ export function ScrollHeader({ theme: themeProp }: ScrollHeaderProps) {
                 }}
               >
                 <nav
+                  className="tryvion-header-primary-nav"
                   aria-label="Primary navigation"
                   style={{ flex: 1, height: '100%', display: 'flex', alignItems: 'stretch' }}
                   onMouseLeave={scheduleClose}
@@ -1252,6 +1470,7 @@ export function ScrollHeader({ theme: themeProp }: ScrollHeaderProps) {
 
                 {/* Right actions — toggle (hamburger) stays on the RIGHT */}
                 <div
+                  className="tryvion-header-main-actions"
                   style={{ display: 'flex', alignItems: 'center', gap: '1.125rem', flexShrink: 0 }}
                 >
                   <button
@@ -1311,7 +1530,10 @@ export function ScrollHeader({ theme: themeProp }: ScrollHeaderProps) {
                     type="button"
                     aria-label="Open menu"
                     aria-expanded={drawerOpen}
-                    onClick={() => setDrawerOpen(true)}
+                    onClick={() => {
+                      setMobileDrawerSubmenuOpen(false);
+                      setDrawerOpen(true);
+                    }}
                     style={{
                       background: 'none',
                       border: 'none',
@@ -1340,6 +1562,7 @@ export function ScrollHeader({ theme: themeProp }: ScrollHeaderProps) {
 
               {/* Layer 2 — search takeover (slides in from the right, covers the nav) */}
               <div
+                className="tryvion-header-search-layer"
                 style={{
                   position: 'absolute',
                   inset: 0,
@@ -1754,7 +1977,10 @@ export function ScrollHeader({ theme: themeProp }: ScrollHeaderProps) {
         }}
       >
         <div
-          onClick={() => setDrawerOpen(false)}
+          onClick={() => {
+            setMobileDrawerSubmenuOpen(false);
+            setDrawerOpen(false);
+          }}
           style={{
             position: 'absolute',
             inset: 0,
@@ -1764,6 +1990,7 @@ export function ScrollHeader({ theme: themeProp }: ScrollHeaderProps) {
           }}
         />
         <div
+          className="tryvion-mobile-drawer-shell"
           style={{
             position: 'absolute',
             inset: 0,
@@ -1775,6 +2002,7 @@ export function ScrollHeader({ theme: themeProp }: ScrollHeaderProps) {
         >
           {/* LEFT — content panel */}
           <div
+            className={`tryvion-mobile-drawer-content ${mobileDrawerSubmenuOpen ? 'is-active' : ''}`}
             style={{
               flex: 1,
               background: 'var(--surface-default)',
@@ -1782,9 +2010,33 @@ export function ScrollHeader({ theme: themeProp }: ScrollHeaderProps) {
               padding: 'clamp(2.5rem,6vw,5rem) clamp(1.5rem,5vw,4.5rem)',
             }}
           >
+            <button
+              type="button"
+              aria-label="Back to menu"
+              className="tryvion-mobile-drawer-back"
+              onClick={() => setMobileDrawerSubmenuOpen(false)}
+              style={{
+                display: 'none',
+                alignItems: 'center',
+                gap: '0.5rem',
+                background: 'none',
+                border: 'none',
+                color: 'var(--content-secondary)',
+                cursor: 'pointer',
+                fontSize: '0.875rem',
+                fontWeight: 600,
+                padding: 0,
+                marginBottom: '1.5rem',
+              }}
+            >
+              <ChevronLeft /> Back
+            </button>
             <NextLink
               href={activeDrawer.href}
-              onClick={() => setDrawerOpen(false)}
+              onClick={() => {
+                setMobileDrawerSubmenuOpen(false);
+                setDrawerOpen(false);
+              }}
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -1805,6 +2057,7 @@ export function ScrollHeader({ theme: themeProp }: ScrollHeaderProps) {
               </span>
             </NextLink>
             <div
+              className="tryvion-mobile-drawer-content-grid"
               style={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(3, 1fr)',
@@ -1821,7 +2074,10 @@ export function ScrollHeader({ theme: themeProp }: ScrollHeaderProps) {
                     <NextLink
                       key={l.label}
                       href={l.href}
-                      onClick={() => setDrawerOpen(false)}
+                      onClick={() => {
+                        setMobileDrawerSubmenuOpen(false);
+                        setDrawerOpen(false);
+                      }}
                       style={{
                         ...panelLink,
                         padding: '0.6875rem 0',
@@ -1840,6 +2096,7 @@ export function ScrollHeader({ theme: themeProp }: ScrollHeaderProps) {
 
           {/* RIGHT — dark nav rail */}
           <div
+            className={`tryvion-mobile-drawer-rail ${mobileDrawerSubmenuOpen ? 'is-submenu-open' : ''}`}
             style={{
               width: 'min(420px, 88vw)',
               background: '#0B1E3D',
@@ -1870,7 +2127,10 @@ export function ScrollHeader({ theme: themeProp }: ScrollHeaderProps) {
               <button
                 type="button"
                 aria-label="Close menu"
-                onClick={() => setDrawerOpen(false)}
+                onClick={() => {
+                  setMobileDrawerSubmenuOpen(false);
+                  setDrawerOpen(false);
+                }}
                 style={{
                   background: 'none',
                   border: 'none',
@@ -1902,7 +2162,10 @@ export function ScrollHeader({ theme: themeProp }: ScrollHeaderProps) {
                   <button
                     key={s.key}
                     type="button"
-                    onClick={() => setDrawerSection(s.key)}
+                    onClick={() => {
+                      setDrawerSection(s.key);
+                      setMobileDrawerSubmenuOpen(true);
+                    }}
                     style={{
                       display: 'flex',
                       flexDirection: 'row-reverse',

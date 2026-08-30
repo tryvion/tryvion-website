@@ -70,6 +70,10 @@ export const ABOUT_LINKS: NavLink[] = [
     href: '/about/our-values',
   },
   {
+    label: 'What We believe',
+    href: '/about/what-we-believe',
+  },
+  {
     label: 'Global Presence',
     href: '/about/locations',
   },
@@ -187,6 +191,10 @@ export const CAREERS_LINKS: NavLink[] = [
   {
     label: 'Life at Tryvion',
     href: '/careers/life-at-tryvion',
+  },
+  {
+    label: 'Job Openings',
+    href: '/careers/roles',
   },
 ];
 

@@ -71,6 +71,7 @@ export interface Config {
     media: Media;
     insights: Insight;
     team: Team;
+    'contact-submissions': ContactSubmission;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -82,6 +83,7 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     insights: InsightsSelect<false> | InsightsSelect<true>;
     team: TeamSelect<false> | TeamSelect<true>;
+    'contact-submissions': ContactSubmissionsSelect<false> | ContactSubmissionsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -247,6 +249,111 @@ export interface Team {
   createdAt: string;
 }
 /**
+ * Website contact and business enquiry submissions received through TRYVION.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-submissions".
+ */
+export interface ContactSubmission {
+  id: number;
+  /**
+   * Name provided by the website visitor.
+   */
+  fullName: string;
+  /**
+   * Company or organisation name.
+   */
+  company: string;
+  /**
+   * Business email address.
+   */
+  email: string;
+  /**
+   * Optional international telephone number.
+   */
+  phone?: string | null;
+  /**
+   * Primary TRYVION service selected by the visitor.
+   */
+  mainService:
+    | 'Tryvion Applications'
+    | 'Tryvion AI'
+    | 'Tryvion Data & Analytics'
+    | 'Tryvion Cloud'
+    | 'Tryvion Labs'
+    | 'Tryvion Talent'
+    | 'Tryvion Academy'
+    | 'Tryvion Operate';
+  /**
+   * Specific service selected under the primary service. Server-side validation enforces the valid pairing.
+   */
+  subService?:
+    | (
+        | 'SAP S/4HANA'
+        | 'SAP SuccessFactors'
+        | 'SAP Customer Experience (CX)'
+        | 'SAP Ariba'
+        | 'SAP Business Technology Platform (BTP)'
+        | 'Enterprise AI Strategy'
+        | 'Enterprise AI Platforms'
+        | 'Intelligent Automation'
+        | 'Data Engineering'
+        | 'Data Platforms'
+        | 'Data Integration'
+        | 'Data Governance'
+        | 'Business Intelligence'
+        | 'Enterprise Reporting'
+        | 'Advanced & Predictive Analytics'
+        | 'Cloud Strategy'
+        | 'Cloud Migration & Modernization'
+        | 'Amazon Web Services (AWS)'
+        | 'Microsoft Azure'
+        | 'Google Cloud Platform (GCP)'
+        | 'Custom Application Development'
+        | 'API Management & Integration'
+        | 'Enterprise Integration'
+        | 'DevSecOps & Platform Engineering'
+        | 'SAP Talent Solutions'
+        | 'Technology Contract Staffing'
+        | 'Permanent Hiring'
+        | 'Executive Search'
+        | 'Global Resource Augmentation'
+        | 'Freelancer Marketplace'
+        | 'Tryvion Learning Platform (TLP)'
+        | 'Inside TLP - SAP Learning'
+        | 'Corporate Learning - Change & Adoption'
+        | 'Leadership Development'
+        | 'SAP Run in the New'
+        | 'Cloud Operations'
+        | 'Application Support'
+      )
+    | null;
+  /**
+   * Business requirement or enquiry submitted by the visitor.
+   */
+  message: string;
+  /**
+   * Visitor confirmed the applicable TRYVION privacy notice/consent statement.
+   */
+  privacyConsent: boolean;
+  /**
+   * Timestamp recorded when privacy consent was accepted.
+   */
+  privacyConsentAt?: string | null;
+  /**
+   * Optional consent to receive TRYVION marketing/newsletter communications.
+   */
+  newsletterOptIn?: boolean | null;
+  status: 'new' | 'in_progress' | 'contacted' | 'qualified' | 'closed' | 'spam';
+  /**
+   * Origin of the submission.
+   */
+  source?: string | null;
+  submittedAt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -285,6 +392,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'team';
         value: number | Team;
+      } | null)
+    | ({
+        relationTo: 'contact-submissions';
+        value: number | ContactSubmission;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -404,6 +515,27 @@ export interface TeamSelect<T extends boolean = true> {
   avatar?: T;
   linkedin?: T;
   email?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-submissions_select".
+ */
+export interface ContactSubmissionsSelect<T extends boolean = true> {
+  fullName?: T;
+  company?: T;
+  email?: T;
+  phone?: T;
+  mainService?: T;
+  subService?: T;
+  message?: T;
+  privacyConsent?: T;
+  privacyConsentAt?: T;
+  newsletterOptIn?: T;
+  status?: T;
+  source?: T;
+  submittedAt?: T;
   updatedAt?: T;
   createdAt?: T;
 }
