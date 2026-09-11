@@ -72,6 +72,7 @@ export interface Config {
     insights: Insight;
     team: Team;
     'contact-submissions': ContactSubmission;
+    'rfp-submissions': RfpSubmission;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -84,6 +85,7 @@ export interface Config {
     insights: InsightsSelect<false> | InsightsSelect<true>;
     team: TeamSelect<false> | TeamSelect<true>;
     'contact-submissions': ContactSubmissionsSelect<false> | ContactSubmissionsSelect<true>;
+    'rfp-submissions': RfpSubmissionsSelect<false> | RfpSubmissionsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -354,6 +356,355 @@ export interface ContactSubmission {
   createdAt: string;
 }
 /**
+ * Formal RFP / Request a Proposal submissions received through the TRYVION website.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "rfp-submissions".
+ */
+export interface RfpSubmission {
+  id: number;
+  /**
+   * Legal name of the organisation submitting the proposal request.
+   */
+  organisationLegalName: string;
+  /**
+   * Official organisation website.
+   */
+  organisationWebsite: string;
+  industrySector:
+    | 'Consumer Products'
+    | 'Retail'
+    | 'Fashion'
+    | 'Wholesale & Distribution'
+    | 'Life Sciences'
+    | 'Agribusiness'
+    | 'Financial Services'
+    | 'Banking'
+    | 'Insurance'
+    | 'Public Sector'
+    | 'Healthcare'
+    | 'Education & Research'
+    | 'Defence & Security'
+    | 'Industrial Manufacturing'
+    | 'High Tech'
+    | 'Automotive'
+    | 'Aerospace & Defence'
+    | 'Energy & Utilities'
+    | 'Mining'
+    | 'Chemicals'
+    | 'Oil & Gas'
+    | 'Construction & Operations'
+    | 'Commercial Real Estate'
+    | 'Sports & Entertainment'
+    | 'Travel & Leisure'
+    | 'Professional Services'
+    | 'Other';
+  /**
+   * Country where the organisation is headquartered.
+   */
+  headquartersCountry: string;
+  /**
+   * Primary country or regional market relevant to this opportunity.
+   */
+  primaryOperatingMarket: string;
+  organisationSize:
+    | '1–499 employees'
+    | '500–4,999 employees'
+    | '5,000–24,999 employees'
+    | '25,000–49,999 employees'
+    | '50,000+ employees';
+  businessFunction:
+    | 'Executive / Leadership'
+    | 'IT / Technology'
+    | 'Digital Transformation'
+    | 'Finance'
+    | 'Procurement'
+    | 'Operations'
+    | 'Human Resources'
+    | 'Supply Chain'
+    | 'Sales / Commercial'
+    | 'Strategy'
+    | 'Other';
+  proposalContactName: string;
+  proposalContactRole: string;
+  procurementInvolvement:
+    | 'Procurement Lead'
+    | 'Business Sponsor'
+    | 'Technology / IT Lead'
+    | 'Transformation Lead'
+    | 'Project / Programme Manager'
+    | 'Executive Decision Maker'
+    | 'Procurement + Business Sponsor'
+    | 'Other';
+  proposalContactEmail: string;
+  proposalContactPhone?: string | null;
+  initiativeName: string;
+  transformationObjective: string;
+  businessChallenge: string;
+  desiredOutcomes: string;
+  primaryCapability:
+    | 'SAP S/4HANA'
+    | 'SAP SuccessFactors'
+    | 'SAP Business Technology Platform (BTP)'
+    | 'SAP Ariba'
+    | 'SAP Customer Experience'
+    | 'Enterprise AI Strategy'
+    | 'Enterprise AI Platforms'
+    | 'Intelligent Automation'
+    | 'Data & Analytics'
+    | 'Cloud Transformation'
+    | 'Enterprise Integration'
+    | 'Digital Engineering'
+    | 'SAP Talent Solutions'
+    | 'Permanent Hiring'
+    | 'Executive Search'
+    | 'TRYVION Academy / Learning'
+    | 'Managed Services / SAP Run in the New'
+    | 'Business Transformation'
+    | 'Multiple / Cross-Capability'
+    | 'Other';
+  secondaryCapabilities?:
+    | (
+        | 'SAP S/4HANA'
+        | 'SAP SuccessFactors'
+        | 'SAP Business Technology Platform (BTP)'
+        | 'SAP Ariba'
+        | 'SAP Customer Experience'
+        | 'Enterprise AI Strategy'
+        | 'Enterprise AI Platforms'
+        | 'Intelligent Automation'
+        | 'Data & Analytics'
+        | 'Cloud Transformation'
+        | 'Enterprise Integration'
+        | 'Digital Engineering'
+        | 'SAP Talent Solutions'
+        | 'Permanent Hiring'
+        | 'Executive Search'
+        | 'TRYVION Academy / Learning'
+        | 'Managed Services / SAP Run in the New'
+        | 'Business Transformation'
+        | 'Multiple / Cross-Capability'
+        | 'Other'
+      )[]
+    | null;
+  affectedFunctions: (
+    | 'Finance'
+    | 'Procurement'
+    | 'Supply Chain'
+    | 'Manufacturing'
+    | 'Sales'
+    | 'Marketing'
+    | 'Customer Service'
+    | 'Human Resources'
+    | 'IT / Technology'
+    | 'Data & Analytics'
+    | 'Cybersecurity'
+    | 'Operations'
+    | 'Legal / Compliance'
+    | 'Strategy / Transformation Office'
+    | 'Executive / Corporate Functions'
+    | 'Multiple / Enterprise-Wide'
+    | 'Other'
+  )[];
+  /**
+   * Countries or regions where the proposed solution will be delivered or used.
+   */
+  targetGeography: string;
+  /**
+   * Estimated number of users or stakeholders affected by the initiative.
+   */
+  estimatedUserCount?: number | null;
+  deploymentScale?:
+    | (
+        | 'Single Business Unit'
+        | 'Single Country'
+        | 'Multiple Countries'
+        | 'Regional'
+        | 'Global'
+        | 'Enterprise-Wide'
+        | 'Not Yet Determined'
+      )
+    | null;
+  transformationStage:
+    | 'Exploring / Early Discovery'
+    | 'Business Case Development'
+    | 'Requirements Definition'
+    | 'Solution Evaluation'
+    | 'RFI / Market Research'
+    | 'RFP / Tender Preparation'
+    | 'RFP / Tender Issued'
+    | 'Vendor Shortlisting'
+    | 'Final Evaluation'
+    | 'Contract / Commercial Negotiation'
+    | 'Implementation Planning'
+    | 'Existing Programme / Transformation'
+    | 'Optimisation / Managed Services'
+    | 'Not Yet Determined';
+  scopeOfWork: string;
+  expectedDeliverables: string;
+  functionalRequirements?: string | null;
+  technicalRequirements?: string | null;
+  integrationRequirements?: string | null;
+  dataMigrationRequirements?: string | null;
+  securityComplianceRequirements?: string | null;
+  reportingRequirements?: string | null;
+  serviceLevelRequirements?: string | null;
+  existingTechnologyStack?:
+    | (
+        | 'SAP'
+        | 'Oracle'
+        | 'Microsoft'
+        | 'Salesforce'
+        | 'Workday'
+        | 'ServiceNow'
+        | 'AWS'
+        | 'Microsoft Azure'
+        | 'Google Cloud'
+        | 'Snowflake'
+        | 'Databricks'
+        | 'Other'
+        | 'None / Greenfield'
+      )[]
+    | null;
+  existingTechnologyLandscape?: string | null;
+  constraintsDependencies?: string | null;
+  successMeasures?: string | null;
+  procurementReference?: string | null;
+  rfpReference?: string | null;
+  procurementStage:
+    | 'Internal Requirement Identified'
+    | 'Business Case Approved'
+    | 'Market Research / RFI'
+    | 'RFP / RFQ Preparation'
+    | 'RFP / RFQ Issued'
+    | 'Vendor Evaluation'
+    | 'Shortlisting'
+    | 'Commercial Negotiation'
+    | 'Final Approval'
+    | 'Award Pending'
+    | 'Direct Procurement / No Formal Tender'
+    | 'Not Yet Determined';
+  proposalDeadline?: string | null;
+  expectedAwardDate?: string | null;
+  expectedStartDate?: string | null;
+  engagementDuration?:
+    | (
+        | 'Less than 3 months'
+        | '3–6 months'
+        | '6–12 months'
+        | '12–24 months'
+        | '24+ months'
+        | 'Ongoing / Managed Service'
+        | 'Not Yet Determined'
+      )
+    | null;
+  commercialModel?:
+    | (
+        | 'Fixed Price'
+        | 'Time & Materials'
+        | 'Managed Services'
+        | 'Subscription / Recurring'
+        | 'Outcome-Based'
+        | 'Milestone-Based'
+        | 'Hybrid'
+        | 'Not Yet Determined'
+      )
+    | null;
+  budgetRange?:
+    | (
+        | 'Not Yet Determined'
+        | 'Under USD 50K'
+        | 'USD 50K – 250K'
+        | 'USD 250K – 1M'
+        | 'USD 1M – 5M'
+        | 'USD 5M+'
+        | 'Prefer Not to Disclose'
+      )
+    | null;
+  /**
+   * Currency expected for the proposal, preferably ISO 4217 code such as USD or EUR.
+   */
+  proposalCurrency?: string | null;
+  contractingEntityCountry?: string | null;
+  deliveryModel?:
+    ('Onsite' | 'Remote' | 'Hybrid' | 'Global Delivery' | 'Regional Delivery' | 'Not Yet Determined') | null;
+  deliveryLocations?: string | null;
+  documents?:
+    | {
+        documentType:
+          | 'RFP / RFQ'
+          | 'Statement of Work'
+          | 'Technical Requirements'
+          | 'Commercial / Pricing Schedule'
+          | 'Architecture / Process Documentation'
+          | 'Business Requirements'
+          | 'Existing Solution Documentation'
+          | 'Supporting Document'
+          | 'Other';
+        documentDescription?: string | null;
+        file: number | Media;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Required: acknowledgement that TRYVION may use the submitted information to evaluate and respond to this proposal request.
+   */
+  privacyConsent: boolean;
+  /**
+   * Optional consent to receive relevant TRYVION services, insights and future opportunities.
+   */
+  marketingConsent?: boolean | null;
+  consentTimestamp?: string | null;
+  consentVersion?: string | null;
+  privacyPolicyVersion?: string | null;
+  /**
+   * Unique identifier assigned to the RFP submission.
+   */
+  submissionId?: string | null;
+  formType?: string | null;
+  sourceUrl?: string | null;
+  sourcePage?: string | null;
+  landingPage?: string | null;
+  referrerUrl?: string | null;
+  utmSource?: string | null;
+  utmMedium?: string | null;
+  utmCampaign?: string | null;
+  utmTerm?: string | null;
+  utmContent?: string | null;
+  serviceContext?: string | null;
+  industryContext?: string | null;
+  locale?: string | null;
+  userAgent?: string | null;
+  submissionStatus?:
+    | (
+        | 'New'
+        | 'Under Review'
+        | 'Qualified'
+        | 'Proposal in Preparation'
+        | 'Proposal Submitted'
+        | 'Won'
+        | 'Lost'
+        | 'On Hold'
+        | 'Disqualified'
+      )
+    | null;
+  leadPriority?: ('Low' | 'Medium' | 'High' | 'Critical') | null;
+  leadScore?: number | null;
+  qualificationStatus?:
+    ('Not Reviewed' | 'Pending Qualification' | 'Qualified' | 'Unqualified' | 'Needs More Information') | null;
+  assignedOwner?: string | null;
+  assignedTeam?: string | null;
+  market?: string | null;
+  salesRegion?: string | null;
+  accountStatus?:
+    | ('Prospect' | 'Existing Customer' | 'Former Customer' | 'Strategic Account' | 'Partner / Alliance' | 'Unknown')
+    | null;
+  internalNotes?: string | null;
+  followUpDate?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -396,6 +747,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'contact-submissions';
         value: number | ContactSubmission;
+      } | null)
+    | ({
+        relationTo: 'rfp-submissions';
+        value: number | RfpSubmission;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -536,6 +891,102 @@ export interface ContactSubmissionsSelect<T extends boolean = true> {
   status?: T;
   source?: T;
   submittedAt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "rfp-submissions_select".
+ */
+export interface RfpSubmissionsSelect<T extends boolean = true> {
+  organisationLegalName?: T;
+  organisationWebsite?: T;
+  industrySector?: T;
+  headquartersCountry?: T;
+  primaryOperatingMarket?: T;
+  organisationSize?: T;
+  businessFunction?: T;
+  proposalContactName?: T;
+  proposalContactRole?: T;
+  procurementInvolvement?: T;
+  proposalContactEmail?: T;
+  proposalContactPhone?: T;
+  initiativeName?: T;
+  transformationObjective?: T;
+  businessChallenge?: T;
+  desiredOutcomes?: T;
+  primaryCapability?: T;
+  secondaryCapabilities?: T;
+  affectedFunctions?: T;
+  targetGeography?: T;
+  estimatedUserCount?: T;
+  deploymentScale?: T;
+  transformationStage?: T;
+  scopeOfWork?: T;
+  expectedDeliverables?: T;
+  functionalRequirements?: T;
+  technicalRequirements?: T;
+  integrationRequirements?: T;
+  dataMigrationRequirements?: T;
+  securityComplianceRequirements?: T;
+  reportingRequirements?: T;
+  serviceLevelRequirements?: T;
+  existingTechnologyStack?: T;
+  existingTechnologyLandscape?: T;
+  constraintsDependencies?: T;
+  successMeasures?: T;
+  procurementReference?: T;
+  rfpReference?: T;
+  procurementStage?: T;
+  proposalDeadline?: T;
+  expectedAwardDate?: T;
+  expectedStartDate?: T;
+  engagementDuration?: T;
+  commercialModel?: T;
+  budgetRange?: T;
+  proposalCurrency?: T;
+  contractingEntityCountry?: T;
+  deliveryModel?: T;
+  deliveryLocations?: T;
+  documents?:
+    | T
+    | {
+        documentType?: T;
+        documentDescription?: T;
+        file?: T;
+        id?: T;
+      };
+  privacyConsent?: T;
+  marketingConsent?: T;
+  consentTimestamp?: T;
+  consentVersion?: T;
+  privacyPolicyVersion?: T;
+  submissionId?: T;
+  formType?: T;
+  sourceUrl?: T;
+  sourcePage?: T;
+  landingPage?: T;
+  referrerUrl?: T;
+  utmSource?: T;
+  utmMedium?: T;
+  utmCampaign?: T;
+  utmTerm?: T;
+  utmContent?: T;
+  serviceContext?: T;
+  industryContext?: T;
+  locale?: T;
+  userAgent?: T;
+  submissionStatus?: T;
+  leadPriority?: T;
+  leadScore?: T;
+  qualificationStatus?: T;
+  assignedOwner?: T;
+  assignedTeam?: T;
+  market?: T;
+  salesRegion?: T;
+  accountStatus?: T;
+  internalNotes?: T;
+  followUpDate?: T;
   updatedAt?: T;
   createdAt?: T;
 }
