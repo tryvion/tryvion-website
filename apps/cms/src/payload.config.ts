@@ -24,6 +24,8 @@ const ALLOWED_ORIGINS = [
 ].filter(Boolean)
 
 export default buildConfig({
+  serverURL: process.env.NEXT_PUBLIC_CMS_URL || 'http://localhost:3001',
+
   admin: {
     user: Users.slug,
 
