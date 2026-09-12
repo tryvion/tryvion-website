@@ -1,10 +1,7 @@
-import type { Metadata } from 'next'
 import { HomePage } from '@/components/home/HomePage'
+import { pageMetadata } from '@/lib/seo/pages'
 
-export const metadata: Metadata = {
-  title: 'TRYVION — The Future Is a Choice',
-  description: 'TRYVION is an independent enterprise transformation partner specialising in SAP, AI, cloud and talent solutions — guiding organisations through complex transformation with clarity, confidence and continuous momentum.',
-}
+export const metadata = pageMetadata.home
 
 export default function Page() {
   return <HomePage />

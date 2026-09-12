@@ -155,15 +155,15 @@ function HeroSection({ isDark }: { isDark: boolean }) {
       <div className="relative z-10 mx-auto w-full max-w-[1280px] px-6 sm:px-12 lg:px-16 pb-20 lg:pb-28 my-auto">
         {/* Breadcrumbs */}
         <div className="mb-12 lg:mb-16 flex items-center gap-2 text-[13px] font-semibold text-white/60">
-          <Link href="/" className="hover:text-white transition-colors">
+          <Link href="/" className="text-white transition-colors">
             Home
           </Link>
           <span>&gt;</span>
-          <Link href="/about" className="hover:text-white transition-colors">
+          <Link href="/about" className="text-white transition-colors">
             About Us
           </Link>
           <span>&gt;</span>
-          <span className="text-[#C9A24B]">Our Values</span>
+          <span className="text-white">Our Values</span>
         </div>
 
         {/* Hero Content */}
@@ -171,6 +171,7 @@ function HeroSection({ isDark }: { isDark: boolean }) {
           <Reveal>
             <Eyebrow isDark={isDark}>OUR VALUES</Eyebrow>
           </Reveal>
+          <br />
           <Reveal delay={0.1}>
             <h1 className="font-sans text-[54px] sm:text-[72px] lg:text-[84px] font-extrabold leading-[0.98] tracking-[-0.035em] text-white">
               How we choose
@@ -178,6 +179,7 @@ function HeroSection({ isDark }: { isDark: boolean }) {
               to work.
             </h1>
           </Reveal>
+          <br />
           <Reveal delay={0.2}>
             <p className="mt-8 text-[17px] sm:text-[19px] font-normal leading-[1.6] text-white/95 max-w-[560px]">
               Our values shape how we think, collaborate, innovate and deliver. They guide the

@@ -35,6 +35,20 @@ export default buildConfig({
 
     meta: {
       titleSuffix: '— TRYVION CMS',
+      icons: [
+        {
+          rel: 'icon',
+          type: 'image/svg+xml',
+          url: '/favicon.svg',
+        },
+      ],
+    },
+
+    components: {
+      graphics: {
+        Logo: '@/components/payload/logo.tsx',
+        Icon: '@/components/payload/icon.tsx',
+      },
     },
   },
 
@@ -64,7 +78,7 @@ export default buildConfig({
    *
    * SMTP credentials remain in the environment and are never
    * exposed to the browser.
-   */
+
   email: nodemailerAdapter({
     defaultFromAddress: process.env.SMTP_USER || 'tryvion2026@gmail.com',
 
@@ -82,7 +96,9 @@ export default buildConfig({
         pass: process.env.SMTP_PASS,
       },
     },
-  }),
+  }),*/
+
+  email: undefined,
 
   // Allow apps/web to read the REST API cross-origin in development
   cors: ALLOWED_ORIGINS,

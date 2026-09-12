@@ -239,19 +239,19 @@ export default function ExecutiveSearchPage() {
                   gap: '0.5rem',
                   fontSize: '0.8125rem',
                   fontWeight: 600,
-                  color: '#94A3B8',
+                  color: '#fff',
                   marginBottom: '1.5rem',
                   flexWrap: 'wrap',
                 }}
               >
-                <Link href="/services" style={{ color: 'inherit', textDecoration: 'none' }}>
+                <Link href="/services" style={{ color: '#fff', textDecoration: 'none' }}>
                   Services
                 </Link>
-                <ChevronRight size={14} style={{ opacity: 0.6 }} />
-                <Link href="/services/talent" style={{ color: 'inherit', textDecoration: 'none' }}>
+                <ChevronRight size={14} style={{ opacity: 0.6, color: '#fff' }} />
+                <Link href="/services/talent" style={{ color: '#fff', textDecoration: 'none' }}>
                   Talent
                 </Link>
-                <ChevronRight size={14} style={{ opacity: 0.6 }} />
+                <ChevronRight size={14} style={{ opacity: 0.6, color: '#fff' }} />
                 <span style={{ color: '#FFFFFF', fontWeight: 700 }}>Executive Search</span>
               </nav>
             </Reveal>

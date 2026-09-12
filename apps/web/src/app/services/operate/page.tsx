@@ -270,14 +270,14 @@ export default function TryvionOperateCategoryPage() {
                   gap: '0.5rem',
                   fontSize: '0.8125rem',
                   fontWeight: 600,
-                  color: '#94A3B8',
+                  color: '#fff',
                   marginBottom: '1.5rem',
                 }}
               >
-                <Link href="/" style={{ color: 'inherit', textDecoration: 'none' }}>
+                <Link href="/" style={{ color: '#fff', textDecoration: 'none' }}>
                   Home
                 </Link>
-                <ChevronRight size={14} style={{ opacity: 0.6 }} />
+                <ChevronRight size={14} style={{ opacity: 0.6, color: '#fff' }} />
                 <span style={{ color: '#FFFFFF', fontWeight: 700 }}>TRYVION Operate</span>
               </nav>
             </Reveal>
@@ -426,7 +426,7 @@ export default function TryvionOperateCategoryPage() {
                       lineHeight: 1.15,
                     }}
                   >
-                    Operations Should Create Moementum.
+                    Operations Should Create Momentum.
                   </h2>
                   <p
                     style={{

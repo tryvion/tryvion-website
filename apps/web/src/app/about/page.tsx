@@ -225,15 +225,15 @@ function Hero() {
               className="mt-5 text-[17px] font-semibold leading-[1.4] sm:text-[20px] lg:text-[22px]"
               style={{ color: isDark ? '#F0F2F6' : '#111827' }}
             >
-              We help organisations shape what comes next.
+              TRYVION is building a new generation of transformation company
             </p>
 
             <p
               className="mt-5 max-w-[520px] text-[14px] leading-[1.7] sm:text-[15px] lg:text-[16px]"
               style={{ color: isDark ? '#A0AAB8' : '#5F6875' }}
             >
-              TRYVION is an enterprise transformation partner helping organisations navigate
-              complexity, make intelligent choices and turn vision into sustained momentum.
+              We combine decades of enterprise and SAP experience with AI-native delivery to make
+              transformation faster, leaner and less dependent on traditional consulting models.
             </p>
 
             <div className="mt-10 flex flex-wrap gap-4">
@@ -270,10 +270,10 @@ function WhoWeAre() {
 
   return (
     <section
-      className="py-20 sm:py-24 lg:py-32"
+      className="py-20 sm:py-24 lg:py-32 mb-10 mt-10"
       style={{ backgroundColor: isDark ? '#1A1F2E' : '#FFFFFF' }}
     >
-      <SectionContainer className="mx-auto grid max-w-[1240px] grid-cols-1 items-center gap-12 px-4 sm:px-6 lg:grid-cols-[0.95fr_1.05fr] lg:gap-24 w-full">
+      <SectionContainer className="mx-auto grid max-w-[1240px] grid-cols-1 items-center gap-12 p-6 px-4 sm:px-6 lg:grid-cols-[0.95fr_1.05fr] lg:gap-24 w-full">
         <Reveal direction="right" distance={60}>
           <div className="relative aspect-square w-full overflow-hidden bg-[#F0F2F5] shadow-lg">
             <Image
@@ -344,27 +344,27 @@ const FIRM_ITEMS = [
   {
     title: 'What We Do',
     body: 'We help organisations modernise enterprise systems, apply intelligence, build specialist capability and continuously improve how they operate.',
-    href: '/about/what-we-do',
+    href: '/services',
   },
   {
     title: 'Our Story',
     body: 'TRYVION was founded to help organisations navigate a rapidly changing world of cloud, AI, automation and intelligent enterprise technology. We bring together transformation, technology and talent to create sustainable business value.',
-    href: '/about/connected-transformation',
+    href: '/about/our-story',
   },
   {
     title: 'Global Presence',
     body: 'TRYVION connects global transformation expertise with local insight, helping organisations navigate change and create lasting business value wherever they operate.',
-    href: '/about/global-presence',
+    href: '/contact/global-offices',
   },
   {
     title: 'Our Values',
     body: 'Courage, vision, intelligence, excellence and trust guide how we think, collaborate, innovate and deliver meaningful outcomes.',
-    href: '/about/brand-values',
+    href: '/about/our-values',
   },
   {
     title: 'Media Center',
     body: 'Explore TRYVION perspectives, announcements and stories shaping enterprise transformation, intelligent technology and the future of work.',
-    href: '/media',
+    href: '#',
   },
 ];
 
@@ -377,7 +377,7 @@ function OurFirm() {
       className="py-20 sm:py-24 lg:py-32"
       style={{ backgroundColor: isDark ? '#121724' : '#F2F4F7' }}
     >
-      <SectionContainer className="mx-auto max-w-[1140px] px-4 sm:px-6 w-full">
+      <SectionContainer className="mx-auto max-w-[1140px] p-6 mb-10 mt-10 px-4 sm:px-6 w-full">
         <Reveal>
           <h2
             className="text-center text-[34px] font-extrabold tracking-[-0.04em] sm:text-[48px] lg:text-[56px]"
@@ -431,12 +431,12 @@ function OurFirm() {
 
 const ECOSYSTEM = [
   {
-    title: 'Applications',
+    title: 'TRYVION Transformation',
     body: 'Transform the systems at the heart of your business with intelligent enterprise applications built for continuous change.',
     href: '/services/applications',
   },
   {
-    title: 'Artificial Intelligence',
+    title: 'TRYVION AI',
     body: 'Move from AI experimentation to enterprise value through strategy, platforms, intelligent automation and AI agents.',
     href: '/services/artificial-intelligence',
   },
@@ -451,24 +451,24 @@ const ECOSYSTEM = [
     href: '/services/academy',
   },
   {
-    title: 'Operate',
+    title: 'TRYVION Operate',
     body: 'Stabilise, operate, optimise and continuously improve your SAP and enterprise technology environment.',
     href: '/services/operate',
   },
   {
-    title: 'Data & Analytics',
+    title: 'TRYVION Data & Analytics',
     body: 'Build trusted data foundations, unlock actionable insights and enable better decisions across the enterprise.',
-    href: '/services/data-analytics',
+    href: '#',
   },
   {
-    title: 'Cloud',
+    title: 'TRYVION Cloud',
     body: 'Create secure, scalable and adaptable cloud foundations that enable modern enterprise transformation.',
-    href: '/services/cloud',
+    href: '#',
   },
   {
     title: 'TRYVION Labs',
     body: 'Develop accelerators, reusable assets and innovative solutions that turn emerging technology into practical enterprise value.',
-    href: '/services/labs',
+    href: '#',
   },
 ];
 
@@ -481,7 +481,7 @@ function Ecosystem() {
       className="py-20 sm:py-24 lg:py-32"
       style={{ backgroundColor: isDark ? '#1A1F2E' : '#FFFFFF' }}
     >
-      <SectionContainer className="mx-auto max-w-[1140px] px-4 text-center sm:px-6 w-full">
+      <SectionContainer className="mx-auto max-w-[1140px] p-6 mb-10 mt-10 px-4 text-center sm:px-6 w-full">
         <Reveal>
           <GoldenLine />
           <h2
@@ -559,7 +559,7 @@ const PEOPLE_ITEMS = [
   {
     title: 'Culture of Excellence',
     body: 'We foster a culture where exceptional people thrive through collaboration, high standards and a shared commitment to client success.',
-    href: '/careers/culture',
+    href: '/careers/life-at-tryvion',
   },
   {
     title: 'Leadership in Transformation',
@@ -569,7 +569,7 @@ const PEOPLE_ITEMS = [
   {
     title: 'Social Impact',
     body: 'We use our expertise to create positive change, supporting sustainable growth, digital inclusion and opportunities for people and communities.',
-    href: '/social-impact',
+    href: '#',
   },
 ];
 
@@ -582,7 +582,7 @@ function People() {
       className="py-20 sm:py-24 lg:py-32"
       style={{ backgroundColor: isDark ? '#121724' : '#F2F4F7' }}
     >
-      <SectionContainer className="mx-auto max-w-[1140px] px-4 sm:px-6 w-full">
+      <SectionContainer className="mx-auto max-w-[1140px] px-4 p-6 mb-10 mt-10 sm:px-6 w-full">
         <Reveal>
           <h2
             className="text-center text-[34px] font-extrabold tracking-[-0.04em] sm:text-[48px] lg:text-[56px]"
@@ -649,6 +649,187 @@ function People() {
 }
 
 /* -------------------------------------------------------------------------- */
+/* CLIENTS & PARTNERS SHOWCASE (Pure Brand Logos matching reference grid)     */
+/* -------------------------------------------------------------------------- */
+
+const CLIENT_CATEGORIES = [
+  {
+    category: 'Professional & Financial Services',
+    logos: [
+      {
+        alt: 'Vistra',
+        src: 'https://www.vistra.com/themes/custom/vistra2024/logo.svg',
+      },
+      {
+        alt: 'Alter Domus',
+        src: 'https://www.lsta.org/wp-content/uploads/2019/05/alterDomus_Logotype.png',
+      },
+      {
+        alt: 'Xchanging',
+        src: 'https://wp.logos-download.com/wp-content/uploads/2019/06/Xchanging_Logo_full-700x319.png',
+      },
+      {
+        alt: 'European Bank',
+        src: 'https://we-fi.org/wp-content/uploads/2021/05/EBRD-blue-logo-long-E.png',
+      },
+    ],
+  },
+  {
+    category: 'Transport & Logistics',
+    logos: [
+      { alt: 'DB Bahn', src: 'https://upload.wikimedia.org/wikipedia/commons/2/21/Db-bahn.svg' },
+      {
+        alt: 'DB Schenker',
+        src: 'https://cdn.worldvectorlogo.com/logos/logo-db-schenker.svg',
+      },
+      {
+        alt: 'Arriva',
+        src: 'https://logonoid.com/images/arriva-logo.png',
+      },
+      {
+        alt: 'Transport for London',
+        src: 'https://upload.wikimedia.org/wikipedia/commons/1/1b/Transport_for_London_logo_%282013%29.svg',
+      },
+    ],
+  },
+  {
+    category: 'Retail & Travel',
+    logos: [
+      { alt: 'Next', src: 'https://upload.wikimedia.org/wikipedia/commons/8/81/Next_logo.svg' },
+      {
+        alt: 'City Plumbing',
+        src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSGuOpuMHirk9SoZ2fx44tN1agG-AzcxVV7VgDvuFZeg&s=10',
+      },
+      {
+        alt: 'Travelopia',
+        src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUpFrJuhafERLW972QO_c0aKGu8hAdPAo7jCtfhtf4Mg&s=10',
+      },
+    ],
+  },
+  {
+    category: 'Telecoms, Technology & Media',
+    logos: [
+      {
+        alt: 'Vodafone',
+        src: 'https://upload.wikimedia.org/wikipedia/en/thumb/c/cc/Vodafone_2017_logo.svg/1280px-Vodafone_2017_logo.svg.png',
+      },
+      {
+        alt: 'Xerox',
+        src: 'https://canoeprocurement.ca/wp-content/uploads/2021/12/xerox-900x300-2.png',
+      },
+      {
+        alt: 'ESL Faceit Group',
+        src: 'https://isselthal.industries/_astro/eslfaceit.DgHGtUUq.png',
+      },
+    ],
+  },
+  {
+    category: 'Energy & Consumer Goods',
+    logos: [
+      {
+        alt: 'Shell',
+        src: 'https://www.svgrepo.com/show/303259/shell-logo.svg',
+      },
+      {
+        alt: 'British American Tobacco',
+        src: 'https://1000logos.net/wp-content/uploads/2020/09/British-American-Tobacco-Logo-1900s.png',
+      },
+    ],
+  },
+];
+
+function ClientsShowcase() {
+  const { theme } = useSiteTheme();
+  const isDark = theme === 'dark';
+
+  return (
+    <section
+      className="py-20 sm:py-24 lg:py-32 p-6"
+      style={{ backgroundColor: isDark ? '#0B1526' : '#F8F9FA' }}
+    >
+      <SectionContainer className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8 w-full">
+        <Reveal>
+          <div className="text-center max-w-[800px] mx-auto mb-16 flex flex-col items-center">
+            {/* Added justify-center and mx-auto here */}
+            <div className="mb-5 flex items-center justify-center gap-3 mx-auto">
+              <span
+                className="h-px w-12 flex-shrink-0"
+                style={{ backgroundColor: '#C9A24B' }}
+                aria-hidden
+              />
+              <span className="text-[13px] font-bold uppercase tracking-[0.22em] text-[#C9A24B]">
+                Trusted Partnerships
+              </span>
+              <span
+                className="h-px w-12 flex-shrink-0"
+                style={{ backgroundColor: '#C9A24B' }}
+                aria-hidden
+              />
+            </div>
+            <h2
+              className="text-[34px] font-extrabold tracking-[-0.04em] sm:text-[46px] lg:text-[52px]"
+              style={{ color: isDark ? '#E8EDF5' : '#0B1E3D' }}
+            >
+              Empowering World-Class Organisations
+            </h2>
+            <br />
+            <p
+              className="mt-4 text-[15px] sm:text-[16px] leading-[1.7]"
+              style={{ color: isDark ? '#A0AAB8' : '#5F6875' }}
+            >
+              Collaborating with market leaders globally to deliver mission-critical <br />
+              transformations and resilient enterprise operations.
+            </p>
+          </div>
+        </Reveal>
+        <br />
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+          {CLIENT_CATEGORIES.map((col, colIdx) => (
+            <Reveal key={col.category} delay={colIdx * 0.08} direction="up" distance={30}>
+              <div className="flex flex-col h-full">
+                {/* Column Header Card */}
+                <div
+                  className="py-3 px-4 text-center font-bold text-[12px] uppercase tracking-[0.1em] text-white shadow-sm mb-3 rounded-t-[4px]"
+                  style={{ backgroundColor: '#C9A24B' }}
+                >
+                  {col.category}
+                </div>
+
+                {/* Logo Slots */}
+                <div className="flex flex-col gap-3 flex-grow">
+                  {col.logos.map((logo, idx) => (
+                    <div
+                      key={idx}
+                      className="group relative flex items-center justify-center px-4 py-3 h-[100px] border transition-all duration-300 hover:shadow-md hover:-translate-y-1 rounded-[4px]"
+                      style={{
+                        borderColor: isDark ? '#2D3548' : '#E5E7EB',
+                        backgroundColor: isDark ? '#FFFFFF' : '#FFFFFF',
+                      }}
+                    >
+                      {/* Uniform bounding box constraint for all logos */}
+                      <div className="relative w-full h-[52px] max-w-[140px] flex items-center justify-center mx-auto">
+                        <Image
+                          src={logo.src}
+                          alt={logo.alt}
+                          fill
+                          unoptimized
+                          className="object-contain filter transition-opacity duration-300 opacity-85 group-hover:opacity-100 scale-110"
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </SectionContainer>
+    </section>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
 /* CTA (Section 5: #FFFFFF in light mode)                                     */
 /* -------------------------------------------------------------------------- */
 
@@ -661,7 +842,7 @@ function CTA() {
       className="py-28 sm:py-32 lg:py-40"
       style={{ backgroundColor: isDark ? '#1A1F2E' : '#FFFFFF' }}
     >
-      <SectionContainer className="mx-auto max-w-[860px] px-4 text-center sm:px-6 w-full">
+      <SectionContainer className="mx-auto max-w-[860px] p-6 mb-10 mt-10px-4 text-center sm:px-6 w-full">
         <Reveal>
           <h2
             className="text-[34px] font-extrabold tracking-[-0.04em] sm:text-[48px] lg:text-[56px]"
@@ -679,18 +860,18 @@ function CTA() {
             you determine what comes next.
           </p>
 
-          <div className="mt-12 flex flex-wrap justify-center gap-4">
+          <div className="mt-12 flex flex-wrap justify-center gap-6 p-6">
             <Link
               href="/contact"
-              className="inline-flex min-h-[50px] items-center justify-center bg-[#1458F2] px-8 text-[11px] font-bold uppercase tracking-[0.1em] text-white transition-colors hover:bg-[#0444D4]"
+              className="inline-flex min-h-[50px] items-center justify-center bg-[#1458F2] px-6 text-[11px] font-bold uppercase tracking-[0.1em] text-white transition-colors hover:bg-[#0444D4]"
             >
               Talk to an Expert
               <ArrowRight className="ml-2 h-3.5 w-3.5" />
             </Link>
 
             <Link
-              href="/book-consultation"
-              className="inline-flex min-h-[50px] items-center justify-center border border-[#1458F2] px-8 text-[11px] font-bold uppercase tracking-[0.1em] transition-colors hover:bg-[#F0F4FF]"
+              href="/contact/book-a-consultation"
+              className="inline-flex min-h-[50px] items-center justify-center border border-[#1458F2] px-6 text-[11px] font-bold uppercase tracking-[0.1em] transition-colors hover:bg-[#F0F4FF]"
               style={{ color: isDark ? '#3B7BFF' : '#1458F2' }}
             >
               Book a Consultation
@@ -723,6 +904,7 @@ export default function TryvionAboutPage() {
       <OurFirm />
       <Ecosystem />
       <People />
+      <ClientsShowcase />
       <CTA />
     </main>
   );

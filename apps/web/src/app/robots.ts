@@ -1,6 +1,7 @@
-import type { MetadataRoute } from 'next'
+import type { MetadataRoute } from 'next';
+import { getSiteOrigin } from '@/lib/seo/config';
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://thetryvion.com'
+const BASE_URL = getSiteOrigin();
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -9,28 +10,10 @@ export default function robots(): MetadataRoute.Robots {
         // All well-behaved crawlers
         userAgent: '*',
         allow: '/',
-        disallow: [
-          '/api/',
-          '/_next/',
-          '/admin/',
-          '/cms/',
-          '/studio/',
-        ],
-      },
-      {
-        // Block AI training crawlers — update this list as needed
-        userAgent: [
-          'GPTBot',
-          'ChatGPT-User',
-          'CCBot',
-          'anthropic-ai',
-          'Claude-Web',
-          'Omgilibot',
-        ],
-        disallow: '/',
+        disallow: ['/api/', '/_next/', '/admin/', '/cms/', '/studio/'],
       },
     ],
     sitemap: `${BASE_URL}/sitemap.xml`,
-    host:    BASE_URL,
-  }
+    host: BASE_URL,
+  };
 }

@@ -776,19 +776,19 @@ export default function ArtificialIntelligencePage() {
                 display: 'flex',
                 gap: '0.5rem',
                 fontSize: '0.875rem',
-                color: 'rgba(255,255,255,0.6)',
+                color: '#fff',
                 marginBottom: '1.5rem',
               }}
             >
-              <Link href="/" style={{ color: 'inherit', textDecoration: 'none' }}>
+              <Link href="/" style={{ color: '#fff', textDecoration: 'none' }}>
                 Home
               </Link>
-              <span>›</span>
-              <Link href="/services" style={{ color: 'inherit', textDecoration: 'none' }}>
+              <span style={{ color: '#fff' }}>›</span>
+              <Link href="/services" style={{ color: '#fff', textDecoration: 'none' }}>
                 Services
               </Link>
-              <span>›</span>
-              <span style={{ color: ORANGE }}>Artificial Intelligence</span>
+              <span style={{ color: '#fff' }}>›</span>
+              <span style={{ color: '#fff' }}>Artificial Intelligence</span>
             </nav>
             <p
               style={{

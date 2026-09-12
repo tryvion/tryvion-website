@@ -1,5 +1,5 @@
-import Link from 'next/link'
-import type { Metadata } from 'next'
+import Link from 'next/link';
+import { pageMetadata } from '@/lib/seo/pages';
 
 /* ─────────────────────────────────────────────────────────────────
    Services page — body only.
@@ -26,28 +26,29 @@ import type { Metadata } from 'next'
    • Honors prefers-reduced-motion everywhere.
 ───────────────────────────────────────────────────────────────── */
 
-export const metadata: Metadata = {
-  title: 'Services — TRYVION',
-  description:
-    'TRYVION Applications, AI, Talent, Academy, Operate and Labs — connected capabilities built for continuous transformation.',
-  alternates: { canonical: 'https://thetryvion.com/services' },
-}
+export const metadata = pageMetadata.services;
 
 /* ✅ Working hero asset (generated brand visual — compass star over Earth) */
-const HERO_IMG = 'images/hero-services.png'
+const HERO_IMG = 'images/hero-services.png';
 const WAVE_IMG =
-  'https://image.qwenlm.ai/public_source/dd8f5ab0-54d9-4499-96dc-b6afb2fb48db/14f3b2ff9-f89e-4d7b-86a1-9f7c0e586a6d.png'
+  'https://image.qwenlm.ai/public_source/dd8f5ab0-54d9-4499-96dc-b6afb2fb48db/14f3b2ff9-f89e-4d7b-86a1-9f7c0e586a6d.png';
 
 /* ── palette (brand anchors) ── */
-const BLUE = '#1458F2'
-const GOLD = '#C9A24B'
-const PURPLE = '#8B5CF6'
-const TEAL = '#469DA0'
-const INDIGO = '#6D9DFF'
+const BLUE = '#1458F2';
+const GOLD = '#C9A24B';
+const PURPLE = '#8B5CF6';
+const TEAL = '#469DA0';
+const INDIGO = '#6D9DFF';
 
 /* ── icons ── */
 function Icon({ name, color }: { name: string; color: string }) {
-  const common = { fill: 'none', stroke: color, strokeWidth: 1.5, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const }
+  const common = {
+    fill: 'none',
+    stroke: color,
+    strokeWidth: 1.5,
+    strokeLinecap: 'round' as const,
+    strokeLinejoin: 'round' as const,
+  };
   return (
     <svg viewBox="0 0 24 24" style={{ width: 22, height: 22 }} aria-hidden="true" {...common}>
       {name === 'cube' && (
@@ -100,44 +101,145 @@ function Icon({ name, color }: { name: string; color: string }) {
           <path d="M10.5 11l-1 4 2.5-1.5L14.5 15l-1-4" />
         </>
       )}
+      {name === 'cloud' && (
+        <>
+          <path
+            d="M6.5 18a4.5 4.5 0 0 1-.36-8.99A6 6 0 0 1 17.8 10.5 4 4 0 0 1 17.5 18h-11z"
+            strokeLinejoin="round"
+          />
+        </>
+      )}
     </svg>
-  )
+  );
 }
 
 function ArrowRight({ color = GOLD, size = 14 }: { color?: string; size?: number }) {
   return (
-    <svg viewBox="0 0 16 16" fill="none" style={{ width: size, height: size, flexShrink: 0 }} aria-hidden="true">
-      <path d="M2 8h11M9 4l4 4-4 4" stroke={color} strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
+    <svg
+      viewBox="0 0 16 16"
+      fill="none"
+      style={{ width: size, height: size, flexShrink: 0 }}
+      aria-hidden="true"
+    >
+      <path
+        d="M2 8h11M9 4l4 4-4 4"
+        stroke={color}
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
-  )
+  );
 }
 
 /* ── data ─ */
 const SERVICES = [
-  { icon: 'cube', color: BLUE, eyebrow: 'TRYVION APPLICATIONS', title: 'Modernise the enterprise.', body: 'Transform the systems at the heart of your business with intelligent enterprise applications.', href: '/services/applications' },
-  { icon: 'sparkle', color: BLUE, eyebrow: 'TRYVION AI', title: 'Turn intelligence into action.', body: 'Move from AI experimentation to enterprise value with strategy, platforms and intelligent automation.', href: '/services/ai' },
-  { icon: 'users', color: GOLD, eyebrow: 'TRYVION TALENT', title: 'Build the capabilities transformation demands.', body: 'Connect with specialist talent and leaders to build the teams that drive transformation.', href: '/services/talent' },
-  { icon: 'cap', color: PURPLE, eyebrow: 'TRYVION ACADEMY', title: 'Build transformation-ready capability.', body: 'Develop the skills, confidence and expertise to thrive in an evolving digital world.', href: '/services/academy' },
-  { icon: 'operate', color: TEAL, eyebrow: 'TRYVION OPERATE', title: 'Run today. Improve tomorrow.', body: 'Stabilise, automate, optimise and continuously improve your SAP environments.', href: '/services/operate' },
-  { icon: 'rocket', color: BLUE, eyebrow: 'TRYVION LABS', title: 'Innovate. Accelerate. Create impact.', body: 'Leverage accelerators and reusable assets to drive innovation at speed and scale.', href: '/services/labs' },
-  { icon: 'cert', color: GOLD, eyebrow: 'TRYVION ACADEMY', title: 'Learn. Validate. Grow.', body: 'Access structured training, certification and enablement built for real-world impact.', href: '/services/academy' },
-]
+  {
+    icon: 'cube',
+    color: BLUE,
+    eyebrow: 'TRYVION TRANSFORMATION',
+    title: 'Modernise the enterprise.',
+    body: 'Transform the systems at the heart of your business with intelligent enterprise applications.',
+    href: '/services/applications',
+  },
+  {
+    icon: 'sparkle',
+    color: BLUE,
+    eyebrow: 'TRYVION AI',
+    title: 'Turn intelligence into action.',
+    body: 'Move from AI experimentation to enterprise value with strategy, platforms and intelligent automation.',
+    href: '/services/artificial-intelligence',
+  },
+  {
+    icon: 'users',
+    color: GOLD,
+    eyebrow: 'TRYVION TALENT',
+    title: 'Build the capabilities transformation demands.',
+    body: 'Connect with specialist talent and leaders to build the teams that drive transformation.',
+    href: '/services/talent',
+  },
+  {
+    icon: 'cap',
+    color: PURPLE,
+    eyebrow: 'TRYVION ACADEMY',
+    title: 'Build transformation-ready capability.',
+    body: 'Develop the skills, confidence and expertise to thrive in an evolving digital world.',
+    href: '/services/academy',
+  },
+  {
+    icon: 'operate',
+    color: TEAL,
+    eyebrow: 'TRYVION OPERATE',
+    title: 'Run today. Improve tomorrow.',
+    body: 'Stabilise, automate, optimise and continuously improve your SAP environments.',
+    href: '/services/operate',
+  },
+  {
+    icon: 'rocket',
+    color: BLUE,
+    eyebrow: 'TRYVION LABS',
+    title: 'Innovate. Accelerate. Create impact.',
+    body: 'Leverage accelerators and reusable assets to drive innovation at speed and scale.',
+    href: '/services/labs',
+  },
+  {
+    icon: 'cert',
+    color: GOLD,
+    eyebrow: 'TRYVION DATA',
+    title: 'Analyse. Decisions. Lead.',
+    body: 'Turn data into decisions and new opportunities.',
+    href: '/services/data',
+  },
+  {
+    icon: 'cloud',
+    color: GOLD,
+    eyebrow: 'TRYVION CLOUD',
+    title: 'Secure. Scale. Capture.',
+    body: 'Build a secure, scalable and future-ready enterprise.',
+    href: '/services/cloud',
+  },
+];
 
 const ECOSYSTEM = [
   { icon: 'cube', color: BLUE, label: 'Applications', desc: 'Modernise the enterprise.' },
   { icon: 'sparkle', color: INDIGO, label: 'AI', desc: 'Make intelligence actionable.' },
-  { icon: 'users', color: GOLD, label: 'Talent', desc: 'Build the capabilities transformation demands.' },
+  {
+    icon: 'users',
+    color: GOLD,
+    label: 'Talent',
+    desc: 'Build the capabilities transformation demands.',
+  },
   { icon: 'cap', color: PURPLE, label: 'Academy', desc: 'Develop transformation-ready skills.' },
-  { icon: 'operate', color: TEAL, label: 'Operate', desc: 'Continuously improve what you have built.' },
-]
+  {
+    icon: 'operate',
+    color: TEAL,
+    label: 'Operate',
+    desc: 'Continuously improve what you have built.',
+  },
+];
 
 const JOURNEY = [
   { n: '01', color: BLUE, label: 'MODERNISE', desc: 'Transform the enterprise foundation.' },
-  { n: '02', color: BLUE, label: 'INTELLIGENT', desc: 'Apply AI and automation where they create meaningful value.' },
-  { n: '03', color: GOLD, label: 'ENABLE', desc: 'Build the people and skills required to sustain transformation.' },
-  { n: '04', color: PURPLE, label: 'OPERATE', desc: 'Run, optimise and continuously improve the enterprise.' },
+  {
+    n: '02',
+    color: BLUE,
+    label: 'INTELLIGENT',
+    desc: 'Apply AI and automation where they create meaningful value.',
+  },
+  {
+    n: '03',
+    color: GOLD,
+    label: 'ENABLE',
+    desc: 'Build the people and skills required to sustain transformation.',
+  },
+  {
+    n: '04',
+    color: PURPLE,
+    label: 'OPERATE',
+    desc: 'Run, optimise and continuously improve the enterprise.',
+  },
   { n: '05', color: TEAL, label: 'EVOLVE', desc: 'Turn transformation into lasting momentum.' },
-]
+];
 
 export default function ServicesPage() {
   return (
@@ -232,42 +334,153 @@ export default function ServicesPage() {
               'calc(var(--layout-header-height-desktop) + 36px + clamp(2.5rem,6vw,4.5rem)) clamp(1.5rem,5vw,3rem) clamp(4.5rem,8vw,6.5rem)',
           }}
         >
-          <nav className="hero-in-1" aria-label="Breadcrumb" style={{ display: 'flex', alignItems: 'center', gap: '0.625rem', marginBottom: '2rem' }}>
-            <Link href="/" style={{ fontSize: '0.8125rem', color: 'rgba(255,255,255,0.55)', textDecoration: 'none' }}>Home</Link>
-            <svg viewBox="0 0 16 16" fill="none" style={{ width: 12, height: 12 }} aria-hidden="true">
-              <path d="M6 3l5 5-5 5" stroke="rgba(255,255,255,0.4)" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
+          <nav
+            className="hero-in-1"
+            aria-label="Breadcrumb"
+            style={{ display: 'flex', alignItems: 'center', gap: '0.625rem', marginBottom: '2rem' }}
+          >
+            <Link
+              href="/"
+              style={{
+                fontSize: '0.8125rem',
+                color: '#fff',
+                textDecoration: 'none',
+              }}
+            >
+              Home
+            </Link>
+            <svg
+              viewBox="0 0 16 16"
+              fill="none"
+              style={{ width: 12, height: 12 }}
+              aria-hidden="true"
+            >
+              <path
+                d="M6 3l5 5-5 5"
+                stroke="#fff"
+                strokeWidth={1.5}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </svg>
-            <span style={{ fontSize: '0.8125rem', color: 'rgba(255,255,255,0.85)' }}>Services</span>
+            <span style={{ fontSize: '0.8125rem', color: '#fff' }}>Services</span>
           </nav>
-          <h1 className="hero-in-2" style={{ fontFamily: 'var(--family-display)', fontWeight: 800, fontSize: 'clamp(2.75rem,6vw,4.5rem)', letterSpacing: 'var(--tracking-display)', lineHeight: 1.05, color: '#fff', margin: '0 0 1.5rem' }}>
-            Services
+          <h1
+            className="hero-in-2"
+            style={{
+              fontFamily: 'var(--family-display)',
+              fontWeight: 800,
+              fontSize: 'clamp(2.75rem,6vw,4.5rem)',
+              letterSpacing: 'var(--tracking-display)',
+              lineHeight: 1.05,
+              color: '#fff',
+              margin: '0 0 1.5rem',
+            }}
+          >
+            Enterprise <br />
+            Transformation <br /> Services
           </h1>
-          <p className="hero-in-3" style={{ fontSize: 'clamp(1rem,1.5vw,1.25rem)', fontWeight: 700, color: '#fff', margin: '0 0 1.25rem' }}>
+          <p
+            className="hero-in-3"
+            style={{
+              fontSize: 'clamp(1rem,1.5vw,1.25rem)',
+              fontWeight: 700,
+              color: '#fff',
+              margin: '0 0 1.25rem',
+            }}
+          >
             Capabilities built for what comes next.
           </p>
-          <p className="hero-in-3" style={{ fontSize: '0.9375rem', lineHeight: 1.75, color: 'rgba(255,255,255,0.6)', maxWidth: '52ch', margin: 0 }}>
-            TRYVION brings together enterprise applications, artificial intelligence, specialist talent, learning and intelligent operations to help organisations transform with clarity, execute with confidence and continuously evolve.
+          <p
+            className="hero-in-3"
+            style={{
+              fontSize: '0.9375rem',
+              lineHeight: 1.75,
+              color: 'rgba(255,255,255,0.6)',
+              maxWidth: '52ch',
+              margin: 0,
+            }}
+          >
+            TRYVION brings together enterprise applications, artificial intelligence, specialist
+            talent, learning and intelligent operations to deliver enterprise transformation
+            services that help organisations transform with clarity, execute with confidence and
+            continuously evolve.
           </p>
         </div>
       </section>
 
       {/* ═══ SERVICE CARDS ═══ */}
-      <section style={{ background: 'var(--surface-canvas)', padding: 'clamp(4rem,7vw,6.5rem) clamp(1.5rem,5vw,3rem)' }}>
+      <section
+        style={{
+          background: 'var(--surface-canvas)',
+          padding: 'clamp(4rem,7vw,6.5rem) clamp(1.5rem,5vw,3rem)',
+        }}
+      >
         <div style={{ maxWidth: 'var(--layout-content-wide)', margin: '0 auto' }}>
           <div className="svcs-grid">
             {SERVICES.map((s) => (
               <div key={s.eyebrow + s.title} className="svc-card rv">
-                <span style={{ width: 48, height: 48, borderRadius: 12, background: `${s.color}14`, border: `1px solid ${s.color}33`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '0.75rem' }}>
+                <span
+                  style={{
+                    width: 48,
+                    height: 48,
+                    borderRadius: 12,
+                    background: `${s.color}14`,
+                    border: `1px solid ${s.color}33`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginBottom: '0.75rem',
+                  }}
+                >
                   <Icon name={s.icon} color={s.color} />
                 </span>
-                <span style={{ fontSize: '0.6875rem', fontWeight: 700, letterSpacing: '0.14em', color: s.color }}>{s.eyebrow}</span>
-                <h2 style={{ fontFamily: 'var(--family-display)', fontWeight: 700, fontSize: '1.25rem', lineHeight: 1.3, letterSpacing: '-0.015em', color: 'var(--content-primary)', margin: 0 }}>
+                <span
+                  style={{
+                    fontSize: '0.6875rem',
+                    fontWeight: 700,
+                    letterSpacing: '0.14em',
+                    color: s.color,
+                  }}
+                >
+                  {s.eyebrow}
+                </span>
+                <h2
+                  style={{
+                    fontFamily: 'var(--family-display)',
+                    fontWeight: 700,
+                    fontSize: '1.25rem',
+                    lineHeight: 1.3,
+                    letterSpacing: '-0.015em',
+                    color: 'var(--content-primary)',
+                    margin: 0,
+                  }}
+                >
                   {s.title}
                 </h2>
-                <p style={{ fontSize: '0.875rem', lineHeight: 1.7, color: 'var(--content-secondary)', margin: '0 0 0.5rem', flex: 1 }}>
+                <p
+                  style={{
+                    fontSize: '0.875rem',
+                    lineHeight: 1.7,
+                    color: 'var(--content-secondary)',
+                    margin: '0 0 0.5rem',
+                    flex: 1,
+                  }}
+                >
                   {s.body}
                 </p>
-                <Link href={s.href} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', fontWeight: 700, color: 'var(--content-primary)', textDecoration: 'none' }}>
+                <Link
+                  href={s.href}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    fontSize: '0.875rem',
+                    fontWeight: 700,
+                    color: 'var(--content-primary)',
+                    textDecoration: 'none',
+                  }}
+                >
                   Explore <ArrowRight />
                 </Link>
               </div>
@@ -275,28 +488,86 @@ export default function ServicesPage() {
           </div>
 
           {/* ═══ ECOSYSTEM PANEL ═══ */}
-          <div className="rv" style={{ marginTop: '3rem', background: 'var(--ink-950)', borderRadius: 'var(--radius-xl)', padding: 'clamp(2.5rem,6vw,4.5rem) clamp(1.25rem,4vw,3.5rem)', textAlign: 'center' }}>
-            <h2 style={{ fontFamily: 'var(--family-display)', fontWeight: 700, fontSize: 'clamp(1.5rem,3vw,2.25rem)', letterSpacing: '-0.02em', color: '#fff', margin: '0 0 1rem' }}>
+          <div
+            className="rv"
+            style={{
+              marginTop: '3rem',
+              background: 'var(--ink-950)',
+              borderRadius: 'var(--radius-xl)',
+              padding: 'clamp(2.5rem,6vw,4.5rem) clamp(1.25rem,4vw,3.5rem)',
+              textAlign: 'center',
+            }}
+          >
+            <h2
+              style={{
+                fontFamily: 'var(--family-display)',
+                fontWeight: 700,
+                fontSize: 'clamp(1.5rem,3vw,2.25rem)',
+                letterSpacing: '-0.02em',
+                color: '#fff',
+                margin: '0 0 1rem',
+              }}
+            >
               One ecosystem. Connected transformation.
             </h2>
-            <p style={{ fontSize: '0.9375rem', lineHeight: 1.7, color: 'rgba(255,255,255,0.6)', maxWidth: '64ch', margin: '0 auto 3rem' }}>
-              Technology creates possibility. People create progress. Intelligence creates momentum. TRYVION connects transformation across the enterprise.
+            <p
+              style={{
+                fontSize: '0.9375rem',
+                lineHeight: 1.7,
+                color: 'rgba(255,255,255,0.6)',
+                maxWidth: '64ch',
+                margin: '0 auto 3rem',
+              }}
+            >
+              Technology creates possibility. People create progress. Intelligence creates momentum.
+              TRYVION connects transformation across the enterprise.
             </p>
-            <div className="eco-row" style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'center' }}>
+            <div
+              className="eco-row"
+              style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'center' }}
+            >
               {ECOSYSTEM.map((e, i) => (
                 <div key={e.label} style={{ display: 'contents' }}>
                   {i > 0 && <div className="eco-dash" aria-hidden="true" />}
                   <div className="eco-item">
-                    <span style={{ width: 72, height: 72, borderRadius: '50%', border: `1.5px solid ${e.color}`, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(255,255,255,0.02)' }}>
+                    <span
+                      style={{
+                        width: 72,
+                        height: 72,
+                        borderRadius: '50%',
+                        border: `1.5px solid ${e.color}`,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        background: 'rgba(255,255,255,0.02)',
+                      }}
+                    >
                       <Icon name={e.icon} color={e.color} />
                     </span>
-                    <span style={{ fontSize: '0.875rem', fontWeight: 700, color: e.color }}>{e.label}</span>
-                    <span style={{ fontSize: '0.75rem', lineHeight: 1.5, color: 'rgba(255,255,255,0.55)' }}>{e.desc}</span>
+                    <span style={{ fontSize: '0.875rem', fontWeight: 700, color: e.color }}>
+                      {e.label}
+                    </span>
+                    <span
+                      style={{
+                        fontSize: '0.75rem',
+                        lineHeight: 1.5,
+                        color: 'rgba(255,255,255,0.55)',
+                      }}
+                    >
+                      {e.desc}
+                    </span>
                   </div>
                 </div>
               ))}
             </div>
-            <p style={{ fontSize: '0.9375rem', color: 'rgba(255,255,255,0.7)', marginTop: '3rem', marginBottom: 0 }}>
+            <p
+              style={{
+                fontSize: '0.9375rem',
+                color: 'rgba(255,255,255,0.7)',
+                marginTop: '3rem',
+                marginBottom: 0,
+              }}
+            >
               Together, they create a transformation ecosystem designed to keep moving forward.
             </p>
           </div>
@@ -304,30 +575,125 @@ export default function ServicesPage() {
       </section>
 
       {/* ═══ THE TRYVION JOURNEY ═══ */}
-      <section style={{ background: 'var(--surface-canvas)', padding: 'clamp(3rem,6vw,5rem) clamp(1.5rem,5vw,3rem) clamp(4rem,7vw,6rem)' }}>
-        <div style={{ maxWidth: 'var(--layout-content-wide)', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,380px),1fr))', gap: 'clamp(2.5rem,5vw,4.5rem)', alignItems: 'center' }}>
+      <section
+        style={{
+          background: 'var(--surface-canvas)',
+          padding: 'clamp(3rem,6vw,5rem) clamp(1.5rem,5vw,3rem) clamp(4rem,7vw,6rem)',
+        }}
+      >
+        <div
+          style={{
+            maxWidth: 'var(--layout-content-wide)',
+            margin: '0 auto',
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,380px),1fr))',
+            gap: 'clamp(2.5rem,5vw,4.5rem)',
+            alignItems: 'center',
+          }}
+        >
           <div className="rv">
-            <p style={{ fontSize: '0.6875rem', fontWeight: 700, letterSpacing: '0.16em', color: GOLD, margin: '0 0 1rem' }}>FROM TRANSFORMATION TO MOMENTUM</p>
-            <h2 style={{ fontFamily: 'var(--family-display)', fontWeight: 800, fontSize: 'clamp(1.75rem,3.5vw,2.5rem)', letterSpacing: '-0.02em', lineHeight: 1.15, color: 'var(--content-primary)', margin: '0 0 1.25rem' }}>
-              The TRYVION<br />journey
+            <p
+              style={{
+                fontSize: '0.6875rem',
+                fontWeight: 700,
+                letterSpacing: '0.16em',
+                color: GOLD,
+                margin: '0 0 1rem',
+              }}
+            >
+              FROM TRANSFORMATION TO MOMENTUM
+            </p>
+            <h2
+              style={{
+                fontFamily: 'var(--family-display)',
+                fontWeight: 800,
+                fontSize: 'clamp(1.75rem,3.5vw,2.5rem)',
+                letterSpacing: '-0.02em',
+                lineHeight: 1.15,
+                color: 'var(--content-primary)',
+                margin: '0 0 1.25rem',
+              }}
+            >
+              The TRYVION
+              <br />
+              journey
             </h2>
-            <p style={{ fontSize: '0.9375rem', lineHeight: 1.75, color: 'var(--content-secondary)', margin: '0 0 1.5rem', maxWidth: '38ch' }}>
+            <p
+              style={{
+                fontSize: '0.9375rem',
+                lineHeight: 1.75,
+                color: 'var(--content-secondary)',
+                margin: '0 0 1.5rem',
+                maxWidth: '38ch',
+              }}
+            >
               A connected approach that turns transformation into lasting momentum.
             </p>
-            <Link href="/about" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9375rem', fontWeight: 700, color: BLUE, textDecoration: 'none' }}>
+            <Link
+              href="/about"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                fontSize: '0.9375rem',
+                fontWeight: 700,
+                color: BLUE,
+                textDecoration: 'none',
+              }}
+            >
               Learn our approach <ArrowRight color={BLUE} />
             </Link>
           </div>
-          <div className="journey-grid rv-late" style={{ position: 'relative', display: 'grid', gridTemplateColumns: 'repeat(5,1fr)', gap: '1rem' }}>
+          <div
+            className="journey-grid rv-late"
+            style={{
+              position: 'relative',
+              display: 'grid',
+              gridTemplateColumns: 'repeat(5,1fr)',
+              gap: '1rem',
+            }}
+          >
             <div className="journey-line" aria-hidden="true" />
             {JOURNEY.map((j) => (
               <div key={j.n} className="j-item">
-                <span className="j-circle" style={{ width: 56, height: 56, borderRadius: '50%', border: `1.5px solid ${j.color}`, background: 'var(--surface-default)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.875rem', fontWeight: 700, color: j.color }}>
+                <span
+                  className="j-circle"
+                  style={{
+                    width: 56,
+                    height: 56,
+                    borderRadius: '50%',
+                    border: `1.5px solid ${j.color}`,
+                    background: 'var(--surface-default)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '0.875rem',
+                    fontWeight: 700,
+                    color: j.color,
+                  }}
+                >
                   {j.n}
                 </span>
                 <div className="j-body">
-                  <span style={{ fontSize: '0.6875rem', fontWeight: 700, letterSpacing: '0.12em', color: j.color }}>{j.label}</span>
-                  <span style={{ fontSize: '0.75rem', lineHeight: 1.55, color: 'var(--content-secondary)' }}>{j.desc}</span>
+                  <span
+                    style={{
+                      fontSize: '0.6875rem',
+                      fontWeight: 700,
+                      letterSpacing: '0.12em',
+                      color: j.color,
+                    }}
+                  >
+                    {j.label}
+                  </span>
+                  <span
+                    style={{
+                      fontSize: '0.75rem',
+                      lineHeight: 1.55,
+                      color: 'var(--content-secondary)',
+                    }}
+                  >
+                    {j.desc}
+                  </span>
                 </div>
               </div>
             ))}
@@ -336,24 +702,114 @@ export default function ServicesPage() {
       </section>
 
       {/* ═══ FINAL CTA — wave texture ═══ */}
-      <section style={{ background: 'var(--surface-canvas)', padding: '0 clamp(1.5rem,5vw,3rem) clamp(4rem,7vw,6rem)' }}>
-        <div className="rv" style={{ maxWidth: 'var(--layout-content-wide)', margin: '0 auto', position: 'relative', overflow: 'hidden', background: 'var(--ink-950)', borderRadius: 'var(--radius-xl)', padding: 'clamp(2.5rem,6vw,4.5rem) clamp(1.25rem,4vw,3.5rem)' }}>
+      <section
+        style={{
+          background: 'var(--surface-canvas)',
+          padding: '0 clamp(1.5rem,5vw,3rem) clamp(4rem,7vw,6rem)',
+        }}
+      >
+        <div
+          className="rv"
+          style={{
+            maxWidth: 'var(--layout-content-wide)',
+            margin: '0 auto',
+            position: 'relative',
+            overflow: 'hidden',
+            background: 'var(--ink-950)',
+            borderRadius: 'var(--radius-xl)',
+            padding: 'clamp(2.5rem,6vw,4.5rem) clamp(1.25rem,4vw,3.5rem)',
+          }}
+        >
           <img className="cta-wave" src={WAVE_IMG} alt="" aria-hidden="true" />
-          <div className="cta-grid" style={{ position: 'relative', zIndex: 1, display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: 'clamp(2rem,4vw,4rem)', alignItems: 'center' }}>
+          <div
+            className="cta-grid"
+            style={{
+              position: 'relative',
+              zIndex: 1,
+              display: 'grid',
+              gridTemplateColumns: '1.2fr 0.8fr',
+              gap: 'clamp(2rem,4vw,4rem)',
+              alignItems: 'center',
+            }}
+          >
             <div>
-              <p style={{ fontSize: '0.6875rem', fontWeight: 700, letterSpacing: '0.16em', color: GOLD, margin: '0 0 1rem' }}>READY TO MOVE FORWARD?</p>
-              <h2 style={{ fontFamily: 'var(--family-display)', fontWeight: 700, fontSize: 'clamp(1.75rem,3.5vw,2.5rem)', letterSpacing: '-0.02em', lineHeight: 1.2, color: '#fff', margin: '0 0 1.25rem' }}>
-                Let&apos;s turn your next<br />decision into momentum.
+              <p
+                style={{
+                  fontSize: '0.6875rem',
+                  fontWeight: 700,
+                  letterSpacing: '0.16em',
+                  color: GOLD,
+                  margin: '0 0 1rem',
+                }}
+              >
+                READY TO MOVE FORWARD?
+              </p>
+              <h2
+                style={{
+                  fontFamily: 'var(--family-display)',
+                  fontWeight: 700,
+                  fontSize: 'clamp(1.75rem,3.5vw,2.5rem)',
+                  letterSpacing: '-0.02em',
+                  lineHeight: 1.2,
+                  color: '#fff',
+                  margin: '0 0 1.25rem',
+                }}
+              >
+                Let&apos;s turn your next
+                <br />
+                decision into momentum.
               </h2>
-              <p style={{ fontSize: '0.875rem', lineHeight: 1.75, color: 'rgba(255,255,255,0.6)', maxWidth: '52ch', margin: 0 }}>
-                Whether you are modernising your enterprise, exploring AI, building capabilities or evolving your operations, TRYVION can help you determine what comes next.
+              <p
+                style={{
+                  fontSize: '0.875rem',
+                  lineHeight: 1.75,
+                  color: 'rgba(255,255,255,0.6)',
+                  maxWidth: '52ch',
+                  margin: 0,
+                }}
+              >
+                Whether you are modernising your enterprise, exploring AI, building capabilities or
+                evolving your operations, TRYVION can help you determine what comes next.
               </p>
             </div>
             <div className="cta-actions">
-              <Link href="/contact" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '0.625rem', height: 48, padding: '0 1.75rem', borderRadius: 'var(--radius-sm)', background: GOLD, color: 'var(--ink-950)', fontSize: '0.9375rem', fontWeight: 700, textDecoration: 'none' }}>
+              <Link
+                href="/contact"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '0.625rem',
+                  height: 48,
+                  padding: '0 1.75rem',
+                  borderRadius: 'var(--radius-sm)',
+                  background: GOLD,
+                  color: 'var(--ink-950)',
+                  fontSize: '0.9375rem',
+                  fontWeight: 700,
+                  textDecoration: 'none',
+                }}
+              >
                 Talk to an Expert <ArrowRight color="var(--ink-950)" />
               </Link>
-              <Link href="/contact/consultation" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '0.625rem', height: 48, padding: '0 1.75rem', borderRadius: 'var(--radius-sm)', border: `1px solid ${GOLD}`, background: 'transparent', color: GOLD, fontSize: '0.9375rem', fontWeight: 700, textDecoration: 'none' }}>
+              <Link
+                href="/contact/book-a-consultation"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '0.625rem',
+                  height: 48,
+                  padding: '0 1.75rem',
+                  borderRadius: 'var(--radius-sm)',
+                  border: `1px solid ${GOLD}`,
+                  background: 'transparent',
+                  color: GOLD,
+                  fontSize: '0.9375rem',
+                  fontWeight: 700,
+                  textDecoration: 'none',
+                }}
+              >
                 Book a Consultation <ArrowRight />
               </Link>
             </div>
@@ -361,5 +817,5 @@ export default function ServicesPage() {
         </div>
       </section>
     </>
-  )
+  );
 }

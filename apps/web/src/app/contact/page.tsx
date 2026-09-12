@@ -102,8 +102,8 @@ function HeroSection({ isDark }: { isDark: boolean }) {
 
       <div className="relative z-10 mx-auto w-full max-w-[1280px] px-6 sm:px-12 lg:px-16 my-auto">
         {/* Breadcrumbs */}
-        <div className="mb-8 flex items-center gap-2 text-[13px] font-semibold text-white/60">
-          <Link href="/" className="hover:text-white transition-colors">
+        <div className="mb-8 flex items-center gap-2 text-[13px] font-semibold text-white">
+          <Link href="/" className="text-white transition-colors">
             Home
           </Link>
           <span>&gt;</span>
@@ -136,7 +136,7 @@ function ContactCardsSection({ isDark }: { isDark: boolean }) {
   const t = isDark ? DARK : LIGHT;
 
   return (
-    <section className="py-28 lg:py-36 transition-colors duration-500" style={{ background: t.bg }}>
+    <section className="py-28 transition-colors duration-500" style={{ background: t.bg }}>
       <div className="mx-auto max-w-[1280px] px-6 sm:px-12 lg:px-16">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* LEFT COLUMN - Action Cards */}
@@ -756,7 +756,7 @@ function ContactFormSection({ isDark }: { isDark: boolean }) {
   `;
 
   return (
-    <section className="py-28 lg:py-36 transition-colors duration-500" style={{ background: t.bg }}>
+    <section className="py-28 transition-colors duration-500" style={{ background: t.bg }}>
       <div className="mx-auto max-w-[1280px] px-6 sm:px-12 lg:px-16">
         <Reveal>
           <div

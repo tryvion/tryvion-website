@@ -1,69 +1,141 @@
-import type { Metadata } from 'next'
+import type { Metadata } from 'next';
 
-// metadataBase is set in the root layout; helper uses path-relative URLs
-// so they resolve correctly across environments.
+// metadataBase is set in the root layout.
+// All paths are relative to the production site origin.
 
 export interface PageMetadataInput {
   /** Page title — the root layout template appends " | TRYVION" automatically */
-  title: string
-  description: string
+  title: string;
+
+  /** Search-engine meta description */
+  description: string;
+
   /** Absolute path from root, e.g. "/services" */
-  path: string
-  /** Absolute URL for a page-specific OG image. Falls back to the auto-generated /opengraph-image */
-  image?: string
-  /** Set true for non-indexed pages (thank-you, legal, admin redirects) */
-  noIndex?: boolean
-  /** Schema.org type override — defaults to "website" */
-  type?: 'website' | 'article'
+  path: string;
+
+  /**
+   * Absolute or root-relative URL for a page-specific OG image.
+   * Falls back to the global generated /opengraph-image.
+   */
+  image?: string;
+
+  /**
+   * Set true for pages that should not appear in search engines,
+   * such as thank-you, preview, or other non-public pages.
+   */
+  noIndex?: boolean;
+
+  /** Schema.org content type — defaults to "website" */
+  type?: 'website' | 'article';
+
   /** ISO 8601 publish date — used when type is "article" */
-  publishedAt?: string
+  publishedAt?: string;
+
   /** ISO 8601 modified date — used when type is "article" */
-  modifiedAt?: string
+  modifiedAt?: string;
 }
 
 /**
- * Builds a consistent Metadata object for a page.
- * The root layout already defines metadataBase, title.template, siteName, and
- * twitter.site — this helper fills in the page-specific fields only.
+ * Builds consistent page-level metadata for TRYVION.
+ *
+ * The root layout provides:
+ * - metadataBase
+ * - title template
+ * - default title
+ * - default description
+ *
+ * This helper provides page-specific:
+ * - title
+ * - description
+ * - canonical URL
+ * - robots directives
+ * - Open Graph metadata
+ * - Twitter/X metadata
  */
 export function buildMetadata({
   title,
   description,
   path,
-  image,
+  image = '/opengraph-image',
   noIndex = false,
   type = 'website',
   publishedAt,
   modifiedAt,
 }: PageMetadataInput): Metadata {
-  const og: Metadata['openGraph'] = {
+  const isArticle = type === 'article';
+
+  const robots = noIndex
+    ? {
+        index: false,
+        follow: false,
+        googleBot: {
+          index: false,
+          follow: false,
+          'max-image-preview': 'large' as const,
+          'max-video-preview': -1,
+          'max-snippet': -1,
+        },
+      }
+    : {
+        index: true,
+        follow: true,
+        googleBot: {
+          index: true,
+          follow: true,
+          'max-image-preview': 'large' as const,
+          'max-video-preview': -1,
+          'max-snippet': -1,
+        },
+      };
+
+  const openGraph: Metadata['openGraph'] = {
     title,
     description,
-    url:  path,
-    type: type === 'article' ? 'article' : 'website',
-    ...(image ? { images: [{ url: image, width: 1200, height: 630, alt: title }] } : {}),
-    ...(type === 'article' && publishedAt
-      ? { publishedTime: publishedAt }
+    url: path,
+    siteName: 'TRYVION',
+    locale: 'en_US',
+    type: isArticle ? 'article' : 'website',
+    images: [
+      {
+        url: image,
+        width: 1200,
+        height: 630,
+        alt: title,
+      },
+    ],
+
+    ...(isArticle && publishedAt
+      ? {
+          publishedTime: publishedAt,
+        }
       : {}),
-    ...(type === 'article' && modifiedAt
-      ? { modifiedTime: modifiedAt }
+
+    ...(isArticle && modifiedAt
+      ? {
+          modifiedTime: modifiedAt,
+        }
       : {}),
-  }
+  };
 
   return {
     title,
     description,
-    alternates: { canonical: path },
-    robots: noIndex
-      ? { index: false, follow: false }
-      : { index: true, follow: true, googleBot: { index: true, follow: true } },
-    openGraph: og,
+
+    alternates: {
+      canonical: path,
+    },
+
+    robots,
+
+    openGraph,
+
     twitter: {
+      card: 'summary_large_image',
       title,
       description,
-      ...(image ? { images: [image] } : {}),
+      images: [image],
     },
-  }
+  };
 }
 
 // ---------------------------------------------------------------------------
@@ -73,5 +145,8 @@ export function buildMetadata({
 export function buildArticleMetadata(
   opts: Omit<PageMetadataInput, 'type'> & Required<Pick<PageMetadataInput, 'publishedAt'>>,
 ): Metadata {
-  return buildMetadata({ ...opts, type: 'article' })
+  return buildMetadata({
+    ...opts,
+    type: 'article',
+  });
 }

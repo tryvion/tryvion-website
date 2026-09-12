@@ -1,89 +1,232 @@
-import type { MetadataRoute } from 'next'
+import type { MetadataRoute } from 'next';
+import { getSiteOrigin } from '@/lib/seo/config';
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://tryvion.com'
+const BASE_URL = getSiteOrigin();
 
-// Static routes — priorities and change frequencies follow Google's guidance:
-// https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap
-const STATIC_ROUTES: MetadataRoute.Sitemap = [
-  {
-    url:              `${BASE_URL}/`,
-    lastModified:     new Date(),
-    changeFrequency:  'weekly',
-    priority:         1.0,
-  },
-  {
-    url:              `${BASE_URL}/services`,
-    lastModified:     new Date(),
-    changeFrequency:  'monthly',
-    priority:         0.9,
-  },
-  {
-    url:              `${BASE_URL}/about`,
-    lastModified:     new Date(),
-    changeFrequency:  'monthly',
-    priority:         0.8,
-  },
-  {
-    url:              `${BASE_URL}/insights`,
-    lastModified:     new Date(),
-    changeFrequency:  'daily',
-    priority:         0.8,
-  },
-  {
-    url:              `${BASE_URL}/contact`,
-    lastModified:     new Date(),
-    changeFrequency:  'yearly',
-    priority:         0.7,
-  },
-  {
-    url:              `${BASE_URL}/get-started`,
-    lastModified:     new Date(),
-    changeFrequency:  'yearly',
-    priority:         0.7,
-  },
-  // Service detail pages — TODO Phase 11+: generate from CMS
-  {
-    url:              `${BASE_URL}/services/sap`,
-    lastModified:     new Date(),
-    changeFrequency:  'monthly',
-    priority:         0.8,
-  },
-  {
-    url:              `${BASE_URL}/services/ai-data`,
-    lastModified:     new Date(),
-    changeFrequency:  'monthly',
-    priority:         0.8,
-  },
-  {
-    url:              `${BASE_URL}/services/cloud`,
-    lastModified:     new Date(),
-    changeFrequency:  'monthly',
-    priority:         0.8,
-  },
-  {
-    url:              `${BASE_URL}/services/digital-engineering`,
-    lastModified:     new Date(),
-    changeFrequency:  'monthly',
-    priority:         0.8,
-  },
-  {
-    url:              `${BASE_URL}/services/talent`,
-    lastModified:     new Date(),
-    changeFrequency:  'monthly',
-    priority:         0.8,
-  },
-  {
-    url:              `${BASE_URL}/services/managed-services`,
-    lastModified:     new Date(),
-    changeFrequency:  'monthly',
-    priority:         0.8,
-  },
-]
+const ROUTES: Array<{
+  path: string;
+  priority: number;
+}> = [
+  // =========================================================================
+  // CORE WEBSITE
+  // =========================================================================
 
-// TODO Phase 11+: merge CMS-sourced insight article URLs here:
-// const insightRoutes = await fetchPublishedInsightSlugs()
-// const dynamicRoutes = insightRoutes.map(slug => ({ url: `${BASE_URL}/insights/${slug}`, ... }))
+  {
+    path: '/',
+    priority: 1.0,
+  },
+  {
+    path: '/about',
+    priority: 0.9,
+  },
+  {
+    path: '/services',
+    priority: 0.9,
+  },
+  {
+    path: '/industries',
+    priority: 0.8,
+  },
+  {
+    path: '/careers',
+    priority: 0.8,
+  },
+  {
+    path: '/contact',
+    priority: 0.8,
+  },
+
+  // =========================================================================
+  // ABOUT
+  // =========================================================================
+
+  {
+    path: '/about/our-story',
+    priority: 0.7,
+  },
+  {
+    path: '/about/leadership',
+    priority: 0.8,
+  },
+  {
+    path: '/about/our-values',
+    priority: 0.7,
+  },
+  {
+    path: '/about/what-we-believe',
+    priority: 0.7,
+  },
+  {
+    path: '/about/locations',
+    priority: 0.8,
+  },
+
+  // =========================================================================
+  // SERVICES — TRYVION APPLICATIONS
+  // =========================================================================
+
+  {
+    path: '/services/applications',
+    priority: 0.9,
+  },
+  {
+    path: '/services/applications/sap-s4hana',
+    priority: 0.9,
+  },
+  {
+    path: '/services/applications/sap-successfactors',
+    priority: 0.8,
+  },
+  {
+    path: '/services/applications/sap-btp',
+    priority: 0.8,
+  },
+
+  // SAP S/4HANA editions
+  {
+    path: '/services/applications/sap-s4hana/private-edition',
+    priority: 0.8,
+  },
+  {
+    path: '/services/applications/sap-s4hana/public-edition',
+    priority: 0.8,
+  },
+
+  // =========================================================================
+  // SERVICES — TRYVION AI
+  // =========================================================================
+
+  {
+    path: '/services/artificial-intelligence',
+    priority: 0.9,
+  },
+  {
+    path: '/services/artificial-intelligence/enterprise-ai-strategy',
+    priority: 0.9,
+  },
+  {
+    path: '/services/artificial-intelligence/enterprise-ai-platforms',
+    priority: 0.8,
+  },
+  {
+    path: '/services/artificial-intelligence/intelligent-automation',
+    priority: 0.8,
+  },
+
+  // =========================================================================
+  // SERVICES — TRYVION TALENT
+  // =========================================================================
+
+  {
+    path: '/services/talent',
+    priority: 0.9,
+  },
+  {
+    path: '/services/talent/sap-talent-solutions',
+    priority: 0.8,
+  },
+  {
+    path: '/services/talent/permanent-hiring',
+    priority: 0.8,
+  },
+  {
+    path: '/services/talent/executive-search',
+    priority: 0.8,
+  },
+
+  // =========================================================================
+  // SERVICES — TRYVION ACADEMY
+  // =========================================================================
+
+  {
+    path: '/services/academy',
+    priority: 0.8,
+  },
+  {
+    path: '/services/academy/learning-platform',
+    priority: 0.8,
+  },
+
+  // =========================================================================
+  // SERVICES — TRYVION OPERATE
+  // =========================================================================
+
+  {
+    path: '/services/operate',
+    priority: 0.8,
+  },
+  {
+    path: '/services/operate/sap-run-in-the-new',
+    priority: 0.8,
+  },
+
+  // =========================================================================
+  // CAREERS
+  // =========================================================================
+
+  {
+    path: '/careers/life-at-tryvion',
+    priority: 0.7,
+  },
+  {
+    path: '/careers/roles',
+    priority: 0.8,
+  },
+
+  // =========================================================================
+  // CONTACT
+  // =========================================================================
+
+  {
+    path: '/contact/talk-to-an-expert',
+    priority: 0.8,
+  },
+  {
+    path: '/contact/book-a-consultation',
+    priority: 0.8,
+  },
+  {
+    path: '/contact/request-a-proposal',
+    priority: 0.8,
+  },
+  {
+    path: '/contact/sales-enquiries',
+    priority: 0.6,
+  },
+  {
+    path: '/contact/customer-support',
+    priority: 0.6,
+  },
+  {
+    path: '/contact/global-offices',
+    priority: 0.7,
+  },
+
+  // =========================================================================
+  // LEGAL / ACCESSIBILITY
+  // =========================================================================
+
+  {
+    path: '/privacy',
+    priority: 0.3,
+  },
+  {
+    path: '/terms',
+    priority: 0.2,
+  },
+  {
+    path: '/cookie-policy',
+    priority: 0.2,
+  },
+  {
+    path: '/accessibility',
+    priority: 0.3,
+  },
+];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return STATIC_ROUTES
+  return ROUTES.map(({ path, priority }) => ({
+    url: new URL(path, BASE_URL).toString(),
+    priority,
+  }));
 }

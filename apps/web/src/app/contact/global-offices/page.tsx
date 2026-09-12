@@ -121,7 +121,7 @@ const OFFICES: OfficeData[] = [
       'Noida, Uttar Pradesh 201304',
     ],
     phone: '+91 97739 93926',
-    email: 'vr@thetryvion.com',
+    email: 'info@thetryvion.com',
     image: '/images/noida-office.webp',
     flag: '🇮🇳',
     lat: 28.5355,
@@ -136,7 +136,7 @@ const OFFICES: OfficeData[] = [
     region: 'Europe, the Middle East, and Africa',
     address: ['151, Ruxley Lane,', 'KT19 9EX, Epsom,', 'Surrey, United Kingdom'],
     phone: '+44(0) 79517 85497',
-    email: 'vr@thetryvion.com',
+    email: 'info@thetryvion.com',
     image: '/images/london-office.jpg',
     flag: '🇬🇧',
     lat: 51.5,
@@ -346,12 +346,12 @@ function HeroSection({ isDark }: { isDark: boolean }) {
       </div>
 
       <div className="relative z-10 mx-auto w-full max-w-[1280px] px-6 sm:px-12 lg:px-16">
-        <div className="mb-12 flex items-center gap-2 text-[13px] font-semibold text-white/60">
-          <Link href="/" className="transition-colors hover:text-white">
+        <div className="mb-12 flex items-center gap-2 text-[13px] font-semibold text-white">
+          <Link href="/" className="transition-colors text-white">
             Home
           </Link>
           <span>&gt;</span>
-          <Link href="/contact" className="transition-colors hover:text-white">
+          <Link href="/contact" className="transition-colors text-white">
             Contact
           </Link>
           <span>&gt;</span>

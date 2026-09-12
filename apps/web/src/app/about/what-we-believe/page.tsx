@@ -124,15 +124,15 @@ function HeroSection({ isDark }: { isDark: boolean }) {
       <div className="relative z-10 mx-auto w-full max-w-[1280px] px-6 sm:px-12 lg:px-16 pt-8 pb-20 lg:pt-10 lg:pb-28 my-auto">
         {/* Breadcrumbs */}
         <div className="mb-8 lg:mb-12 flex items-center gap-2 text-[13px] font-semibold text-white/60">
-          <Link href="/" className="hover:text-white transition-colors">
+          <Link href="/" className="text-white transition-colors">
             Home
           </Link>
           <span>&gt;</span>
-          <Link href="/about" className="hover:text-white transition-colors">
+          <Link href="/about" className="text-white transition-colors">
             About Us
           </Link>
           <span>&gt;</span>
-          <span className="text-[#C9A24B]">What We Believe</span>
+          <span className="text-white">What We Believe</span>
         </div>
         <br />
 

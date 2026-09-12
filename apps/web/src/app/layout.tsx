@@ -7,6 +7,9 @@ import { SiteThemeProvider } from '@/providers/SiteThemeProvider';
 import { GoogleAnalytics } from '@/components/analytics/GoogleAnalytics';
 import { CookieBanner } from '@/components/consent/CookieBanner';
 import { publicEnv } from '@/lib/env';
+import { getSiteUrl } from '@/lib/seo/config';
+import { organizationSchema, websiteSchema } from '@/lib/seo/schema';
+import { JsonLd } from '@/components/seo/JsonLd';
 import './globals.css';
 
 /*
@@ -25,37 +28,7 @@ const manrope = Manrope({
   preload: true,
 });
 
-/*
- * Resolve the canonical site URL safely at build time.
- *
- * Vercel may expose NEXT_PUBLIC_SITE_URL as an empty string.
- * Using `??` is not sufficient because an empty string is not null/undefined.
- *
- * The fallback therefore uses:
- *   1. trimmed NEXT_PUBLIC_SITE_URL when it is a valid absolute URL
- *   2. TRYVION's production URL otherwise
- *
- * This prevents `new URL('')` from crashing Next.js during prerendering.
- */
-function getMetadataBase(): URL {
-  const configuredUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim();
-
-  if (configuredUrl) {
-    try {
-      const url = new URL(configuredUrl);
-
-      if (url.protocol === 'http:' || url.protocol === 'https:') {
-        return url;
-      }
-    } catch {
-      // Fall through to the production fallback below.
-    }
-  }
-
-  return new URL('https://thetryvion.com');
-}
-
-const metadataBase = getMetadataBase();
+const metadataBase = getSiteUrl();
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -117,6 +90,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       className={`${manrope.variable} h-full`}
     >
       <body className="min-h-full flex flex-col antialiased bg-[var(--color-surface-default)] text-[var(--color-content-primary)]">
+        <JsonLd data={organizationSchema()} />
+        <JsonLd data={websiteSchema()} />
         {/* WCAG 2.4.1 — skip navigation */}
         <a href="#main-content" className="skip-nav">
           Skip to main content

@@ -110,12 +110,7 @@ interface DrawerSection {
   columns: DrawerCol[];
 }
 const DRAWER_SECTIONS: DrawerSection[] = [
-  {
-    key: 'industries',
-    label: 'Industries',
-    href: '/industries',
-    columns: [{ links: INDUSTRY_LINKS }],
-  },
+  { key: 'about', label: 'About Us', href: '/about', columns: [{ links: ABOUT_LINKS }] },
   {
     key: 'services',
     label: 'Services',
@@ -123,10 +118,10 @@ const DRAWER_SECTIONS: DrawerSection[] = [
     columns: SERVICES_GROUPS.map((g) => ({ heading: g.heading, links: g.links })),
   },
   {
-    key: 'ai',
-    label: 'Tryvion AI',
-    href: '/services/ai',
-    columns: [{ links: SERVICES_GROUPS[1].links }],
+    key: 'industries',
+    label: 'Industries',
+    href: '/industries',
+    columns: [{ links: INDUSTRY_LINKS }],
   },
   {
     key: 'insights',
@@ -143,7 +138,6 @@ const DRAWER_SECTIONS: DrawerSection[] = [
       },
     ],
   },
-  { key: 'about', label: 'About Us', href: '/about', columns: [{ links: ABOUT_LINKS }] },
   {
     key: 'careers',
     label: 'Careers',
@@ -2211,7 +2205,7 @@ export function ScrollHeader({ theme: themeProp }: ScrollHeaderProps) {
               }}
             >
               <NextLink
-                href="/login"
+                href="#"
                 style={{
                   display: 'flex',
                   flexDirection: 'row-reverse',
@@ -2233,7 +2227,7 @@ export function ScrollHeader({ theme: themeProp }: ScrollHeaderProps) {
                 <UserIcon /> Sign In
               </NextLink>
               <NextLink
-                href="/subscribe"
+                href="#"
                 style={{
                   display: 'flex',
                   flexDirection: 'row-reverse',

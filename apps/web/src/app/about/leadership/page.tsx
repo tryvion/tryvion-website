@@ -3,20 +3,39 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import {
-  Eye,
-  Target,
-  Users,
-  TrendingUp,
-  ArrowRight,
-  Binoculars,
-  Network,
-  Rocket,
-  Compass,
-  X,
-} from 'lucide-react';
+import { Eye, Target, Users, TrendingUp, Binoculars, Network, Rocket, X } from 'lucide-react';
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import { useSiteTheme } from '@/providers/SiteThemeProvider';
+
+/* -------------------------------------------------------------------------- */
+/* CUSTOM BRAND / UTILITY ICONS                                               */
+/* -------------------------------------------------------------------------- */
+
+function LinkedinIcon({ className = 'w-4 h-4' }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+    </svg>
+  );
+}
+
+function MailIcon({ className = 'w-4 h-4' }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <rect width="20" height="16" x="2" y="4" rx="2" />
+      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+    </svg>
+  );
+}
 
 /* -------------------------------------------------------------------------- */
 /* DESIGN TOKENS & THEME COLORS                                               */
@@ -64,9 +83,9 @@ interface LeaderProfile {
 const LEADERSHIP_TEAM: LeaderProfile[] = [
   {
     id: 'meena-thevi-kandasamy',
-    name: 'Meena Thevi Kandasamy',
+    name: 'Meena Kandasamy',
     role: 'Founder & Strategic Leadership',
-    image: '/images/meena.jpg',
+    image: '/images/meena-thevi-kandasamy.png',
     linkedin: 'https://www.linkedin.com/in/meenakandasamy/',
     email: 'mailto:meena@thetryvion.com',
     biography:
@@ -80,9 +99,9 @@ const LEADERSHIP_TEAM: LeaderProfile[] = [
   },
   {
     id: 'rp-shukla',
-    name: 'R.P.Shukla',
+    name: 'R.P. Shukla',
     role: 'Director - Global',
-    image: '/images/deon.jpg',
+    image: '/images/r-p-shukla.png',
     linkedin: 'https://linkedin.com/',
     email: 'mailto:rpshukla@thetryvion.com',
     biography:
@@ -94,14 +113,13 @@ const LEADERSHIP_TEAM: LeaderProfile[] = [
     beyondrole:
       'Mr. Shukla is passionate about developing people, sharing industry experience, and mentoring the next generation of professionals. His leadership philosophy reflects TRYVION’s approach to combining decades of experience with new-age thinking to create meaningful and lasting change.',
   },
-
   {
     id: 'abhishek-srivastava',
     name: 'Abhishek Srivastava',
     role: 'Director - India',
-    image: '/images/sarah.jpeg',
+    image: '/images/abhishek-srivastava.png',
     linkedin: 'https://www.linkedin.com/in/abhishekosrivastava/',
-    email: 'mailto:abhishek@thetryvion.com',
+    email: 'mailto:abhishek.srivastava@thetryvion.com',
     biography:
       'Abhishek Srivastava is an entrepreneur and global business leader with 15+ years of experience spanning technology, industrial solutions, international trade, healthcare, consulting, and strategic business development. He brings a multidisciplinary perspective to TRYVION, combining technology-led thinking with commercial strategy, global partnerships, and a strong focus on sustainable value creation.',
     background:
@@ -144,7 +162,7 @@ function Eyebrow({ children, isDark }: { children: React.ReactNode; isDark: bool
   return (
     <div className="mb-6 flex items-center gap-3">
       <span
-        className={`font-sans text-[12px] font-bold uppercase tracking-[0.16em] ${isDark ? 'text-[#C9A24B]' : 'text-[#1458F2]'}`}
+        className={`font-sans text-[14px] sm:text-[15px] font-bold uppercase tracking-[0.16em] ${isDark ? 'text-[#C9A24B]' : 'text-[#1458F2]'}`}
       >
         {children}
       </span>
@@ -163,10 +181,9 @@ function Eyebrow({ children, isDark }: { children: React.ReactNode; isDark: bool
 function LeadershipHero({ isDark }: { isDark: boolean }) {
   return (
     <section
-      className="relative overflow-hidden min-h-[700px] lg:min-h-[800px] flex items-center transition-colors duration-500 pt-32 lg:pt-40 pb-20"
+      className="relative overflow-hidden min-h-[620px] sm:min-h-[700px] lg:min-h-[800px] flex items-center transition-colors duration-500 pt-28 sm:pt-32 lg:pt-40 pb-16 sm:pb-20"
       style={{ background: '#0B1E3D' }}
     >
-      {/* Background Visual - Architectural/Directional */}
       <div className="absolute inset-0 pointer-events-none">
         <Image
           src="/images/hero-leadership.png"
@@ -178,19 +195,19 @@ function LeadershipHero({ isDark }: { isDark: boolean }) {
         />
       </div>
 
-      <div className="relative z-10 mx-auto w-full max-w-[1280px] px-6 lg:px-12">
+      <div className="relative z-10 mx-auto w-full max-w-[1280px] px-5 sm:px-6 lg:px-12">
         <div className="max-w-[650px] space-y-8">
           <Reveal>
-            <div className="flex items-center gap-2 text-[13px] font-semibold text-white/60 mb-8">
-              <Link href="/" className="hover:text-white transition-colors">
+            <div className="flex flex-wrap items-center gap-2 text-[13px] font-semibold text-white mb-8">
+              <Link href="/" className="text-white transition-colors">
                 Home
               </Link>
               <span>&gt;</span>
-              <Link href="/about" className="hover:text-white transition-colors">
+              <Link href="/about" className="text-white transition-colors">
                 About Us
               </Link>
               <span>&gt;</span>
-              <span className="text-[#C9A24B]">Leadership</span>
+              <span className="text-white">Leadership</span>
             </div>
           </Reveal>
 
@@ -201,17 +218,17 @@ function LeadershipHero({ isDark }: { isDark: boolean }) {
           </Reveal>
 
           <Reveal delay={0.2}>
-            <h1 className="font-sans text-[48px] sm:text-[64px] lg:text-[72px] font-extrabold leading-[1.05] tracking-tight text-white">
+            <h1 className="font-sans text-[42px] sm:text-[64px] lg:text-[72px] font-extrabold leading-[1.05] tracking-tight text-white">
               Experience that
               <br />
               helps shape what
               <br />
-              comes next<span className="text-[#C9A24B]">.</span>
+              comes next<span className="text-[#ffffff]">.</span>
             </h1>
           </Reveal>
 
           <Reveal delay={0.3}>
-            <p className="text-[18px] sm:text-[20px] leading-[1.6] text-white/90 max-w-[550px]">
+            <p className="text-[16px] sm:text-[20px] leading-[1.6] text-white/90 max-w-[550px]">
               TRYVION is led by experienced enterprise technology and transformation professionals
               who bring deep expertise, practical perspective and a shared commitment to helping
               organisations navigate change with confidence.
@@ -242,9 +259,11 @@ function LeadershipPhilosophy({ isDark }: { isDark: boolean }) {
   const t = isDark ? DARK : LIGHT;
 
   return (
-    <section className="py-28 lg:py-36 transition-colors duration-500" style={{ background: t.bg }}>
-      <div className="mx-auto max-w-[1280px] px-6 lg:px-12">
-        {/* Top Content Row */}
+    <section
+      className="py-20 sm:py-28 lg:py-36 transition-colors duration-500"
+      style={{ background: t.bg }}
+    >
+      <div className="mx-auto max-w-[1280px] px-5 sm:px-6 lg:px-12">
         <div className="max-w-[700px] mb-16 lg:mb-20">
           <Reveal>
             <Eyebrow isDark={isDark}>OUR LEADERSHIP PHILOSOPHY</Eyebrow>
@@ -252,7 +271,7 @@ function LeadershipPhilosophy({ isDark }: { isDark: boolean }) {
 
           <Reveal delay={0.1}>
             <h2
-              className={`font-sans text-[36px] sm:text-[48px] font-extrabold leading-[1.1] tracking-tight mb-8 ${isDark ? 'text-white' : 'text-[#0B1E3D]'}`}
+              className={`font-sans text-[32px] sm:text-[48px] font-extrabold leading-[1.1] tracking-tight mb-8 ${isDark ? 'text-white' : 'text-[#0B1E3D]'}`}
             >
               Creating clarity for
               <br />
@@ -263,20 +282,19 @@ function LeadershipPhilosophy({ isDark }: { isDark: boolean }) {
 
           <Reveal delay={0.2}>
             <div
-              className={`space-y-6 text-[18px] leading-[1.6] ${isDark ? 'text-gray-300' : 'text-[#5F6875]'}`}
+              className={`space-y-6 text-[16px] sm:text-[18px] leading-[1.6] ${isDark ? 'text-gray-300' : 'text-[#5F6875]'}`}
             >
               <p>
-                We believe effective transformation requires leaders who understand both <br />
-                business and technology—and know how to bring people, ideas and capabilities <br />
-                together. Our leadership is guided by vision, accountability, collaboration and
-                continuous evolution.
+                We believe effective transformation requires leaders who understand both business
+                and technology—and know how to bring people, ideas and capabilities together. Our
+                leadership is guided by vision, accountability, collaboration and continuous
+                evolution.
               </p>
             </div>
           </Reveal>
         </div>
         <br />
 
-        {/* Bottom Icons Row with Hover Animations */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
           {PHILOSOPHY_ITEMS.map((item, idx) => {
             const Icon = item.icon;
@@ -306,7 +324,6 @@ function LeadershipPhilosophy({ isDark }: { isDark: boolean }) {
                     {item.desc}
                   </p>
 
-                  {/* Golden Bottom Line Animation */}
                   <div className="absolute bottom-0 left-0 w-full h-[2px] bg-[#C9A24B] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
                 </motion.div>
               </Reveal>
@@ -319,14 +336,11 @@ function LeadershipPhilosophy({ isDark }: { isDark: boolean }) {
 }
 
 /* -------------------------------------------------------------------------- */
-/* FOUNDING LEADERSHIP - CAROUSEL WITH EXPANDABLE CARDS                       */
+/* FOUNDING LEADERSHIP - SIDE-BY-SIDE EXPANDABLE CARDS                        */
 /* -------------------------------------------------------------------------- */
 
 function FoundingLeadership({ isDark }: { isDark: boolean }) {
   const [expandedCard, setExpandedCard] = useState<string | null>(null);
-  const t = isDark ? DARK : LIGHT;
-
-  const CARD_WIDTH = 'min(520px, 85vw)';
 
   const handleCardClick = (id: string) => {
     setExpandedCard(expandedCard === id ? null : id);
@@ -334,17 +348,17 @@ function FoundingLeadership({ isDark }: { isDark: boolean }) {
 
   return (
     <section
-      className="py-28 lg:py-36 transition-colors duration-500"
+      className="py-20 sm:py-28 lg:py-36 transition-colors duration-500"
       style={{ background: isDark ? '#0A1128' : '#F4F6F9' }}
     >
-      <div className="mx-auto max-w-[1280px] px-6 sm:px-12 lg:px-16">
+      <div className="mx-auto max-w-[1280px] px-5 sm:px-8 lg:px-16">
         <Reveal>
           <Eyebrow isDark={isDark}>FOUNDING LEADERSHIP</Eyebrow>
         </Reveal>
 
         <Reveal delay={0.1}>
           <h2
-            className={`font-sans text-[36px] sm:text-[48px] font-extrabold leading-[1.1] tracking-tight mb-16 ${
+            className={`font-sans text-[32px] sm:text-[48px] font-extrabold leading-[1.1] tracking-tight mb-12 sm:mb-16 ${
               isDark ? 'text-white' : 'text-[#0B1E3D]'
             }`}
           >
@@ -355,42 +369,28 @@ function FoundingLeadership({ isDark }: { isDark: boolean }) {
         </Reveal>
         <br />
 
-        {/* Horizontal Carousel Container */}
-        <div
-          className="flex gap-6 overflow-x-auto pb-8 snap-x snap-mandatory scrollbar-hide"
-          style={{
-            scrollSnapType: 'x mandatory',
-            WebkitOverflowScrolling: 'touch',
-            msOverflowStyle: 'none',
-            scrollbarWidth: 'none',
-          }}
-        >
+        {/* Leadership Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {LEADERSHIP_TEAM.map((leader, idx) => {
             const isExpanded = expandedCard === leader.id;
 
             return (
-              <Reveal key={leader.id} delay={idx * 0.15}>
+              <Reveal
+                key={leader.id}
+                delay={idx * 0.15}
+                className={isExpanded ? 'md:col-span-2 lg:col-span-3' : ''}
+              >
                 <motion.div
                   layout
                   initial={false}
-                  animate={{
-                    width: CARD_WIDTH,
-                    minWidth: CARD_WIDTH,
-                  }}
-                  transition={{
-                    type: 'spring',
-                    stiffness: 200,
-                    damping: 30,
-                    mass: 0.8,
-                  }}
-                  className={`relative flex-shrink-0 rounded-xl border backdrop-blur-sm cursor-pointer transition-all duration-300 snap-start ${
+                  className={`relative w-full rounded-[24px] border backdrop-blur-sm cursor-pointer transition-all duration-300 ${
                     isDark
                       ? 'bg-white/5 border-white/10 hover:border-[#C9A24B]/40 hover:bg-white/[0.08]'
-                      : 'bg-white border-[#E2E6EB] hover:border-[#C9A24B]/50 hover:shadow-lg'
+                      : 'bg-white border-[#E2E6EB] hover:border-[#C9A24B]/50 hover:shadow-xl'
                   }`}
                   onClick={() => handleCardClick(leader.id)}
                 >
-                  {/* Close Button (visible only when expanded) */}
+                  {/* Close Button when expanded - perfectly positioned with high polish */}
                   <AnimatePresence>
                     {isExpanded && (
                       <motion.button
@@ -398,9 +398,9 @@ function FoundingLeadership({ isDark }: { isDark: boolean }) {
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.8 }}
                         transition={{ duration: 0.2 }}
-                        className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-200"
+                        className="absolute top-6 right-6 lg:top-8 lg:right-8 z-30 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200 shadow-sm"
                         style={{
-                          background: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.06)',
+                          background: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(15, 23, 42, 0.05)',
                           color: isDark ? '#FFFFFF' : '#0B1E3D',
                         }}
                         onClick={(e) => {
@@ -414,128 +414,82 @@ function FoundingLeadership({ isDark }: { isDark: boolean }) {
                     )}
                   </AnimatePresence>
 
-                  {/* Card Inner Content */}
-                  <div className="p-6 lg:p-8">
-                    {/* Header Row: Photo + Name + Role + Social */}
-                    <div
-                      className="flex items-start gap-5"
-                      style={{
-                        marginRight: '24px',
-                        marginLeft: '24px',
-                        marginTop: '24px',
-                        marginBottom: '24px',
-                      }}
-                    >
-                      {/* Portrait */}
-                      {/*        <div
-                        className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-lg overflow-hidden flex-shrink-0"
-                        style={{
-                          boxShadow: isDark
-                            ? '0 4px 20px rgba(0,0,0,0.4)'
-                            : '0 4px 16px rgba(11,30,61,0.12)',
-                        }}
-                      >
-                        <Image
-                          src={leader.image}
-                          alt={`${leader.name}, ${leader.role}`}
-                          fill
-                          unoptimized
-                          className="object-cover"
-                        />
-                      </div> --> */}
-
-                      {/* Name & Role */}
-                      <div className="flex-1 min-w-0 pt-1">
-                        <h3
-                          className={`text-[20px] sm:text-[22px] font-bold leading-tight mb-2 ${
-                            isDark ? 'text-white' : 'text-[#0B1E3D]'
-                          }`}
-                        >
-                          {leader.name}
-                        </h3>
-                        <p
-                          className={`text-[14px] sm:text-[15px] font-medium ${
-                            isDark ? 'text-[#3B7BFF]' : 'text-[#1458F2]'
-                          }`}
-                        >
-                          {leader.role}
-                        </p>
-
-                        {/* Social Links */}
-                        <div className="flex items-center gap-3 mt-4">
-                          {leader.linkedin && (
-                            <a
-                              href={leader.linkedin}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="w-9 h-9 rounded-full flex items-center justify-center transition-transform duration-200 hover:scale-110"
-                              style={{ background: '#0A66C2' }}
-                              onClick={(e) => e.stopPropagation()}
-                              aria-label={`${leader.name}'s LinkedIn`}
-                            >
-                              <svg viewBox="0 0 24 24" fill="white" className="w-[18px] h-[18px]">
-                                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
-                                <rect x="2" y="9" width="4" height="12" />
-                                <circle cx="4" cy="4" r="2" />
-                              </svg>
-                            </a>
-                          )}
-                          {leader.email && (
-                            <a
-                              href={leader.email}
-                              className="w-9 h-9 rounded-full flex items-center justify-center transition-transform duration-200 hover:scale-110"
-                              style={{ background: '#F5A623' }}
-                              onClick={(e) => e.stopPropagation()}
-                              aria-label={`Email ${leader.name}`}
-                            >
-                              <svg viewBox="0 0 24 24" fill="white" className="w-[18px] h-[18px]">
-                                <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
-                              </svg>
-                            </a>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Expandable Biography & Missions */}
-                    <AnimatePresence initial={false}>
-                      {isExpanded && (
-                        <motion.div
-                          initial={{ opacity: 0, height: 0, marginTop: 0 }}
-                          animate={{
-                            opacity: 1,
-                            height: 'auto',
-                            marginTop: 24,
-                            marginBottom: 24,
-                            marginLeft: 24,
-                            marginRight: 24,
-                          }}
-                          exit={{ opacity: 0, height: 0, marginTop: 0 }}
-                          transition={{
-                            type: 'spring',
-                            stiffness: 200,
-                            damping: 30,
-                            mass: 0.8,
-                          }}
-                          className="overflow-hidden"
-                        >
+                  <div className="p-6 sm:p-6 lg:p-6 xl:p-6">
+                    {isExpanded ? (
+                      /* Expanded Side-by-Side Layout: MNC Google-level clean spacing & margins */
+                      <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] xl:grid-cols-[320px_1fr] gap-6 lg:gap-6 mb-10 mt-10 items-start">
+                        {/* Left Column: Image, Name, Role, Socials */}
+                        <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
                           <div
-                            className="w-full h-[1px] mb-6"
+                            className="relative w-full max-w-[240px] lg:max-w-none h-[280px] sm:h-[320px] lg:h-[380px] rounded-2xl overflow-hidden mb-6 bg-[#eef1f5]"
                             style={{
-                              background: isDark ? 'rgba(255,255,255,0.1)' : '#E2E6EB',
+                              boxShadow: isDark
+                                ? '0 10px 30px rgba(0,0,0,0.5)'
+                                : '0 10px 30px rgba(11,30,61,0.08)',
                             }}
-                          />
+                          >
+                            <Image
+                              src={leader.image}
+                              alt={`${leader.name}, ${leader.role}`}
+                              fill
+                              unoptimized
+                              className="object-cover object-top"
+                            />
+                          </div>
 
-                          <div className="mb-6">
+                          <h3
+                            className={`text-[22px] sm:text-[24px] font-bold leading-snug mb-1.5 ${
+                              isDark ? 'text-white' : 'text-[#0B1E3D]'
+                            }`}
+                          >
+                            {leader.name}
+                          </h3>
+                          <p
+                            className={`text-[14px] sm:text-[15px] font-semibold mb-6 ${
+                              isDark ? 'text-[#3B7BFF]' : 'text-[#1458F2]'
+                            }`}
+                          >
+                            {leader.role}
+                          </p>
+
+                          <div className="flex items-center gap-3">
+                            {leader.linkedin && (
+                              <a
+                                href={leader.linkedin}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="w-10 h-10 rounded-full flex items-center justify-center bg-[#0A66C2] text-white hover:scale-105 transition-transform shadow-sm"
+                                onClick={(e) => e.stopPropagation()}
+                                aria-label={`${leader.name}'s LinkedIn`}
+                              >
+                                <LinkedinIcon className="w-6 h-6 text-white" />
+                              </a>
+                            )}
+                            {leader.email && (
+                              <a
+                                href={leader.email}
+                                className="w-10 h-10 rounded-full flex items-center justify-center bg-[#F5A623] text-white hover:scale-105 transition-transform shadow-sm"
+                                onClick={(e) => e.stopPropagation()}
+                                aria-label={`Email ${leader.name}`}
+                              >
+                                <MailIcon className="w-6 h-6 text-white" />
+                              </a>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Right Column: Comprehensive Content Sections with polished vertical spacing */}
+                        <div className="space-y-8 lg:pr-12">
+                          <div className="space-y-2">
                             <h4
-                              className={`text-[14px] font-bold uppercase tracking-[0.12em] mb-3 ${
-                                isDark ? 'text-white' : 'text-[#0B1E3D]'
+                              className={`text-[12px] sm:text-[13px] font-bold uppercase tracking-[0.16em] ${
+                                isDark ? 'text-[#C9A24B]' : 'text-[#1458F2]'
                               }`}
                             >
                               Biography
                             </h4>
                             <p
-                              className={`text-[15px] leading-[1.7] ${
+                              className={`text-[15px] sm:text-[16px] leading-[1.75] ${
                                 isDark ? 'text-gray-300' : 'text-[#5F6875]'
                               }`}
                             >
@@ -543,16 +497,16 @@ function FoundingLeadership({ isDark }: { isDark: boolean }) {
                             </p>
                           </div>
 
-                          <div className="mb-6">
+                          <div className="space-y-2">
                             <h4
-                              className={`text-[14px] font-bold uppercase tracking-[0.12em] mb-3 ${
-                                isDark ? 'text-white' : 'text-[#0B1E3D]'
+                              className={`text-[12px] sm:text-[13px] font-bold uppercase tracking-[0.16em] ${
+                                isDark ? 'text-[#C9A24B]' : 'text-[#1458F2]'
                               }`}
                             >
                               Background & Experience
                             </h4>
                             <p
-                              className={`text-[15px] leading-[1.7] ${
+                              className={`text-[15px] sm:text-[16px] leading-[1.75] ${
                                 isDark ? 'text-gray-300' : 'text-[#5F6875]'
                               }`}
                             >
@@ -560,16 +514,16 @@ function FoundingLeadership({ isDark }: { isDark: boolean }) {
                             </p>
                           </div>
 
-                          <div className="mb-6">
+                          <div className="space-y-2">
                             <h4
-                              className={`text-[14px] font-bold uppercase tracking-[0.12em] mb-3 ${
-                                isDark ? 'text-white' : 'text-[#0B1E3D]'
+                              className={`text-[12px] sm:text-[13px] font-bold uppercase tracking-[0.16em] ${
+                                isDark ? 'text-[#C9A24B]' : 'text-[#1458F2]'
                               }`}
                             >
                               Leadership & Expertise
                             </h4>
                             <p
-                              className={`text-[15px] leading-[1.7] ${
+                              className={`text-[15px] sm:text-[16px] leading-[1.75] ${
                                 isDark ? 'text-gray-300' : 'text-[#5F6875]'
                               }`}
                             >
@@ -577,25 +531,76 @@ function FoundingLeadership({ isDark }: { isDark: boolean }) {
                             </p>
                           </div>
 
-                          <div className="mb-6">
+                          <div className="space-y-2">
                             <h4
-                              className={`text-[14px] font-bold uppercase tracking-[0.12em] mb-3 ${
-                                isDark ? 'text-white' : 'text-[#0B1E3D]'
+                              className={`text-[12px] sm:text-[13px] font-bold uppercase tracking-[0.16em] ${
+                                isDark ? 'text-[#C9A24B]' : 'text-[#1458F2]'
                               }`}
                             >
                               Beyond the Role
                             </h4>
                             <p
-                              className={`text-[15px] leading-[1.7] ${
+                              className={`text-[15px] sm:text-[16px] leading-[1.75] ${
                                 isDark ? 'text-gray-300' : 'text-[#5F6875]'
                               }`}
                             >
                               {leader.beyondrole}
                             </p>
                           </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
+                        </div>
+                      </div>
+                    ) : (
+                      /* Collapsed Compact Card Layout: Image on Left, Details on Right */
+                      <div className="flex items-center gap-5">
+                        <div
+                          className="relative w-[110px] h-[110px] sm:w-[130px] sm:h-[130px] min-w-[110px] sm:min-w-[130px] rounded-xl overflow-hidden bg-[#eef1f5]"
+                          style={{
+                            boxShadow: isDark
+                              ? '0 4px 20px rgba(0,0,0,0.4)'
+                              : '0 4px 16px rgba(11,30,61,0.08)',
+                          }}
+                        >
+                          <Image
+                            src={leader.image}
+                            alt={`${leader.name}, ${leader.role}`}
+                            fill
+                            unoptimized
+                            className="object-cover object-top"
+                          />
+                        </div>
+
+                        <div className="flex-1 min-w-0">
+                          <h3
+                            className={`text-[18px] sm:text-[20px] font-bold leading-snug mb-1.5 ${
+                              isDark ? 'text-white' : 'text-[#0B1E3D]'
+                            }`}
+                          >
+                            {leader.name}
+                          </h3>
+                          <p
+                            className={`text-[13px] sm:text-[14px] font-medium leading-normal mb-3 ${
+                              isDark ? 'text-[#3B7BFF]' : 'text-[#5F6875]'
+                            }`}
+                          >
+                            {leader.role}
+                          </p>
+                          <br />
+
+                          <div className="flex items-center gap-6">
+                            {leader.linkedin && (
+                              <span className="w-10 h-10 rounded-full flex items-center justify-center bg-[#0A66C2] text-white">
+                                <LinkedinIcon className="w-5 h-5 text-white" />
+                              </span>
+                            )}
+                            {leader.email && (
+                              <span className="w-10 h-10 rounded-full flex items-center justify-center bg-[#F5A623] text-white">
+                                <MailIcon className="w-5 h-5 text-white" />
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </motion.div>
               </Reveal>
@@ -604,9 +609,9 @@ function FoundingLeadership({ isDark }: { isDark: boolean }) {
         </div>
 
         <p
-          className={`mt-6 text-[13px] text-center ${isDark ? 'text-gray-500' : 'text-[#5F6875]'}`}
+          className={`mt-8 text-[13px] text-center ${isDark ? 'text-gray-400' : 'text-[#5F6875]'}`}
         >
-          Click a card to view full profile → Swipe to explore
+          Click a card to view full profile →
         </p>
       </div>
     </section>
@@ -700,13 +705,6 @@ function CardGeometry({ type }: { type: string }) {
           <path d="M-70 391 C 40 336, 105 364, 170 348 C 235 332, 300 264, 430 241" />
           <path d="M-70 399 C 40 344, 105 372, 170 356 C 235 340, 302 272, 430 249" />
         </g>
-
-        <g fill="none" stroke="#1D6FEA" strokeWidth="0.55" opacity="0.28">
-          <path d="M90 315 C170 292 215 292 260 255 C300 222 325 190 410 180" />
-          <path d="M100 322 C178 300 220 300 266 263 C306 230 332 198 410 188" />
-          <path d="M110 329 C186 308 226 308 272 271 C312 238 338 206 410 196" />
-          <path d="M120 336 C194 316 232 316 278 279 C318 246 344 214 410 204" />
-        </g>
       </svg>
     );
   }
@@ -720,12 +718,6 @@ function CardGeometry({ type }: { type: string }) {
         aria-hidden="true"
       >
         <defs>
-          <radialGradient id="dotFade">
-            <stop offset="0%" stopColor="#2580FF" stopOpacity="0.95" />
-            <stop offset="55%" stopColor="#1B6DE8" stopOpacity="0.5" />
-            <stop offset="100%" stopColor="#1B6DE8" stopOpacity="0" />
-          </radialGradient>
-
           <radialGradient id="dotFieldFade" cx="88%" cy="46%" r="72%">
             <stop offset="0%" stopColor="white" stopOpacity="1" />
             <stop offset="35%" stopColor="white" stopOpacity="0.85" />
@@ -744,32 +736,6 @@ function CardGeometry({ type }: { type: string }) {
 
         <g mask="url(#dotMask)" opacity="0.65">
           <rect x="125" y="0" width="275" height="320" fill="url(#dotPattern)" />
-        </g>
-
-        <g fill="none" stroke="#1675F4" strokeWidth="0.5" opacity="0.15">
-          <ellipse cx="382" cy="160" rx="70" ry="70" />
-          <ellipse cx="382" cy="160" rx="92" ry="92" />
-          <ellipse cx="382" cy="160" rx="114" ry="114" />
-          <ellipse cx="382" cy="160" rx="136" ry="136" />
-          <ellipse cx="382" cy="160" rx="158" ry="158" />
-          <ellipse cx="382" cy="160" rx="180" ry="180" />
-          <ellipse cx="382" cy="160" rx="202" ry="202" />
-        </g>
-
-        <g mask="url(#dotMask)">
-          <circle cx="382" cy="160" r="2" fill="#2A82FF" opacity="0.7" />
-          <circle cx="382" cy="160" r="5" fill="none" stroke="#247BFA" opacity="0.25" />
-          <circle cx="382" cy="160" r="11" fill="none" stroke="#247BFA" opacity="0.15" />
-        </g>
-
-        <g fill="#2380FF">
-          <circle cx="294" cy="74" r="1.2" opacity="0.45" />
-          <circle cx="320" cy="103" r="1.4" opacity="0.55" />
-          <circle cx="349" cy="127" r="1" opacity="0.35" />
-          <circle cx="365" cy="196" r="1.4" opacity="0.5" />
-          <circle cx="328" cy="224" r="1" opacity="0.4" />
-          <circle cx="282" cy="250" r="1.3" opacity="0.35" />
-          <circle cx="360" cy="272" r="1" opacity="0.4" />
         </g>
       </svg>
     );
@@ -804,7 +770,6 @@ function CardGeometry({ type }: { type: string }) {
               <stop offset="65%" stopColor="white" />
               <stop offset="100%" stopColor="white" />
             </linearGradient>
-
             <rect width="400" height="320" fill="url(#arcFadeMask)" />
           </mask>
         </defs>
@@ -818,24 +783,6 @@ function CardGeometry({ type }: { type: string }) {
           <circle cx="390" cy="70" r="136" strokeWidth="0.8" />
           <circle cx="390" cy="70" r="158" strokeWidth="0.8" />
           <circle cx="390" cy="70" r="180" strokeWidth="0.7" />
-          <circle cx="390" cy="70" r="202" strokeWidth="0.65" />
-          <circle cx="390" cy="70" r="224" strokeWidth="0.55" />
-          <circle cx="390" cy="70" r="246" strokeWidth="0.5" />
-        </g>
-
-        <g fill="none" stroke="#1A73ED" strokeLinecap="round">
-          <path d="M 278 0 A 190 190 0 0 1 400 116" strokeWidth="0.9" opacity="0.32" />
-          <path d="M 300 0 A 165 165 0 0 1 400 100" strokeWidth="0.8" opacity="0.38" />
-          <path d="M 326 0 A 138 138 0 0 1 400 82" strokeWidth="0.75" opacity="0.42" />
-        </g>
-
-        <g fill="#2583FF">
-          <circle cx="286" cy="20" r="1.3" opacity="0.55" />
-          <circle cx="324" cy="8" r="1" opacity="0.35" />
-          <circle cx="356" cy="23" r="1.5" opacity="0.7" />
-          <circle cx="374" cy="49" r="1" opacity="0.45" />
-          <circle cx="337" cy="107" r="1.2" opacity="0.4" />
-          <circle cx="300" cy="126" r="1" opacity="0.35" />
         </g>
       </svg>
     );
@@ -850,8 +797,7 @@ function HowWeLead({ isDark }: { isDark: boolean }) {
       className="py-28 lg:py-36 transition-colors duration-500"
       style={{ background: '#0B1E3D' }}
     >
-      <div className="mx-auto max-w-[1280px] px-6 lg:px-12">
-        {/* Top Content Row */}
+      <div className="mx-auto max-w-[1280px] px-5 sm:px-6 lg:px-12">
         <div className="max-w-[700px] mb-16 lg:mb-20">
           <Reveal>
             <Eyebrow isDark={isDark}>HOW WE LEAD</Eyebrow>
@@ -878,7 +824,6 @@ function HowWeLead({ isDark }: { isDark: boolean }) {
         </div>
         <br />
 
-        {/* Bottom Cards Row */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {LEAD_CARDS.map((card, idx) => {
             const Icon = card.icon;
@@ -911,7 +856,7 @@ function HowWeLead({ isDark }: { isDark: boolean }) {
 }
 
 /* -------------------------------------------------------------------------- */
-/* 02. BENTO GRID SECTION - WITH DARK MODE SUPPORT                            */
+/* BENTO GRID SECTION                                                         */
 /* -------------------------------------------------------------------------- */
 
 function LeadershipBentoGrid() {
@@ -922,29 +867,24 @@ function LeadershipBentoGrid() {
     <section
       className={`py-28 lg:py-36 transition-colors duration-300 ${isDark ? 'bg-[#07162C]' : 'bg-white'}`}
     >
-      <div className="mx-auto max-w-[1280px] px-6 sm:px-12 lg:px-16">
-        <div className="grid grid-cols-1 md:grid-cols-[557px_1fr] gap-6 auto-rows-min">
-          {/* LARGE LEFT CARD - LEADERSHIP */}
+      <div className="mx-auto max-w-[1280px] px-5 sm:px-8 lg:px-16">
+        <div className="grid grid-cols-1 md:grid-cols-[minmax(0,557px)_minmax(0,1fr)] gap-5 sm:gap-6 auto-rows-min">
           <Reveal delay={0.1}>
-            <div className="group relative h-[557px] w-full overflow-hidden rounded-[20px] bg-[#4C1D95]">
+            <div className="group relative h-[420px] sm:h-[557px] w-full overflow-hidden rounded-[20px] bg-[#4C1D95]">
               <Image
                 src="/images/leadership-bento.png"
                 alt="Leadership team silhouettes in purple light"
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-105"
               />
-
-              {/* Dark overlay for better text contrast in both modes */}
               <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-500" />
-
-              <div className="absolute inset-0 p-[45px] flex flex-col justify-between z-10">
-                <h3 className="text-[43px] font-semibold leading-[normal] tracking-[0] text-white font-[family-name:var(--font-manrope)]">
+              <div className="absolute inset-0 p-6 sm:p-[45px] flex flex-col justify-between z-10">
+                <h3 className="text-[32px] sm:text-[43px] font-semibold leading-[normal] tracking-[0] text-white font-[family-name:var(--font-manrope)]">
                   Leadership that
                   <br />
                   grows with the future.
                 </h3>
-
-                <p className="w-[466px] text-sm font-semibold leading-[normal] tracking-[0] text-white/90 font-[family-name:var(--font-manrope)]">
+                <p className="w-full max-w-[466px] text-sm font-semibold leading-[normal] tracking-[0] text-white/90 font-[family-name:var(--font-manrope)]">
                   As TRYVION grows, we will continue to bring together experienced professionals who
                   share our commitment to innovation, collaboration, integrity and continuous
                   learning.
@@ -957,13 +897,11 @@ function LeadershipBentoGrid() {
             </div>
           </Reveal>
 
-          {/* RIGHT COLUMN STACK */}
           <div className="flex flex-col gap-6">
-            {/* TOP RIGHT - ABOUT */}
             <Reveal delay={0.2}>
               <Link
                 href="/about"
-                className={`group relative block h-[250px] w-full overflow-hidden rounded-[20px] transition-all duration-300 ${
+                className={`group relative block h-[220px] sm:h-[250px] w-full overflow-hidden rounded-[20px] transition-all duration-300 ${
                   isDark ? 'bg-[#DC2626]/80 hover:bg-[#DC2626]' : 'bg-[#DC2626]'
                 }`}
               >
@@ -973,15 +911,10 @@ function LeadershipBentoGrid() {
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
                 />
-
-                {/* Subtle gradient overlay for depth */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-                <div className="absolute inset-0 p-[31px] flex flex-col justify-between z-10">
-                  <h3 className="text-[43px] font-semibold leading-[normal] tracking-[0] text-white font-[family-name:var(--font-manrope)]">
+                <div className="absolute inset-0 p-6 sm:p-[31px] flex flex-col justify-between z-10">
+                  <h3 className="text-[32px] sm:text-[43px] font-semibold leading-[normal] tracking-[0] text-white font-[family-name:var(--font-manrope)]">
                     About
                   </h3>
-
                   <div className="self-end">
                     <motion.div
                       className="h-[49px] w-[65px] aspect-[1.32]"
@@ -1003,13 +936,11 @@ function LeadershipBentoGrid() {
               </Link>
             </Reveal>
 
-            {/* BOTTOM RIGHT ROW - SERVICES & INDUSTRIES */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 flex-1">
-              {/* SERVICES CARD */}
               <Reveal delay={0.3}>
                 <Link
                   href="/services"
-                  className={`group relative block h-[287px] w-full overflow-hidden rounded-[20px] transition-all duration-300 ${
+                  className={`group relative block h-[240px] sm:h-[287px] w-full overflow-hidden rounded-[20px] transition-all duration-300 ${
                     isDark ? 'bg-[#0D9488]/80 hover:bg-[#0D9488]' : 'bg-[#0D9488]'
                   }`}
                 >
@@ -1019,14 +950,10 @@ function LeadershipBentoGrid() {
                     fill
                     className="object-cover transition-transform duration-700 group-hover:scale-105"
                   />
-
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-                  <div className="absolute inset-0 p-[32px] flex flex-col justify-between z-10">
+                  <div className="absolute inset-0 p-6 sm:p-[32px] flex flex-col justify-between z-10">
                     <h3 className="text-3xl font-semibold leading-[normal] tracking-[0] text-white font-[family-name:var(--font-manrope)]">
                       Services
                     </h3>
-
                     <div className="self-end">
                       <motion.div
                         className="h-[49px] w-[65px] aspect-[1.32]"
@@ -1048,11 +975,10 @@ function LeadershipBentoGrid() {
                 </Link>
               </Reveal>
 
-              {/* INDUSTRIES CARD */}
               <Reveal delay={0.4}>
                 <Link
                   href="/industries"
-                  className={`group relative block h-[287px] w-full overflow-hidden rounded-[20px] transition-all duration-300 ${
+                  className={`group relative block h-[240px] sm:h-[287px] w-full overflow-hidden rounded-[20px] transition-all duration-300 ${
                     isDark ? 'bg-[#EA580C]/80 hover:bg-[#EA580C]' : 'bg-[#EA580C]'
                   }`}
                 >
@@ -1062,14 +988,10 @@ function LeadershipBentoGrid() {
                     fill
                     className="object-cover transition-transform duration-700 group-hover:scale-105"
                   />
-
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-                  <div className="absolute inset-0 p-[32px] flex flex-col justify-between z-10">
+                  <div className="absolute inset-0 p-6 sm:p-[32px] flex flex-col justify-between z-10">
                     <h3 className="text-3xl font-semibold leading-[normal] tracking-[0] text-white font-[family-name:var(--font-manrope)]">
                       Industries
                     </h3>
-
                     <div className="self-end">
                       <motion.div
                         className="h-[49px] w-[65px] aspect-[1.32]"
@@ -1099,7 +1021,7 @@ function LeadershipBentoGrid() {
 }
 
 /* -------------------------------------------------------------------------- */
-/* FINAL CTA - EXACT REPLICA OF THE CTA IMAGE (DARK BACKGROUND)               */
+/* FINAL CTA SECTION                                                          */
 /* -------------------------------------------------------------------------- */
 
 function LeadershipCTA({ isDark }: { isDark: boolean }) {
@@ -1107,10 +1029,8 @@ function LeadershipCTA({ isDark }: { isDark: boolean }) {
     <section className="py-20 lg:py-28 bg-[#040D1A] transition-colors duration-500">
       <div className="mx-auto max-w-[1280px] px-6 lg:px-12">
         <Reveal>
-          <div className="relative overflow-hidden rounded-[32px] bg-[#0038FF] px-8 py-12 sm:px-12 sm:py-16 lg:px-20 lg:py-20 min-h-[380px] lg:min-h-[440px] flex items-center shadow-2xl">
-            {/* Technology Gradient Waves (Right Side Visual) */}
+          <div className="relative overflow-hidden rounded-[32px] bg-[#0038FF] px-6 py-10 sm:px-12 sm:py-16 lg:px-20 lg:py-20 min-h-[420px] sm:min-h-[380px] lg:min-h-[440px] flex items-center shadow-2xl">
             <div className="absolute right-0 top-0 bottom-0 w-full lg:w-3/5 pointer-events-none overflow-hidden flex items-center justify-end">
-              {/* Wave Layer 1 - Deep Blue Base Flow */}
               <div
                 className="absolute inset-0 opacity-40"
                 style={{
@@ -1119,8 +1039,6 @@ function LeadershipCTA({ isDark }: { isDark: boolean }) {
                   filter: 'blur(40px)',
                 }}
               />
-
-              {/* Wave Layer 2 - Electric Cyan Accent Curve */}
               <svg
                 viewBox="0 0 700 440"
                 fill="none"
@@ -1162,40 +1080,23 @@ function LeadershipCTA({ isDark }: { isDark: boolean }) {
                   </linearGradient>
                 </defs>
               </svg>
-
-              {/* Wave Layer 3 - Subtle Grid Overlay for Tech Feel */}
-              <div
-                className="absolute inset-0 opacity-20 mix-blend-overlay"
-                style={{
-                  backgroundImage: `
-                    linear-gradient(to right, rgba(255,255,255,0.1) 1px, transparent 1px),
-                    linear-gradient(to bottom, rgba(255,255,255,0.1) 1px, transparent 1px)
-                  `,
-                  backgroundSize: '40px 40px',
-                  maskImage: 'linear-gradient(to left, black 40%, transparent 100%)',
-                  WebkitMaskImage: 'linear-gradient(to left, black 40%, transparent 100%)',
-                }}
-              />
             </div>
 
-            {/* Left Content Column */}
             <div className="relative z-10 max-w-[620px]">
-              <h2 className="font-sans text-[36px] sm:text-[48px] lg:text-[56px] font-bold leading-[1.08] tracking-tight text-white mb-6 ml-6">
+              <h2 className="font-sans text-[32px] sm:text-[48px] lg:text-[56px] font-bold leading-[1.08] tracking-tight text-white mb-6 ml-0 sm:ml-6">
                 Let's shape the
                 <br />
                 future together.
               </h2>
-
-              <p className="text-[15px] sm:text-[16px] lg:text-[17px] leading-[1.6] text-white max-w-[530px] mb-6 ml-6 lg:mb-10 font-normal">
+              <p className="text-[15px] sm:text-[16px] lg:text-[17px] leading-[1.6] text-white max-w-[530px] mb-6 ml-0 sm:ml-6 lg:mb-10 font-normal">
                 Whether you are looking to transform your enterprise, explore new technology or
                 build the capabilities required for what comes next, TRYVION brings together the
                 experience & expertise to help you move forward with confidence.
               </p>
-
               <div>
                 <Link
                   href="/contact"
-                  className="inline-flex items-center justify-center px-6 py-3.5 mb-6 ml-6 rounded-full bg-white text-[#040D1A] font-medium text-[15px] hover:bg-white/95 transition-all duration-300 shadow-md hover:scale-[1.02]"
+                  className="inline-flex items-center justify-center px-6 py-3.5 mb-6 ml-0 sm:ml-6 rounded-full bg-white text-[#040D1A] font-medium text-[15px] hover:bg-white/95 transition-all duration-300 shadow-md hover:scale-[1.02]"
                 >
                   Talk to an expert
                 </Link>
@@ -1216,7 +1117,6 @@ export default function LeadershipPage() {
   const { theme } = useSiteTheme();
   const isDark = theme === 'dark';
 
-  // Sync dark class to document element for global Tailwind dark mode support
   React.useEffect(() => {
     if (isDark) {
       document.documentElement.classList.add('dark');

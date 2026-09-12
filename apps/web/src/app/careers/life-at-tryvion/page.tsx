@@ -333,18 +333,18 @@ export default function LifeAtTryvionPage() {
               gap: '0.5rem',
               alignItems: 'center',
               fontSize: '0.8125rem',
-              color: 'rgba(255,255,255,0.35)',
+              color: '#fff',
             }}
           >
-            <Link href="/" style={{ color: 'inherit', textDecoration: 'none' }}>
+            <Link href="/" style={{ color: '#fff', textDecoration: 'none' }}>
               Home
             </Link>
             <span>/</span>
-            <Link href="/careers" style={{ color: 'inherit', textDecoration: 'none' }}>
+            <Link href="/careers" style={{ color: '#fff', textDecoration: 'none' }}>
               Careers
             </Link>
             <span>/</span>
-            <span style={{ color: 'rgba(255,255,255,0.6)' }}>Life at TRYVION</span>
+            <span style={{ color: '#fff' }}>Life at TRYVION</span>
           </nav>
         </div>
 

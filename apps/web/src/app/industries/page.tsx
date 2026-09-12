@@ -73,28 +73,28 @@ const INDUSTRIES: IndustryGroup[] = [
     subIndustries: [
       {
         name: 'Professional Services',
-        href: '/industries/professional-services',
+        href: '/industries',
         icon: BriefcaseBusiness,
       },
-      { name: 'Media', href: '/industries/media', icon: Tv },
-      { name: 'Telco', href: '/industries/telecom', icon: Radio },
+      { name: 'Media', href: '/industries', icon: Tv },
+      { name: 'Telco', href: '/industries', icon: Radio },
       {
         name: 'Transportation & Logistics',
-        href: '/industries/transportation-logistics',
+        href: '/industries',
         icon: Truck,
       },
       {
         name: 'Engineering, Construction & Operations',
-        href: '/industries/engineering-construction',
+        href: '/industries',
         icon: Building2,
       },
-      { name: 'Sports & Entertainment', href: '/industries/sports-entertainment', icon: Trophy },
+      { name: 'Sports & Entertainment', href: '/industries', icon: Trophy },
       {
         name: 'Commercial Real Estate',
-        href: '/industries/commercial-real-estate',
+        href: '/industries',
         icon: Landmark,
       },
-      { name: 'Travel & Leisure', href: '/industries/travel-leisure', icon: Compass },
+      { name: 'Travel & Leisure', href: '/industries', icon: Compass },
     ],
   },
   {
@@ -103,12 +103,12 @@ const INDUSTRIES: IndustryGroup[] = [
     title: 'CONSUMER INDUSTRIES',
     description: 'Connect the business to the customer.',
     subIndustries: [
-      { name: 'Consumer Products', href: '/industries/consumer-products', icon: ShoppingBag },
-      { name: 'Retail', href: '/industries/retail', icon: Store },
-      { name: 'Fashion', href: '/industries/fashion', icon: ShoppingBag },
-      { name: 'Wholesale Distribution', href: '/industries/wholesale-distribution', icon: Layers3 },
-      { name: 'Life Sciences', href: '/industries/life-sciences', icon: Dna },
-      { name: 'Agribusiness', href: '/industries/agribusiness', icon: Sprout },
+      { name: 'Consumer Products', href: '/industries', icon: ShoppingBag },
+      { name: 'Retail', href: '/industries', icon: Store },
+      { name: 'Fashion', href: '/industries', icon: ShoppingBag },
+      { name: 'Wholesale Distribution', href: '/industries', icon: Layers3 },
+      { name: 'Life Sciences', href: '/industries', icon: Dna },
+      { name: 'Agribusiness', href: '/industries', icon: Sprout },
     ],
   },
   {
@@ -117,8 +117,8 @@ const INDUSTRIES: IndustryGroup[] = [
     title: 'FINANCIAL SERVICES',
     description: 'Build trusted, intelligent financial enterprises.',
     subIndustries: [
-      { name: 'Banking', href: '/industries/banking', icon: CircleDollarSign },
-      { name: 'Insurance', href: '/industries/insurance', icon: ShieldCheck },
+      { name: 'Banking', href: '/industries', icon: CircleDollarSign },
+      { name: 'Insurance', href: '/industries', icon: ShieldCheck },
     ],
   },
   {
@@ -127,10 +127,10 @@ const INDUSTRIES: IndustryGroup[] = [
     title: 'PUBLIC SERVICES',
     description: 'Technology that creates better outcomes for society.',
     subIndustries: [
-      { name: 'Public Sector', href: '/industries/public-sector', icon: Building2 },
-      { name: 'Health Care', href: '/industries/health-care', icon: HeartPulse },
-      { name: 'Education & Research', href: '/industries/education-research', icon: GraduationCap },
-      { name: 'Defence & Security', href: '/industries/defence-security', icon: Shield },
+      { name: 'Public Sector', href: '/industries', icon: Building2 },
+      { name: 'Health Care', href: '/industries', icon: HeartPulse },
+      { name: 'Education & Research', href: '/industries', icon: GraduationCap },
+      { name: 'Defence & Security', href: '/industries', icon: Shield },
     ],
   },
   {
@@ -141,12 +141,12 @@ const INDUSTRIES: IndustryGroup[] = [
     subIndustries: [
       {
         name: 'Industrial Manufacturing',
-        href: '/industries/industrial-manufacturing',
+        href: '/industries',
         icon: Factory,
       },
-      { name: 'High Tech', href: '/industries/high-tech', icon: Cpu },
-      { name: 'Automotive', href: '/industries/automotive', icon: CarFront },
-      { name: 'Aerospace & Defence', href: '/industries/aerospace-defence', icon: Plane },
+      { name: 'High Tech', href: '/industries', icon: Cpu },
+      { name: 'Automotive', href: '/industries', icon: CarFront },
+      { name: 'Aerospace & Defence', href: '/industries', icon: Plane },
     ],
   },
   {
@@ -155,11 +155,11 @@ const INDUSTRIES: IndustryGroup[] = [
     title: 'ENERGY & NATURAL RESOURCES',
     description: 'Transform the enterprise behind the resource.',
     subIndustries: [
-      { name: 'Utilities', href: '/industries/utilities', icon: Zap },
-      { name: 'Mill Products', href: '/industries/mill-products', icon: Layers3 },
-      { name: 'Mining', href: '/industries/mining', icon: Pickaxe },
-      { name: 'Chemicals', href: '/industries/chemicals', icon: FlaskConical },
-      { name: 'Oil & Gas & Energy', href: '/industries/oil-gas-energy', icon: Flame },
+      { name: 'Utilities', href: '/industries', icon: Zap },
+      { name: 'Mill Products', href: '/industries', icon: Layers3 },
+      { name: 'Mining', href: '/industries', icon: Pickaxe },
+      { name: 'Chemicals', href: '/industries', icon: FlaskConical },
+      { name: 'Oil & Gas & Energy', href: '/industries', icon: Flame },
     ],
   },
 ];
@@ -391,7 +391,7 @@ function IndustryCard({
         </span>
         <span className="flex shrink-0 items-center gap-3">
           <span
-            className="hidden text-[10px] font-extrabold uppercase tracking-[.14em] sm:block"
+            className="hidden text-[14px] font-extrabold uppercase tracking-[.14em] sm:block"
             style={{ color: expanded ? '#2563EB' : isDark ? '#CBD5E1' : '#475569' }}
           >
             {expanded ? 'Collapse' : 'Explore'}
@@ -399,7 +399,7 @@ function IndustryCard({
           <motion.span
             animate={{ rotate: expanded ? 180 : 0 }}
             transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-            className="flex h-12 w-12 items-center justify-center rounded-full"
+            className="flex h-24 w-24 items-center justify-center rounded-full"
             style={{
               background: expanded ? '#2563EB' : isDark ? 'rgba(255,255,255,.06)' : '#F1F5F9',
               color: expanded ? '#FFFFFF' : isDark ? '#FFFFFF' : '#0F172A',
@@ -635,7 +635,10 @@ function IndustryTechnology({ isDark }: { isDark: boolean }) {
                   }}
                 >
                   <div className="flex items-center justify-between">
-                    <span className="font-mono text-xs font-extrabold" style={{ color: '#C9A24B' }}>
+                    <span
+                      className="font-mono text-xs font-extrabold text-[16px]"
+                      style={{ color: '#C9A24B' }}
+                    >
                       {item.step}
                     </span>
                     <Icon
@@ -648,13 +651,13 @@ function IndustryTechnology({ isDark }: { isDark: boolean }) {
                     />
                   </div>
                   <h3
-                    className="mt-10 m-0 text-base font-extrabold tracking-[.02em]"
+                    className="mt-10 m-0 text-base font-extrabold tracking-[.02em] text-[18px]"
                     style={{ color: isDark ? '#FFFFFF' : '#0F172A' }}
                   >
                     {item.title}
                   </h3>
                   <p
-                    className="mt-2 m-0 text-xs leading-5"
+                    className="mt-2 m-0 text-xs leading-5 text-[14px]"
                     style={{ color: isDark ? '#94A3B8' : '#64748B' }}
                   >
                     {item.description}

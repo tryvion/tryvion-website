@@ -162,26 +162,31 @@ const COLUMNS = [
   {
     heading: 'What We Do',
     links: [
-      { label: 'Applications', href: '/services/applications' },
+      { label: 'Transformation', href: '/services/applications' },
       { label: 'AI', href: '/services/artificial-intelligence' },
-      { label: 'Talent', href: '/talent' },
+      { label: 'Talent', href: '/services/talent' },
       { label: 'Operate', href: '/services/operate' },
+      { label: 'Academy', href: '/services/academy' },
     ],
   },
   {
     heading: 'Company',
     links: [
       { label: 'About', href: '/about' },
+      { label: 'Our Story', href: '/about/our-story' },
+      { label: 'Leadership', href: '/about/leadership' },
       { label: 'Industries', href: '/industries' },
       { label: 'Careers', href: '/careers' },
-      { label: 'Insights', href: '/insights' },
     ],
   },
   {
     heading: 'Connect',
     links: [
       { label: 'Contact', href: '/contact' },
-      { label: 'Global Offices', href: '/about/locations' },
+      { label: 'Talk to an Expert', href: '/contact/talk-to-an-expert' },
+      { label: 'Book Consultation', href: '/contact/book-a-consultation' },
+      { label: 'RFP', href: '/contact/request-a-proposal' },
+      { label: 'Global Offices', href: '/contact/global-offices' },
     ],
   },
 ];

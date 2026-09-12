@@ -1,7 +1,7 @@
-'use client'
-import Link from 'next/link'
-import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react'
-import { useSiteTheme } from '@/providers/SiteThemeProvider'
+'use client';
+import Link from 'next/link';
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
+import { useSiteTheme } from '@/providers/SiteThemeProvider';
 
 /* ─────────────────────────────────────────────────────────────────
    SAP S/4HANA — CLOUD, PUBLIC EDITION
@@ -20,56 +20,176 @@ import { useSiteTheme } from '@/providers/SiteThemeProvider'
 const IMG = {
   hero: '/images/SAP_S_4HANA_Public_Cloud.webp',
   wave: '/images/planetary-wave.png',
-}
+};
 
 /* ── line icons (restrained, unified stroke) ── */
-function Ic({ k, size = 22, color = 'currentColor' }: { k: string; size?: number; color?: string }) {
+function Ic({
+  k,
+  size = 22,
+  color = 'currentColor',
+}: {
+  k: string;
+  size?: number;
+  color?: string;
+}) {
   const P: Record<string, ReactNode> = {
-    clipboard: (<><rect x="5" y="4" width="11" height="14" rx="2" /><path d="M9 4a2 2 0 0 1 4 0M8 9h5M8 12h5M8 15h3" /><path d="M13.5 14.5l1.25 1.25L17 12.5" /></>),
-    shield: (<><path d="M11 3l7 2.8v5.2c0 4.5-3 8.5-7 10-4-1.5-7-5.5-7-10V5.8L11 3z" /><path d="M8 11.5l2 2 4-4.5" /></>),
-    cube: (<><path d="M11 3l8 4.5v9L11 20l-8-4.5v-9L11 3z" /><path d="M11 12l8-4.5M11 12v8M11 12L3 7.5" /><path d="M7 5.25l8 4.5" /></>),
-    cloud: (<path d="M5.5 17a4 4 0 0 1-.3-7.98 5.5 5.5 0 0 1 10.6-1.1A4.2 4.2 0 0 1 16.5 17h-11z" />),
-    rocket: (<><path d="M9.5 13.5l-2-2c1-2.5 2.5-4.5 5-6 2.5-1.5 5-2 7.5-2-.0 2.5-.5 5-2 7.5-1.5 2.5-3.5 4-6 5l-2-2z" /><path d="M7.5 11.5l-3 .5 2-2.5M11.5 15.5l-.5 3 2.5-2M5.5 16.5c-1 .5-1.5 2-1.5 2s1.5-.5 2-1.5" /></>),
-    target: (<><circle cx="11" cy="11" r="8" /><circle cx="11" cy="11" r="4.5" /><circle cx="11" cy="11" r="1.2" /><path d="M11 3v2M11 17v2M3 11h2M17 11h2" /></>),
-    route: (<><circle cx="6" cy="5" r="2.2" /><circle cx="16" cy="17" r="2.2" /><path d="M8 5h6a3 3 0 0 1 0 6H8a3 3 0 0 0 0 6h6" /></>),
-    puzzle: (<><path d="M10 4.5a1.8 1.8 0 1 1 3.6 0H17a1.5 1.5 0 0 1 1.5 1.5v3.4a1.8 1.8 0 1 0 0 3.6V16a1.5 1.5 0 0 1-1.5 1.5h-3.4a1.8 1.8 0 1 1-3.6 0H6A1.5 1.5 0 0 1 4.5 16v-3.4a1.8 1.8 0 1 1 0-3.6V6A1.5 1.5 0 0 1 6 4.5h4z" /></>),
-    users: (<><circle cx="8" cy="7" r="3" /><path d="M3 17c.6-3 2.6-4.5 5-4.5s4.4 1.5 5 4.5" /><circle cx="15.5" cy="8" r="2.4" /><path d="M14.5 12.7c2 .3 3.6 1.6 4.2 4" /></>),
-    award: (<><circle cx="11" cy="8" r="5" /><path d="M8.5 12.5L7 20l4-2.5 4 2.5-1.5-7.5" /><path d="M9.5 8l1 1 2-2.2" /></>),
-    trend: (<><path d="M3 17l5-5 3 3 7-7" /><path d="M14 8h4v4" /></>),
-    check: (<><path d="M4 11.5l4 4L18 5.5" /></>),
-    doc: (<><path d="M6 3h8l4 4v13H6V3z" /><path d="M14 3v4h4M9 11h6M9 14h6" /></>),
-  }
+    clipboard: (
+      <>
+        <rect x="5" y="4" width="11" height="14" rx="2" />
+        <path d="M9 4a2 2 0 0 1 4 0M8 9h5M8 12h5M8 15h3" />
+        <path d="M13.5 14.5l1.25 1.25L17 12.5" />
+      </>
+    ),
+    shield: (
+      <>
+        <path d="M11 3l7 2.8v5.2c0 4.5-3 8.5-7 10-4-1.5-7-5.5-7-10V5.8L11 3z" />
+        <path d="M8 11.5l2 2 4-4.5" />
+      </>
+    ),
+    cube: (
+      <>
+        <path d="M11 3l8 4.5v9L11 20l-8-4.5v-9L11 3z" />
+        <path d="M11 12l8-4.5M11 12v8M11 12L3 7.5" />
+        <path d="M7 5.25l8 4.5" />
+      </>
+    ),
+    cloud: <path d="M5.5 17a4 4 0 0 1-.3-7.98 5.5 5.5 0 0 1 10.6-1.1A4.2 4.2 0 0 1 16.5 17h-11z" />,
+    rocket: (
+      <>
+        <path d="M9.5 13.5l-2-2c1-2.5 2.5-4.5 5-6 2.5-1.5 5-2 7.5-2-.0 2.5-.5 5-2 7.5-1.5 2.5-3.5 4-6 5l-2-2z" />
+        <path d="M7.5 11.5l-3 .5 2-2.5M11.5 15.5l-.5 3 2.5-2M5.5 16.5c-1 .5-1.5 2-1.5 2s1.5-.5 2-1.5" />
+      </>
+    ),
+    target: (
+      <>
+        <circle cx="11" cy="11" r="8" />
+        <circle cx="11" cy="11" r="4.5" />
+        <circle cx="11" cy="11" r="1.2" />
+        <path d="M11 3v2M11 17v2M3 11h2M17 11h2" />
+      </>
+    ),
+    route: (
+      <>
+        <circle cx="6" cy="5" r="2.2" />
+        <circle cx="16" cy="17" r="2.2" />
+        <path d="M8 5h6a3 3 0 0 1 0 6H8a3 3 0 0 0 0 6h6" />
+      </>
+    ),
+    puzzle: (
+      <>
+        <path d="M10 4.5a1.8 1.8 0 1 1 3.6 0H17a1.5 1.5 0 0 1 1.5 1.5v3.4a1.8 1.8 0 1 0 0 3.6V16a1.5 1.5 0 0 1-1.5 1.5h-3.4a1.8 1.8 0 1 1-3.6 0H6A1.5 1.5 0 0 1 4.5 16v-3.4a1.8 1.8 0 1 1 0-3.6V6A1.5 1.5 0 0 1 6 4.5h4z" />
+      </>
+    ),
+    users: (
+      <>
+        <circle cx="8" cy="7" r="3" />
+        <path d="M3 17c.6-3 2.6-4.5 5-4.5s4.4 1.5 5 4.5" />
+        <circle cx="15.5" cy="8" r="2.4" />
+        <path d="M14.5 12.7c2 .3 3.6 1.6 4.2 4" />
+      </>
+    ),
+    award: (
+      <>
+        <circle cx="11" cy="8" r="5" />
+        <path d="M8.5 12.5L7 20l4-2.5 4 2.5-1.5-7.5" />
+        <path d="M9.5 8l1 1 2-2.2" />
+      </>
+    ),
+    trend: (
+      <>
+        <path d="M3 17l5-5 3 3 7-7" />
+        <path d="M14 8h4v4" />
+      </>
+    ),
+    check: (
+      <>
+        <path d="M4 11.5l4 4L18 5.5" />
+      </>
+    ),
+    doc: (
+      <>
+        <path d="M6 3h8l4 4v13H6V3z" />
+        <path d="M14 3v4h4M9 11h6M9 14h6" />
+      </>
+    ),
+  };
   return (
-    <svg viewBox="0 0 22 22" fill="none" stroke={color} strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ width: size, height: size, flexShrink: 0 }}>
+    <svg
+      viewBox="0 0 22 22"
+      fill="none"
+      stroke={color}
+      strokeWidth={1.5}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      style={{ width: size, height: size, flexShrink: 0 }}
+    >
       {P[k]}
     </svg>
-  )
+  );
 }
 
 function Arrow({ size = 13 }: { size?: number }) {
   return (
     <svg viewBox="0 0 16 16" fill="none" style={{ width: size, height: size, flexShrink: 0 }}>
-      <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
+      <path
+        d="M3 8h10M9 4l4 4-4 4"
+        stroke="currentColor"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
-  )
+  );
 }
 
-function Reveal({ children, delay = 0, style }: { children: ReactNode; delay?: number; style?: CSSProperties }) {
-  const ref = useRef<HTMLDivElement>(null)
-  const [show, setShow] = useState(false)
+function Reveal({
+  children,
+  delay = 0,
+  style,
+}: {
+  children: ReactNode;
+  delay?: number;
+  style?: CSSProperties;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [show, setShow] = useState(false);
   useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    if (typeof window === 'undefined' || !('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) { setShow(true); return }
-    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setShow(true); io.disconnect() } }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' })
-    io.observe(el)
-    return () => io.disconnect()
-  }, [])
+    const el = ref.current;
+    if (!el) return;
+    if (
+      typeof window === 'undefined' ||
+      !('IntersectionObserver' in window) ||
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    ) {
+      setShow(true);
+      return;
+    }
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          setShow(true);
+          io.disconnect();
+        }
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -40px 0px' },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
   return (
-    <div ref={ref} style={{ ...style, opacity: show ? 1 : 0, transform: show ? 'none' : 'translateY(22px)', transition: `opacity 0.7s cubic-bezier(0.2,0,0,1) ${delay}ms, transform 0.7s cubic-bezier(0.2,0,0,1) ${delay}ms` }}>
+    <div
+      ref={ref}
+      style={{
+        ...style,
+        opacity: show ? 1 : 0,
+        transform: show ? 'none' : 'translateY(22px)',
+        transition: `opacity 0.7s cubic-bezier(0.2,0,0,1) ${delay}ms, transform 0.7s cubic-bezier(0.2,0,0,1) ${delay}ms`,
+      }}
+    >
       {children}
     </div>
-  )
+  );
 }
 
 /* ── the 8 folder chapters ── */
@@ -82,12 +202,12 @@ const CHAPTERS = [
   { num: '06', title: 'Is Public Edition Right for Your Organisation?', icon: 'users' },
   { num: '07', title: 'The TRYVION Difference', icon: 'award' },
   { num: '08', title: 'Public Cloud That Creates Momentum', icon: 'trend' },
-]
+];
 
 export default function S4HanaPublicEditionPage() {
-  const { theme } = useSiteTheme()
-  const isDark = theme === 'dark'
-  const [active, setActive] = useState(0)
+  const { theme } = useSiteTheme();
+  const isDark = theme === 'dark';
+  const [active, setActive] = useState(0);
 
   const t = {
     sectionBg: isDark ? '#030D22' : '#0B1E3D',
@@ -99,7 +219,7 @@ export default function S4HanaPublicEditionPage() {
     gold: '#C9A24B',
     ink: '#0B1E3D',
     blue: '#1458F2',
-  }
+  };
 
   /* paper-internal colours (paper stays light in both themes) */
   const P = {
@@ -111,23 +231,65 @@ export default function S4HanaPublicEditionPage() {
     iconBg: 'rgba(20,88,242,0.08)',
     icon: '#1458F2',
     eyebrow: '#B57302',
-  }
+  };
 
-  const docEyebrow: CSSProperties = { fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: P.eyebrow, margin: '0 0 1.125rem' }
-  const docH: CSSProperties = { fontFamily: 'var(--family-display)', fontSize: 'clamp(1.6rem,2.6vw,2.25rem)', fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1.2, color: P.ink, margin: '0 0 1.5rem' }
-  const docP: CSSProperties = { fontSize: '0.9375rem', lineHeight: 1.8, color: P.body, margin: '0 0 1.125rem', maxWidth: '62ch' }
+  const docEyebrow: CSSProperties = {
+    fontSize: '0.75rem',
+    fontWeight: 700,
+    letterSpacing: '0.14em',
+    textTransform: 'uppercase',
+    color: P.eyebrow,
+    margin: '0 0 1.125rem',
+  };
+  const docH: CSSProperties = {
+    fontFamily: 'var(--family-display)',
+    fontSize: 'clamp(1.6rem,2.6vw,2.25rem)',
+    fontWeight: 800,
+    letterSpacing: '-0.02em',
+    lineHeight: 1.2,
+    color: P.ink,
+    margin: '0 0 1.5rem',
+  };
+  const docP: CSSProperties = {
+    fontSize: '0.9375rem',
+    lineHeight: 1.8,
+    color: P.body,
+    margin: '0 0 1.125rem',
+    maxWidth: '62ch',
+  };
 
   const capItem = (icon: string, title: string, desc: string) => (
     <div className="cap-item">
-      <span style={{ width: 52, height: 52, borderRadius: 12, background: P.iconBg, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+      <span
+        style={{
+          width: 52,
+          height: 52,
+          borderRadius: 12,
+          background: P.iconBg,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexShrink: 0,
+        }}
+      >
         <Ic k={icon} size={24} color={P.icon} />
       </span>
       <div>
-        <h3 style={{ fontSize: '0.9375rem', fontWeight: 700, color: P.ink, margin: '0 0 0.5rem', letterSpacing: '-0.01em' }}>{title}</h3>
+        <h3
+          style={{
+            fontSize: '0.9375rem',
+            fontWeight: 700,
+            color: P.ink,
+            margin: '0 0 0.5rem',
+            letterSpacing: '-0.01em',
+          }}
+        >
+          {title}
+        </h3>
         <p style={{ fontSize: '0.8438rem', lineHeight: 1.65, color: P.body, margin: 0 }}>{desc}</p>
       </div>
     </div>
-  )
+  );
 
   const chapterBody = () => {
     switch (active) {
@@ -135,124 +297,320 @@ export default function S4HanaPublicEditionPage() {
         return (
           <>
             <p style={docEyebrow}>The Public Edition Agenda</p>
-            <h2 style={docH}>Standardise the core. Accelerate value.<br />Stay ready for what&apos;s next.</h2>
-            <p style={docP}>SAP S/4HANA Cloud, Public Edition provides a standardised, cloud-first approach to enterprise resource planning built around SAP Best Practices.</p>
-            <p style={{ ...docP, margin: 0 }}>For organisations seeking faster implementation, lower operating complexity and continuous access to innovation, it creates a foundation designed to evolve with the business.</p>
+            <h2 style={docH}>
+              Standardise the core. Accelerate value.
+              <br />
+              Stay ready for what&apos;s next.
+            </h2>
+            <p style={docP}>
+              SAP S/4HANA Cloud, Public Edition provides a standardised, cloud-first approach to
+              enterprise resource planning built around SAP Best Practices.
+            </p>
+            <p style={{ ...docP, margin: 0 }}>
+              For organisations seeking faster implementation, lower operating complexity and
+              continuous access to innovation, it creates a foundation designed to evolve with the
+              business.
+            </p>
             <div className="cap-grid">
-              {capItem('clipboard', 'SAP Best Practices', 'Start with proven business processes rather than rebuilding the past.')}
-              {capItem('target', 'Fit-to-Standard', 'Align business requirements with standard processes and challenge customisation that does not create genuine differentiation.')}
-              {capItem('cube', 'Clean Core', 'Keep the ERP foundation maintainable, upgradeable and ready for continuous innovation.')}
-              {capItem('cloud', 'Cloud Operations', 'Let SAP manage the underlying infrastructure, security, maintenance and operations.')}
-              {capItem('rocket', 'Continuous Innovation', 'Adopt new capabilities as the platform evolves rather than waiting for the next major transformation.')}
+              {capItem(
+                'clipboard',
+                'SAP Best Practices',
+                'Start with proven business processes rather than rebuilding the past.',
+              )}
+              {capItem(
+                'target',
+                'Fit-to-Standard',
+                'Align business requirements with standard processes and challenge customisation that does not create genuine differentiation.',
+              )}
+              {capItem(
+                'cube',
+                'Clean Core',
+                'Keep the ERP foundation maintainable, upgradeable and ready for continuous innovation.',
+              )}
+              {capItem(
+                'cloud',
+                'Cloud Operations',
+                'Let SAP manage the underlying infrastructure, security, maintenance and operations.',
+              )}
+              {capItem(
+                'rocket',
+                'Continuous Innovation',
+                'Adopt new capabilities as the platform evolves rather than waiting for the next major transformation.',
+              )}
             </div>
           </>
-        )
+        );
       case 1:
         return (
           <>
             <p style={docEyebrow}>Built Around Best Practice</p>
             <h2 style={docH}>Best-practice ERP. Delivered at speed.</h2>
-            <p style={docP}>A standardised, fit-to-standard approach for organisations seeking faster implementation, lower operating complexity and continuous access to innovation.</p>
-            <p style={{ ...docP, margin: 0 }}>Adopting proven processes is not a limitation — it is the fastest route to a clean, upgradeable and intelligent enterprise core.</p>
+            <p style={docP}>
+              A standardised, fit-to-standard approach for organisations seeking faster
+              implementation, lower operating complexity and continuous access to innovation.
+            </p>
+            <p style={{ ...docP, margin: 0 }}>
+              Adopting proven processes is not a limitation — it is the fastest route to a clean,
+              upgradeable and intelligent enterprise core.
+            </p>
             <div className="cap-grid">
-              {capItem('clipboard', 'SAP Best Practices', 'Start with proven business processes rather than rebuilding the past.')}
-              {capItem('shield', 'Fit-to-Standard', 'Use proven processes while challenging unnecessary customisation.')}
-              {capItem('cube', 'Clean Core', 'Create a foundation designed for long-term adaptability.')}
-              {capItem('trend', 'Continuous Transformation', 'Treat go-live as the beginning of the journey—not the end.')}
+              {capItem(
+                'clipboard',
+                'SAP Best Practices',
+                'Start with proven business processes rather than rebuilding the past.',
+              )}
+              {capItem(
+                'shield',
+                'Fit-to-Standard',
+                'Use proven processes while challenging unnecessary customisation.',
+              )}
+              {capItem(
+                'cube',
+                'Clean Core',
+                'Create a foundation designed for long-term adaptability.',
+              )}
+              {capItem(
+                'trend',
+                'Continuous Transformation',
+                'Treat go-live as the beginning of the journey—not the end.',
+              )}
             </div>
           </>
-        )
+        );
       case 2:
         return (
           <>
             <p style={docEyebrow}>What Public Edition Enables</p>
-            <h2 style={docH}>Modernise the core. Simplify the enterprise.<br />Enable what&apos;s next.</h2>
-            <p style={{ ...docP, margin: 0 }}>One standardised foundation across the enterprise — ready to serve every function and every market.</p>
+            <h2 style={docH}>
+              Modernise the core. Simplify the enterprise.
+              <br />
+              Enable what&apos;s next.
+            </h2>
+            <p style={{ ...docP, margin: 0 }}>
+              One standardised foundation across the enterprise — ready to serve every function and
+              every market.
+            </p>
             <div className="cap-grid">
-              {capItem('cube', 'Modern Enterprise Core', 'Unify and simplify your business processes on a modern, intelligent ERP foundation.')}
-              {capItem('users', 'Connected Enterprise', 'Bring finance, operations, supply chain and customer experience together.')}
-              {capItem('trend', 'Intelligent Business', 'Leverage real-time insights, automation and AI to make better decisions, faster.')}
-              {capItem('cloud', 'Future Ready', 'Build for agility, innovation and continuous transformation.')}
+              {capItem(
+                'cube',
+                'Modern Enterprise Core',
+                'Unify and simplify your business processes on a modern, intelligent ERP foundation.',
+              )}
+              {capItem(
+                'users',
+                'Connected Enterprise',
+                'Bring finance, operations, supply chain and customer experience together.',
+              )}
+              {capItem(
+                'trend',
+                'Intelligent Business',
+                'Leverage real-time insights, automation and AI to make better decisions, faster.',
+              )}
+              {capItem(
+                'cloud',
+                'Future Ready',
+                'Build for agility, innovation and continuous transformation.',
+              )}
             </div>
           </>
-        )
+        );
       case 3:
         return (
           <>
             <p style={docEyebrow}>The TRYVION Approach</p>
             <h2 style={docH}>From complexity to clarity.</h2>
-            <p style={{ ...docP, margin: 0 }}>Five steps that keep the implementation standardised, the organisation prepared and the core clean.</p>
+            <p style={{ ...docP, margin: 0 }}>
+              Five steps that keep the implementation standardised, the organisation prepared and
+              the core clean.
+            </p>
             <div className="cap-grid">
-              {capItem('route', 'Understand', 'Understand the business, operating model, existing SAP landscape and transformation objectives.')}
-              {capItem('target', 'Envision', 'Define the future-state enterprise and the capabilities required to achieve it.')}
-              {capItem('cube', 'Transform', 'Modernise applications and processes around the right SAP S/4HANA architecture.')}
-              {capItem('users', 'Adopt', 'Enable people and the organisation to embrace new processes, technology and ways of working.')}
-              {capItem('trend', 'Evolve', 'Continuously improve as business needs and technology change.')}
+              {capItem(
+                'route',
+                'Understand',
+                'Understand the business, operating model, existing SAP landscape and transformation objectives.',
+              )}
+              {capItem(
+                'target',
+                'Envision',
+                'Define the future-state enterprise and the capabilities required to achieve it.',
+              )}
+              {capItem(
+                'cube',
+                'Transform',
+                'Modernise applications and processes around the right SAP S/4HANA architecture.',
+              )}
+              {capItem(
+                'users',
+                'Adopt',
+                'Enable people and the organisation to embrace new processes, technology and ways of working.',
+              )}
+              {capItem(
+                'trend',
+                'Evolve',
+                'Continuously improve as business needs and technology change.',
+              )}
             </div>
           </>
-        )
+        );
       case 4:
         return (
           <>
             <p style={docEyebrow}>Extend Without Compromising the Core</p>
             <h2 style={docH}>Connect. Extend. Innovate.</h2>
-            <p style={docP}>Connect applications and data, extend the digital core and create new capabilities without compromising the integrity of the enterprise landscape.</p>
-            <p style={{ ...docP, margin: 0 }}>Differentiation belongs at the edge — the core stays clean, supported and upgradeable.</p>
+            <p style={docP}>
+              Connect applications and data, extend the digital core and create new capabilities
+              without compromising the integrity of the enterprise landscape.
+            </p>
+            <p style={{ ...docP, margin: 0 }}>
+              Differentiation belongs at the edge — the core stays clean, supported and upgradeable.
+            </p>
             <div className="cap-grid">
-              {capItem('cube', 'New Implementation', 'Build a modern SAP S/4HANA foundation around standardised processes and clean-core principles.')}
-              {capItem('route', 'System Conversion', 'Modernise an existing SAP ERP landscape while preserving the capabilities that continue to create business value.')}
-              {capItem('puzzle', 'Selective Transformation', 'Balance standardisation, continuity and business differentiation through a targeted transformation approach.')}
-              {capItem('cloud', 'SAP Business Technology Platform', 'Connect applications and data, extend the digital core and create new capabilities.')}
+              {capItem(
+                'cube',
+                'New Implementation',
+                'Build a modern SAP S/4HANA foundation around standardised processes and clean-core principles.',
+              )}
+              {capItem(
+                'route',
+                'System Conversion',
+                'Modernise an existing SAP ERP landscape while preserving the capabilities that continue to create business value.',
+              )}
+              {capItem(
+                'puzzle',
+                'Selective Transformation',
+                'Balance standardisation, continuity and business differentiation through a targeted transformation approach.',
+              )}
+              {capItem(
+                'cloud',
+                'SAP Business Technology Platform',
+                'Connect applications and data, extend the digital core and create new capabilities.',
+              )}
             </div>
           </>
-        )
+        );
       case 5:
         return (
           <>
             <p style={docEyebrow}>Is Public Edition Right for Your Organisation?</p>
             <h2 style={docH}>Choose the path that fits your business.</h2>
-            <p style={{ ...docP, margin: 0 }}>Public Edition is the natural choice for organisations that value speed, standardisation and continuous innovation over heavy customisation.</p>
+            <p style={{ ...docP, margin: 0 }}>
+              Public Edition is the natural choice for organisations that value speed,
+              standardisation and continuous innovation over heavy customisation.
+            </p>
             <div className="cap-grid">
-              {capItem('check', 'Faster implementation', 'A standardised scope shortens timelines and reduces delivery risk.')}
-              {capItem('check', 'Lower operating complexity', 'SAP manages infrastructure, upgrades and operations.')}
-              {capItem('check', 'Continuous access to innovation', 'New capabilities arrive without major upgrade projects.')}
-              {capItem('check', 'A clean, upgradeable core', 'Standardised processes keep the foundation adaptable for the long term.')}
+              {capItem(
+                'check',
+                'Faster implementation',
+                'A standardised scope shortens timelines and reduces delivery risk.',
+              )}
+              {capItem(
+                'check',
+                'Lower operating complexity',
+                'SAP manages infrastructure, upgrades and operations.',
+              )}
+              {capItem(
+                'check',
+                'Continuous access to innovation',
+                'New capabilities arrive without major upgrade projects.',
+              )}
+              {capItem(
+                'check',
+                'A clean, upgradeable core',
+                'Standardised processes keep the foundation adaptable for the long term.',
+              )}
             </div>
           </>
-        )
+        );
       case 6:
         return (
           <>
             <p style={docEyebrow}>The TRYVION Difference</p>
             <h2 style={docH}>SAP transformation with a business-first mindset.</h2>
             <div className="cap-grid">
-              {capItem('target', 'Business + Technology', 'Connect SAP decisions with the business outcomes they are expected to create.')}
-              {capItem('shield', 'Fit-to-Standard', 'Use proven processes while challenging unnecessary customisation.')}
-              {capItem('cube', 'Clean Core', 'Create a foundation designed for long-term adaptability.')}
-              {capItem('route', 'Connected Thinking', 'Consider SAP S/4HANA as part of the wider enterprise ecosystem.')}
-              {capItem('trend', 'Continuous Transformation', 'Treat go-live as the beginning of the journey—not the end.')}
+              {capItem(
+                'target',
+                'Business + Technology',
+                'Connect SAP decisions with the business outcomes they are expected to create.',
+              )}
+              {capItem(
+                'shield',
+                'Fit-to-Standard',
+                'Use proven processes while challenging unnecessary customisation.',
+              )}
+              {capItem(
+                'cube',
+                'Clean Core',
+                'Create a foundation designed for long-term adaptability.',
+              )}
+              {capItem(
+                'route',
+                'Connected Thinking',
+                'Consider SAP S/4HANA as part of the wider enterprise ecosystem.',
+              )}
+              {capItem(
+                'trend',
+                'Continuous Transformation',
+                'Treat go-live as the beginning of the journey—not the end.',
+              )}
             </div>
           </>
-        )
+        );
       default:
         return (
           <>
             <p style={docEyebrow}>Public Cloud That Creates Momentum</p>
-            <h2 style={docH}>Turn your application landscape into a foundation for what&apos;s next.</h2>
-            <p style={docP}>Whether you are modernising your enterprise, exploring AI, building transformation capability or evolving your operations, the next step begins with a choice.</p>
-            <p style={{ ...docP, margin: 0 }}>Public cloud, chosen with clarity — and built to keep moving forward.</p>
+            <h2 style={docH}>
+              Turn your application landscape into a foundation for what&apos;s next.
+            </h2>
+            <p style={docP}>
+              Whether you are modernising your enterprise, exploring AI, building transformation
+              capability or evolving your operations, the next step begins with a choice.
+            </p>
+            <p style={{ ...docP, margin: 0 }}>
+              Public cloud, chosen with clarity — and built to keep moving forward.
+            </p>
             <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '2rem' }}>
-              <Link href="/contact" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', height: 44, padding: '0 1.5rem', borderRadius: 4, background: t.gold, color: t.ink, fontSize: '0.875rem', fontWeight: 700, textDecoration: 'none' }}>
+              <Link
+                href="/contact"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  height: 44,
+                  padding: '0 1.5rem',
+                  borderRadius: 4,
+                  background: t.gold,
+                  color: t.ink,
+                  fontSize: '0.875rem',
+                  fontWeight: 700,
+                  textDecoration: 'none',
+                }}
+              >
                 Talk to an SAP Expert <Arrow />
               </Link>
-              <Link href="/contact/consultation" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', height: 44, padding: '0 1.5rem', borderRadius: 4, border: `1px solid ${t.gold}`, color: P.eyebrow, fontSize: '0.875rem', fontWeight: 700, textDecoration: 'none' }}>
+              <Link
+                href="/contact/consultation"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  height: 44,
+                  padding: '0 1.5rem',
+                  borderRadius: 4,
+                  border: `1px solid ${t.gold}`,
+                  color: P.eyebrow,
+                  fontSize: '0.875rem',
+                  fontWeight: 700,
+                  textDecoration: 'none',
+                }}
+              >
                 Book a Consultation <Arrow />
               </Link>
             </div>
           </>
-        )
+        );
     }
-  }
+  };
 
   return (
     <>
@@ -324,34 +682,164 @@ export default function S4HanaPublicEditionPage() {
 
       {/* ═══ HERO ═══ */}
       <section style={{ position: 'relative', background: t.sectionBg, overflow: 'hidden' }}>
-        <img src={IMG.hero} alt="" aria-hidden="true" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'right center', opacity: 0.9 }} />
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(90deg, rgba(3,13,34,0.94) 0%, rgba(3,13,34,0.82) 42%, rgba(3,13,34,0.25) 75%, rgba(3,13,34,0.1) 100%)' }} />
-        <div style={{ position: 'relative', zIndex: 1, maxWidth: 'var(--layout-content-wide)', margin: '0 auto', padding: 'calc(36px + var(--layout-header-height-desktop) + 56px) clamp(1.25rem,5vw,3.5rem) 72px' }}>
+        <img
+          src={IMG.hero}
+          alt=""
+          aria-hidden="true"
+          style={{
+            position: 'absolute',
+            inset: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            objectPosition: 'right center',
+            opacity: 0.9,
+          }}
+        />
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            background:
+              'linear-gradient(90deg, rgba(3,13,34,0.94) 0%, rgba(3,13,34,0.82) 42%, rgba(3,13,34,0.25) 75%, rgba(3,13,34,0.1) 100%)',
+          }}
+        />
+        <div
+          style={{
+            position: 'relative',
+            zIndex: 1,
+            maxWidth: 'var(--layout-content-wide)',
+            margin: '0 auto',
+            padding:
+              'calc(36px + var(--layout-header-height-desktop) + 56px) clamp(1.25rem,5vw,3.5rem) 72px',
+          }}
+        >
           <Reveal>
-            <nav aria-label="Breadcrumb" style={{ display: 'flex', alignItems: 'center', gap: '0.625rem', fontSize: '0.8125rem', color: 'rgba(255,255,255,0.55)', marginBottom: '2.5rem', flexWrap: 'wrap' }}>
-              <Link href="/" style={{ color: 'inherit', textDecoration: 'none' }}>Home</Link>
-              <span aria-hidden="true">›</span>
-              <Link href="/services" style={{ color: 'inherit', textDecoration: 'none' }}>Services</Link>
-              <span aria-hidden="true">›</span>
-              <Link href="/services/applications" style={{ color: 'inherit', textDecoration: 'none' }}>TRYVION Applications</Link>
-              <span aria-hidden="true">›</span>
-              <Link href="/services/applications/sap-s4hana" style={{ color: 'inherit', textDecoration: 'none' }}>SAP S/4HANA</Link>
-              <span aria-hidden="true">›</span>
-              <span style={{ color: t.gold, fontWeight: 700 }}>Public Cloud Edition</span>
+            <nav
+              aria-label="Breadcrumb"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.625rem',
+                fontSize: '0.8125rem',
+                color: '#fff',
+                marginBottom: '2.5rem',
+                flexWrap: 'wrap',
+              }}
+            >
+              <Link href="/" style={{ color: '#fff', textDecoration: 'none' }}>
+                Home
+              </Link>
+              <span aria-hidden="true" style={{ color: '#fff' }}>
+                ›
+              </span>
+              <Link href="/services" style={{ color: '#fff', textDecoration: 'none' }}>
+                Services
+              </Link>
+              <span aria-hidden="true" style={{ color: '#fff' }}>
+                ›
+              </span>
+              <Link href="/services/applications" style={{ color: '#fff', textDecoration: 'none' }}>
+                TRYVION Applications
+              </Link>
+              <span aria-hidden="true" style={{ color: '#fff' }}>
+                ›
+              </span>
+              <Link
+                href="/services/applications/sap-s4hana"
+                style={{ color: '#fff', textDecoration: 'none' }}
+              >
+                SAP S/4HANA
+              </Link>
+              <span aria-hidden="true" style={{ color: '#fff' }}>
+                ›
+              </span>
+              <span style={{ color: '#fff', fontWeight: 700 }}>Public Cloud Edition</span>
             </nav>
-            <p style={{ fontSize: 'var(--size-eyebrow)', lineHeight: 'var(--line-height-eyebrow)', fontWeight: 700, letterSpacing: 'var(--tracking-eyebrow)', textTransform: 'uppercase', color: t.gold, margin: '0 0 1.25rem' }}>SAP S/4HANA</p>
-            <h1 style={{ fontFamily: 'var(--family-display)', fontSize: 'clamp(2.5rem,5.5vw,4.25rem)', fontWeight: 800, letterSpacing: 'var(--tracking-display)', lineHeight: 1.08, color: '#fff', margin: '0 0 1.75rem', maxWidth: '20ch' }}>
-              Cloud.<br />Public Edition.
+            <p
+              style={{
+                fontSize: 'var(--size-eyebrow)',
+                lineHeight: 'var(--line-height-eyebrow)',
+                fontWeight: 700,
+                letterSpacing: 'var(--tracking-eyebrow)',
+                textTransform: 'uppercase',
+                color: t.gold,
+                margin: '0 0 1.25rem',
+              }}
+            >
+              SAP S/4HANA
+            </p>
+            <h1
+              style={{
+                fontFamily: 'var(--family-display)',
+                fontSize: 'clamp(2.5rem,5.5vw,4.25rem)',
+                fontWeight: 800,
+                letterSpacing: 'var(--tracking-display)',
+                lineHeight: 1.08,
+                color: '#fff',
+                margin: '0 0 1.75rem',
+                maxWidth: '20ch',
+              }}
+            >
+              Cloud.
+              <br />
+              Public Edition.
             </h1>
-            <div style={{ width: '56px', height: '3px', background: t.gold, marginBottom: '1.75rem' }} />
-            <p style={{ fontSize: '0.9375rem', lineHeight: 1.75, color: 'rgba(255,255,255,0.62)', maxWidth: '46ch', margin: '0 0 2.5rem' }}>
-              Build a modern enterprise foundation around proven business processes, a clean core and continuous innovation.<br />We help organisations adopt SAP S/4HANA Cloud, Public Edition through a fit-to-standard approach-simplifying processes, reducing unnecessary complexity and creating a scalable ERP foundation designed for what comes next.
+            <div
+              style={{ width: '56px', height: '3px', background: t.gold, marginBottom: '1.75rem' }}
+            />
+            <p
+              style={{
+                fontSize: '0.9375rem',
+                lineHeight: 1.75,
+                color: 'rgba(255,255,255,0.62)',
+                maxWidth: '46ch',
+                margin: '0 0 2.5rem',
+              }}
+            >
+              Build a modern enterprise foundation around proven business processes, a clean core
+              and continuous innovation.
+              <br />
+              We help organisations adopt SAP S/4HANA Cloud, Public Edition through a
+              fit-to-standard approach-simplifying processes, reducing unnecessary complexity and
+              creating a scalable ERP foundation designed for what comes next.
             </p>
             <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-              <Link href="/contact" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', height: 48, padding: '0 1.75rem', borderRadius: 4, background: 'var(--gold-400)', color: 'var(--ink-1000)', fontSize: '0.875rem', fontWeight: 700, textDecoration: 'none' }}>
+              <Link
+                href="/contact"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  height: 48,
+                  padding: '0 1.75rem',
+                  borderRadius: 4,
+                  background: 'var(--gold-400)',
+                  color: 'var(--ink-1000)',
+                  fontSize: '0.875rem',
+                  fontWeight: 700,
+                  textDecoration: 'none',
+                }}
+              >
                 Talk to an SAP Expert <Arrow />
               </Link>
-              <Link href="#folder" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', height: 48, padding: '0 1.75rem', borderRadius: 4, border: '1px solid rgba(255,255,255,0.35)', color: '#fff', fontSize: '0.875rem', fontWeight: 600, textDecoration: 'none', background: 'rgba(255,255,255,0.04)' }}>
+              <Link
+                href="#folder"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  height: 48,
+                  padding: '0 1.75rem',
+                  borderRadius: 4,
+                  border: '1px solid rgba(255,255,255,0.35)',
+                  color: '#fff',
+                  fontSize: '0.875rem',
+                  fontWeight: 600,
+                  textDecoration: 'none',
+                  background: 'rgba(255,255,255,0.04)',
+                }}
+              >
                 Explore Your Transformation Path <Arrow />
               </Link>
             </div>
@@ -360,13 +848,31 @@ export default function S4HanaPublicEditionPage() {
       </section>
 
       {/* ═══ THE EXECUTIVE FOLDER — 8 interactive chapters ═══ */}
-      <section id="folder" style={{ background: t.sectionBg, padding: 'clamp(3.5rem,6vw,6rem) clamp(1rem,4vw,3rem) clamp(4rem,7vw,6.5rem)' }}>
+      <section
+        id="folder"
+        style={{
+          background: t.sectionBg,
+          padding: 'clamp(3.5rem,6vw,6rem) clamp(1rem,4vw,3rem) clamp(4rem,7vw,6.5rem)',
+        }}
+      >
         <div style={{ maxWidth: 'var(--layout-content-wide)', margin: '0 auto' }}>
           <Reveal>
             <div className="tv-folder">
               <div className="tv-flap" aria-hidden="true" />
               {/* subtle TRYVION fork mark on the upper-right flap */}
-              <svg viewBox="0 0 80 128" fill="none" aria-hidden="true" style={{ position: 'absolute', top: 10, right: 'calc(8% + 66px)', width: 26, height: 42, opacity: 0.35 }}>
+              <svg
+                viewBox="0 0 80 128"
+                fill="none"
+                aria-hidden="true"
+                style={{
+                  position: 'absolute',
+                  top: 10,
+                  right: 'calc(8% + 66px)',
+                  width: 26,
+                  height: 42,
+                  opacity: 0.35,
+                }}
+              >
                 <line x1="40" y1="0" x2="40" y2="58" stroke="#8a6a2c" strokeWidth="6" />
                 <line x1="40" y1="64" x2="6" y2="128" stroke="#8a6a2c" strokeWidth="6" />
                 <line x1="40" y1="64" x2="74" y2="128" stroke="#8a6a2c" strokeWidth="6" />
@@ -374,7 +880,11 @@ export default function S4HanaPublicEditionPage() {
 
               <div className="tv-body">
                 {/* LEFT — 8 stacked physical folder tabs (never disappear) */}
-                <div className="tv-tabs" role="tablist" aria-label="SAP S/4HANA Cloud, Public Edition chapters">
+                <div
+                  className="tv-tabs"
+                  role="tablist"
+                  aria-label="SAP S/4HANA Cloud, Public Edition chapters"
+                >
                   {CHAPTERS.map((c, i) => (
                     <button
                       key={c.num}
@@ -391,7 +901,9 @@ export default function S4HanaPublicEditionPage() {
                         <span className="n">{c.num}</span>
                       </span>
                       <span className="t">{c.title}</span>
-                      <span className="i"><Ic k={c.icon} size={22} /></span>
+                      <span className="i">
+                        <Ic k={c.icon} size={22} />
+                      </span>
                     </button>
                   ))}
                 </div>
@@ -400,9 +912,25 @@ export default function S4HanaPublicEditionPage() {
                 <div className="tv-docwrap">
                   <div className="tv-sheet s2" aria-hidden="true" />
                   <div className="tv-sheet s1" aria-hidden="true" />
-                  <div className="tv-doc" id="tv-doc" role="tabpanel" aria-labelledby={`tv-tab-${CHAPTERS[active].num}`} key={active}>
+                  <div
+                    className="tv-doc"
+                    id="tv-doc"
+                    role="tabpanel"
+                    aria-labelledby={`tv-tab-${CHAPTERS[active].num}`}
+                    key={active}
+                  >
                     {/* paperclip */}
-                    <svg className="tv-clip" viewBox="0 0 24 24" fill="none" stroke="#9aa0a6" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ width: 40, height: 40 }}>
+                    <svg
+                      className="tv-clip"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="#9aa0a6"
+                      strokeWidth={1.6}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      aria-hidden="true"
+                      style={{ width: 40, height: 40 }}
+                    >
                       <path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.12l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48" />
                     </svg>
                     {chapterBody()}
@@ -415,29 +943,162 @@ export default function S4HanaPublicEditionPage() {
       </section>
 
       {/* ═══ CTA ═══ */}
-      <section style={{ padding: '0 clamp(1.25rem,5vw,3.5rem) clamp(4.5rem,8vw,7rem)', background: t.sectionBg }}>
+      <section
+        style={{
+          padding: '0 clamp(1.25rem,5vw,3.5rem) clamp(4.5rem,8vw,7rem)',
+          background: t.sectionBg,
+        }}
+      >
         <div style={{ maxWidth: 'var(--layout-content-wide)', margin: '0 auto' }}>
           <Reveal>
-            <div style={{ position: 'relative', overflow: 'hidden', borderRadius: 16, background: 'var(--ink-950)' }}>
-              <img src={IMG.wave} alt="" aria-hidden="true" style={{ position: 'absolute', right: 0, bottom: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'right bottom', opacity: 0.9 }} />
-              <div style={{ position: 'relative', zIndex: 1, padding: 'clamp(2.5rem,5vw,4rem)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '2rem', flexWrap: 'wrap' }}>
+            <div
+              style={{
+                position: 'relative',
+                overflow: 'hidden',
+                borderRadius: 16,
+                background: 'var(--ink-950)',
+              }}
+            >
+              <img
+                src={IMG.wave}
+                alt=""
+                aria-hidden="true"
+                style={{
+                  position: 'absolute',
+                  right: 0,
+                  bottom: 0,
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  objectPosition: 'right bottom',
+                  opacity: 0.9,
+                }}
+              />
+              <div
+                style={{
+                  position: 'relative',
+                  zIndex: 1,
+                  padding: 'clamp(2.5rem,5vw,4rem)',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  gap: '2rem',
+                  flexWrap: 'wrap',
+                }}
+              >
                 <div style={{ maxWidth: '34ch' }}>
-                  <p style={{ fontSize: 'var(--size-eyebrow)', lineHeight: 'var(--line-height-eyebrow)', fontWeight: 700, letterSpacing: 'var(--tracking-eyebrow)', textTransform: 'uppercase', color: t.gold, margin: '0 0 1rem' }}>Ready to Move to SAP S/4HANA CLOUD, PUBLIC EDITION??</p>
-                  <h2 style={{ fontFamily: 'var(--family-display)', fontSize: 'clamp(1.6rem,3vw,2.25rem)', fontWeight: 800, letterSpacing: 'var(--tracking-h2)', lineHeight: 1.25, color: '#fff', margin: 0 }}>
+                  <p
+                    style={{
+                      fontSize: 'var(--size-eyebrow)',
+                      lineHeight: 'var(--line-height-eyebrow)',
+                      fontWeight: 700,
+                      letterSpacing: 'var(--tracking-eyebrow)',
+                      textTransform: 'uppercase',
+                      color: t.gold,
+                      margin: '0 0 1rem',
+                    }}
+                  >
+                    Ready to Move to SAP S/4HANA CLOUD, PUBLIC EDITION??
+                  </p>
+                  <h2
+                    style={{
+                      fontFamily: 'var(--family-display)',
+                      fontSize: 'clamp(1.6rem,3vw,2.25rem)',
+                      fontWeight: 800,
+                      letterSpacing: 'var(--tracking-h2)',
+                      lineHeight: 1.25,
+                      color: '#fff',
+                      margin: 0,
+                    }}
+                  >
                     Let&apos;s turn your ERP transformation into a foundation for what&apos;s next.
                   </h2>
                 </div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.875rem', flexShrink: 0 }}>
-                  <Link href="/contact" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', height: 48, padding: '0 1.75rem', borderRadius: 4, background: 'var(--gold-400)', color: 'var(--ink-1000)', fontSize: '0.875rem', fontWeight: 700, textDecoration: 'none' }}>
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '0.875rem',
+                    flexShrink: 0,
+                  }}
+                >
+                  <Link
+                    href="/contact"
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '0.5rem',
+                      height: 48,
+                      padding: '0 1.75rem',
+                      borderRadius: 4,
+                      background: 'var(--gold-400)',
+                      color: 'var(--ink-1000)',
+                      fontSize: '0.875rem',
+                      fontWeight: 700,
+                      textDecoration: 'none',
+                    }}
+                  >
                     Talk to an SAP Expert <Arrow />
                   </Link>
-                  <Link href="/contact/consultation" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', height: 48, padding: '0 1.75rem', borderRadius: 4, border: '1px solid rgba(201,162,75,0.55)', color: '#fff', fontSize: '0.875rem', fontWeight: 600, textDecoration: 'none', background: 'rgba(255,255,255,0.04)' }}>
+                  <Link
+                    href="/contact/consultation"
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '0.5rem',
+                      height: 48,
+                      padding: '0 1.75rem',
+                      borderRadius: 4,
+                      border: '1px solid rgba(201,162,75,0.55)',
+                      color: '#fff',
+                      fontSize: '0.875rem',
+                      fontWeight: 600,
+                      textDecoration: 'none',
+                      background: 'rgba(255,255,255,0.04)',
+                    }}
+                  >
                     Book a Consultation <Arrow />
                   </Link>
-                  <Link href="/services/applications/sap-s4hana" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', height: 48, padding: '0 1.75rem', borderRadius: 4, border: '1px solid rgba(201,162,75,0.55)', color: '#fff', fontSize: '0.875rem', fontWeight: 600, textDecoration: 'none', background: 'rgba(255,255,255,0.04)' }}>
+                  <Link
+                    href="/services/applications/sap-s4hana"
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '0.5rem',
+                      height: 48,
+                      padding: '0 1.75rem',
+                      borderRadius: 4,
+                      border: '1px solid rgba(201,162,75,0.55)',
+                      color: '#fff',
+                      fontSize: '0.875rem',
+                      fontWeight: 600,
+                      textDecoration: 'none',
+                      background: 'rgba(255,255,255,0.04)',
+                    }}
+                  >
                     Explore SAP S/4HANA <Arrow />
                   </Link>
-                  <Link href="/services/applications/sap-s4hana/private-cloud" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', height: 48, padding: '0 1.75rem', borderRadius: 4, border: '1px solid rgba(201,162,75,0.55)', color: '#fff', fontSize: '0.875rem', fontWeight: 600, textDecoration: 'none', background: 'rgba(255,255,255,0.04)' }}>
+                  <Link
+                    href="/services/applications/sap-s4hana/private-cloud"
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '0.5rem',
+                      height: 48,
+                      padding: '0 1.75rem',
+                      borderRadius: 4,
+                      border: '1px solid rgba(201,162,75,0.55)',
+                      color: '#fff',
+                      fontSize: '0.875rem',
+                      fontWeight: 600,
+                      textDecoration: 'none',
+                      background: 'rgba(255,255,255,0.04)',
+                    }}
+                  >
                     Explore SAP S/4HANA Private Cloud <Arrow />
                   </Link>
                 </div>
@@ -447,5 +1108,5 @@ export default function S4HanaPublicEditionPage() {
         </div>
       </section>
     </>
-  )
+  );
 }

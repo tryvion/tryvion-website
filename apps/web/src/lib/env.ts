@@ -22,7 +22,7 @@ export const serverEnv = {
 
 // Safe to import in shared modules — NEXT_PUBLIC_ vars are inlined at build time
 export const publicEnv = {
-  SITE_URL:    optional('NEXT_PUBLIC_SITE_URL',             'https://tryvion.com'),
+  SITE_URL:    optional('NEXT_PUBLIC_SITE_URL',             'https://thetryvion.com'),
   CMS_URL:     optional('NEXT_PUBLIC_CMS_URL',              'http://localhost:3001'),
   GA_ID:       optional('NEXT_PUBLIC_GA_MEASUREMENT_ID'),
   POSTHOG_KEY: optional('NEXT_PUBLIC_POSTHOG_KEY'),

@@ -276,18 +276,18 @@ export default function TryvionLearningPlatform() {
                   gap: '0.5rem',
                   fontSize: '0.8125rem',
                   fontWeight: 600,
-                  color: '#94A3B8',
+                  color: '#fff',
                   marginBottom: '1.5rem',
                 }}
               >
-                <Link href="/services" style={{ color: 'inherit', textDecoration: 'none' }}>
+                <Link href="/services" style={{ color: '#fff', textDecoration: 'none' }}>
                   Home
                 </Link>
-                <ChevronRight size={14} style={{ opacity: 0.6 }} />
-                <Link href="/services/academy" style={{ color: 'inherit', textDecoration: 'none' }}>
+                <ChevronRight size={14} style={{ opacity: 0.6, color: '#fff' }} />
+                <Link href="/services/academy" style={{ color: '#fff', textDecoration: 'none' }}>
                   Tryvion Academy
                 </Link>
-                <ChevronRight size={14} style={{ opacity: 0.6 }} />
+                <ChevronRight size={14} style={{ opacity: 0.6, color: '#fff' }} />
                 <span style={{ color: '#FFFFFF', fontWeight: 700 }}>
                   Tryvion Learning Platform (TLP)
                 </span>

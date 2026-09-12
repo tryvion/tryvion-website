@@ -481,15 +481,15 @@ export default function EnterpriseTalentPage() {
                     gap: '0.5rem',
                     fontSize: '0.8125rem',
                     fontWeight: 600,
-                    color: '#94A3B8',
+                    color: '#fff',
                     marginBottom: '1.5rem',
                     flexWrap: 'wrap',
                   }}
                 >
-                  <Link href="/services" style={{ color: 'inherit', textDecoration: 'none' }}>
+                  <Link href="/services" style={{ color: '#fff', textDecoration: 'none' }}>
                     Services
                   </Link>
-                  <ChevronRight size={14} style={{ opacity: 0.6 }} />
+                  <ChevronRight size={14} style={{ opacity: 0.6, color: '#fff' }} />
                   <span style={{ color: '#FFFFFF', fontWeight: 700 }}>Talent</span>
                 </nav>
               </Reveal>

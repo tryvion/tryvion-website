@@ -36,15 +36,15 @@ export interface ServiceGroup {
 export const UTILITY_LEFT: NavLink[] = [
   {
     label: 'Offices',
-    href: '/about/locations',
+    href: '/contact/global-offices',
   },
   {
     label: 'Media Center',
-    href: '/media',
+    href: '#',
   },
   {
     label: 'Subscribe',
-    href: '/subscribe',
+    href: '#',
   },
   {
     label: 'Contact',
@@ -70,12 +70,8 @@ export const ABOUT_LINKS: NavLink[] = [
     href: '/about/our-values',
   },
   {
-    label: 'What We believe',
+    label: 'What We Believe',
     href: '/about/what-we-believe',
-  },
-  {
-    label: 'Global Presence',
-    href: '/about/locations',
   },
 ];
 
@@ -85,7 +81,7 @@ export const ABOUT_LINKS: NavLink[] = [
 
 export const SERVICES_GROUPS: ServiceGroup[] = [
   {
-    heading: 'Tryvion Applications',
+    heading: 'Tryvion Transformation/Advisory',
     href: '/services/applications',
     links: [
       {
@@ -234,7 +230,7 @@ export const CONTACT_COLUMNS: NavColumn[] = [
       },
       {
         label: 'Global Offices',
-        href: '/about/locations',
+        href: '/contact/global-offices',
       },
     ],
   },
