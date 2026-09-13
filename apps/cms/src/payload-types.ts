@@ -642,7 +642,13 @@ export interface RfpSubmission {
           | 'Supporting Document'
           | 'Other';
         documentDescription?: string | null;
-        file: number | Media;
+        fileName: string;
+        blobPathname: string;
+        blobUrl: string;
+        contentType: string;
+        fileSize: number;
+        etag?: string | null;
+        uploadedAt: string;
         id?: string | null;
       }[]
     | null;
@@ -953,7 +959,13 @@ export interface RfpSubmissionsSelect<T extends boolean = true> {
     | {
         documentType?: T;
         documentDescription?: T;
-        file?: T;
+        fileName?: T;
+        blobPathname?: T;
+        blobUrl?: T;
+        contentType?: T;
+        fileSize?: T;
+        etag?: T;
+        uploadedAt?: T;
         id?: T;
       };
   privacyConsent?: T;

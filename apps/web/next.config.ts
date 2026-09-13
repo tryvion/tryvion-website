@@ -1,4 +1,4 @@
-import type { NextConfig } from 'next'
+import type { NextConfig } from 'next';
 
 // ---------------------------------------------------------------------------
 // Security headers — applied to all routes
@@ -7,17 +7,17 @@ import type { NextConfig } from 'next'
 // ---------------------------------------------------------------------------
 
 const SECURITY_HEADERS = [
-  { key: 'X-DNS-Prefetch-Control',  value: 'on' },
-  { key: 'X-Frame-Options',         value: 'SAMEORIGIN' },
-  { key: 'X-Content-Type-Options',  value: 'nosniff' },
-  { key: 'Referrer-Policy',         value: 'strict-origin-when-cross-origin' },
+  { key: 'X-DNS-Prefetch-Control', value: 'on' },
+  { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
+  { key: 'X-Content-Type-Options', value: 'nosniff' },
+  { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
   {
-    key:   'Permissions-Policy',
+    key: 'Permissions-Policy',
     value: 'camera=(), microphone=(), geolocation=(), interest-cohort=()',
   },
   {
     // HSTS — 2 years; only effective over HTTPS (ignored on HTTP)
-    key:   'Strict-Transport-Security',
+    key: 'Strict-Transport-Security',
     value: 'max-age=63072000; includeSubDomains; preload',
   },
   {
@@ -31,32 +31,37 @@ const SECURITY_HEADERS = [
       // blob: for Next.js image optimisation; https: for CMS media
       "img-src 'self' data: blob: https:",
       "media-src 'self' https:",
-      "connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com",
+      "connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://vercel.com",
       "frame-src 'none'",
       "frame-ancestors 'none'",
       "base-uri 'self'",
       "form-action 'self'",
-      "upgrade-insecure-requests",
+      'upgrade-insecure-requests',
     ].join('; '),
   },
-]
+];
 
 // ---------------------------------------------------------------------------
 // CMS image domain — parsed from NEXT_PUBLIC_CMS_URL at build time
 // ---------------------------------------------------------------------------
 
 function parseCmsPattern() {
-  const raw = process.env.NEXT_PUBLIC_CMS_URL ?? 'http://localhost:3001'
+  const raw = process.env.NEXT_PUBLIC_CMS_URL ?? 'http://localhost:3001';
   try {
-    const u = new URL(raw)
+    const u = new URL(raw);
     return {
       protocol: u.protocol.replace(':', '') as 'http' | 'https',
       hostname: u.hostname,
       ...(u.port ? { port: u.port } : {}),
       pathname: '/api/media/file/**',
-    }
+    };
   } catch {
-    return { protocol: 'http' as const, hostname: 'localhost', port: '3001', pathname: '/api/media/file/**' }
+    return {
+      protocol: 'http' as const,
+      hostname: 'localhost',
+      port: '3001',
+      pathname: '/api/media/file/**',
+    };
   }
 }
 
@@ -93,10 +98,10 @@ const nextConfig: NextConfig = {
     return [
       {
         // Apply to all routes including _next/static
-        source:  '/(.*)',
+        source: '/(.*)',
         headers: SECURITY_HEADERS,
       },
-    ]
+    ];
   },
 
   // Redirect /admin to the CMS admin panel in development
@@ -104,13 +109,13 @@ const nextConfig: NextConfig = {
     return process.env.NODE_ENV === 'development'
       ? [
           {
-            source:      '/admin',
+            source: '/admin',
             destination: `${process.env.NEXT_PUBLIC_CMS_URL ?? 'http://localhost:3001'}/admin`,
-            permanent:   false,
+            permanent: false,
           },
         ]
-      : []
+      : [];
   },
-}
+};
 
-export default nextConfig
+export default nextConfig;

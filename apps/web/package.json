@@ -19,6 +19,7 @@
         "@tryvion/design-tokens": "workspace:*",
         "@tryvion/ui": "workspace:*",
         "@tryvion/utils": "workspace:*",
+        "@vercel/blob": "2.6.1",
         "framer-motion": "^13.2.0",
         "next": "16.3.0",
         "react": "19.2.8",

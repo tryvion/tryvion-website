@@ -10,9 +10,7 @@ import {
   ChevronRight,
   FileText,
   LockKeyhole,
-  Mail,
   Paperclip,
-  Phone,
   ShieldCheck,
   Target,
   Upload,
@@ -27,7 +25,8 @@ import { motion } from 'framer-motion';
    /contact/request-a-proposal
 
    Front-end + API submission implementation.
-   Submits through /api/rfp to the TRYVION Payload CMS.
+   RFP documents upload directly to private Vercel Blob using Vercel OIDC.
+   Final submission sends document metadata through /api/rfp.
 
    Design:
    • Premium enterprise RFP experience
@@ -106,7 +105,19 @@ const ORGANISATION_SIZES = [
   '50,000+ employees',
 ];
 
-const OPERATING_FOOTPRINTS = ['Single Country', 'Regional', 'Multi-Regional', 'Global'];
+const BUSINESS_FUNCTIONS = [
+  'Executive / Leadership',
+  'IT / Technology',
+  'Digital Transformation',
+  'Finance',
+  'Procurement',
+  'Operations',
+  'Human Resources',
+  'Supply Chain',
+  'Sales / Commercial',
+  'Strategy',
+  'Other',
+];
 
 const CAPABILITIES = [
   'SAP S/4HANA',
@@ -229,13 +240,51 @@ const DELIVERY_MODELS = [
   'Not Yet Determined',
 ];
 
+const DOCUMENT_TYPES = [
+  'RFP / RFQ',
+  'Statement of Work',
+  'Technical Requirements',
+  'Commercial / Pricing Schedule',
+  'Architecture / Process Documentation',
+  'Business Requirements',
+  'Existing Solution Documentation',
+  'Supporting Document',
+  'Other',
+];
+
+const ALLOWED_FILE_EXTENSIONS = new Set([
+  'pdf',
+  'doc',
+  'docx',
+  'xls',
+  'xlsx',
+  'ppt',
+  'pptx',
+  'txt',
+  'csv',
+]);
+
+const MAX_FILE_SIZE = 10 * 1024 * 1024;
+const MAX_FILES = 10;
+
+const CONTENT_TYPE_BY_EXTENSION: Record<string, string> = {
+  pdf: 'application/pdf',
+  doc: 'application/msword',
+  docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  xls: 'application/vnd.ms-excel',
+  xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  ppt: 'application/vnd.ms-powerpoint',
+  pptx: 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+  txt: 'text/plain',
+  csv: 'text/csv',
+};
+
 type FormData = {
   organisationLegalName: string;
   organisationWebsite: string;
   industrySector: string;
   headquartersCountry: string;
   primaryOperatingMarket: string;
-  operatingFootprint: string;
   organisationSize: string;
   businessFunction: string;
   proposalContactName: string;
@@ -291,6 +340,9 @@ type UploadedDocument = {
   id: string;
   file: File;
   documentType: string;
+  blobPathname: string;
+  contentType: string;
+  fileSize: number;
 };
 
 const INITIAL_FORM: FormData = {
@@ -299,7 +351,6 @@ const INITIAL_FORM: FormData = {
   industrySector: '',
   headquartersCountry: '',
   primaryOperatingMarket: '',
-  operatingFootprint: '',
   organisationSize: '',
   businessFunction: '',
   proposalContactName: '',
@@ -351,18 +402,6 @@ const INITIAL_FORM: FormData = {
   marketingConsent: false,
 };
 
-const DOCUMENT_TYPES = [
-  'RFP / RFQ',
-  'Statement of Work',
-  'Technical Requirements',
-  'Commercial / Pricing Schedule',
-  'Architecture / Process Documentation',
-  'Business Requirements',
-  'Existing Solution Documentation',
-  'Supporting Document',
-  'Other',
-];
-
 function FieldLabel({ children, required = false }: { children: ReactNode; required?: boolean }) {
   return (
     <label
@@ -377,7 +416,13 @@ function FieldLabel({ children, required = false }: { children: ReactNode; requi
     >
       {children}
       {required && (
-        <span aria-hidden="true" style={{ color: 'var(--content-accent)', marginLeft: 3 }}>
+        <span
+          aria-hidden="true"
+          style={{
+            color: 'var(--content-accent)',
+            marginLeft: 3,
+          }}
+        >
           *
         </span>
       )}
@@ -433,6 +478,7 @@ function SelectInput({
   return (
     <div>
       <FieldLabel required={required}>{label}</FieldLabel>
+
       <div style={{ position: 'relative' }}>
         <select
           value={value}
@@ -445,12 +491,14 @@ function SelectInput({
           }}
         >
           <option value="">{placeholder}</option>
+
           {options.map((option) => (
             <option key={option} value={option}>
               {option}
             </option>
           ))}
         </select>
+
         <ChevronDown
           size={17}
           aria-hidden="true"
@@ -486,6 +534,7 @@ function TextArea({
   return (
     <div>
       <FieldLabel required={required}>{label}</FieldLabel>
+
       <textarea
         value={value}
         onChange={(event) => onChange(event.target.value)}
@@ -508,11 +557,13 @@ function MultiSelect({
   options,
   selected,
   onChange,
+  required = false,
 }: {
   label: string;
   options: string[];
   selected: string[];
   onChange: (values: string[]) => void;
+  required?: boolean;
 }) {
   const toggle = (option: string) => {
     onChange(
@@ -524,7 +575,8 @@ function MultiSelect({
 
   return (
     <div>
-      <FieldLabel>{label}</FieldLabel>
+      <FieldLabel required={required}>{label}</FieldLabel>
+
       <div
         style={{
           display: 'flex',
@@ -663,29 +715,31 @@ function StepRail({
 }) {
   return (
     <aside className="rfp-step-rail">
-      {STEPS.map((step, index) => {
-        const active = currentStep === step.number;
-        const completed = currentStep > step.number;
+      {STEPS.map((stepItem) => {
+        const active = currentStep === stepItem.number;
+        const completed = currentStep > stepItem.number;
 
         return (
           <button
-            key={step.number}
+            key={stepItem.number}
             type="button"
             onClick={() => {
-              if (step.number <= currentStep) onSelect(step.number);
+              if (stepItem.number <= currentStep) {
+                onSelect(stepItem.number);
+              }
             }}
-            disabled={step.number > currentStep}
+            disabled={stepItem.number > currentStep}
             className={`rfp-step-button ${active ? 'is-active' : ''}`}
           >
             <span
               className={`rfp-step-number ${active ? 'is-active' : completed ? 'is-complete' : ''}`}
             >
-              {completed ? <Check size={15} strokeWidth={2.5} /> : step.number}
+              {completed ? <Check size={15} strokeWidth={2.5} /> : stepItem.number}
             </span>
 
             <span style={{ minWidth: 0 }}>
-              <strong>{step.title}</strong>
-              <small>{step.description}</small>
+              <strong>{stepItem.title}</strong>
+              <small>{stepItem.description}</small>
             </span>
           </button>
         );
@@ -752,6 +806,7 @@ function InfoAccordion({
         }}
       >
         {title}
+
         <ChevronDown
           size={17}
           style={{
@@ -798,6 +853,7 @@ export default function RequestAProposalPage() {
   const [openAccordion, setOpenAccordion] = useState<string | null>('project');
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const [uploadingDocuments, setUploadingDocuments] = useState(false);
   const [submissionId, setSubmissionId] = useState('');
   const [submitted, setSubmitted] = useState(false);
 
@@ -832,6 +888,8 @@ export default function RequestAProposalPage() {
         form.businessChallenge &&
         form.desiredOutcomes &&
         form.primaryCapability &&
+        form.affectedFunctions.length > 0 &&
+        form.targetGeography &&
         form.transformationStage,
       );
     }
@@ -841,7 +899,7 @@ export default function RequestAProposalPage() {
     }
 
     if (step === 4) {
-      return true;
+      return Boolean(form.procurementStage);
     }
 
     return true;
@@ -856,63 +914,182 @@ export default function RequestAProposalPage() {
     }
 
     setStep((current) => Math.min(5, current + 1));
-    window.scrollTo({ top: 500, behavior: 'smooth' });
+    window.scrollTo({
+      top: 500,
+      behavior: 'smooth',
+    });
   };
 
   const goBack = () => {
     setError('');
+
     setStep((current) => Math.max(1, current - 1));
-    window.scrollTo({ top: 500, behavior: 'smooth' });
+
+    window.scrollTo({
+      top: 500,
+      behavior: 'smooth',
+    });
   };
 
-  const handleDocuments = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleDocuments = async (event: ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(event.target.files ?? []);
-    const allowedExtensions = new Set([
-      'pdf',
-      'doc',
-      'docx',
-      'xls',
-      'xlsx',
-      'ppt',
-      'pptx',
-      'txt',
-      'csv',
-    ]);
-    const maxFileSize = 10 * 1024 * 1024;
-    const maxFiles = 10;
 
     const currentCount = documents.length;
-    const availableSlots = Math.max(0, maxFiles - currentCount);
+    const availableSlots = Math.max(0, MAX_FILES - currentCount);
 
-    if (!files.length || availableSlots === 0) {
+    if (!files.length) {
+      event.target.value = '';
+      return;
+    }
+
+    if (availableSlots === 0) {
       setError('You can upload a maximum of 10 documents.');
       event.target.value = '';
       return;
     }
 
-    const acceptedFiles = files.slice(0, availableSlots).filter((file) => {
+    const selectedFiles = files.slice(0, availableSlots);
+
+    const invalidFile = selectedFiles.find((file) => {
       const extension = file.name.split('.').pop()?.toLowerCase() || '';
 
-      return allowedExtensions.has(extension) && file.size <= maxFileSize;
+      return !ALLOWED_FILE_EXTENSIONS.has(extension) || file.size <= 0 || file.size > MAX_FILE_SIZE;
     });
 
-    if (acceptedFiles.length !== files.length) {
-      setError(
-        'Some documents were not added. Use PDF, Word, Excel, PowerPoint, TXT or CSV files up to 10 MB each.',
-      );
-    } else {
-      setError('');
+    if (invalidFile) {
+      const extension = invalidFile.name.split('.').pop()?.toLowerCase() || '';
+
+      if (!ALLOWED_FILE_EXTENSIONS.has(extension)) {
+        setError(
+          `"${invalidFile.name}" is not an accepted file type. Use PDF, Word, Excel, PowerPoint, TXT or CSV.`,
+        );
+      } else if (invalidFile.size <= 0) {
+        setError(`"${invalidFile.name}" is empty and cannot be uploaded.`);
+      } else {
+        setError(`"${invalidFile.name}" exceeds the 10 MB file size limit.`);
+      }
+
+      event.target.value = '';
+      return;
     }
 
-    const nextDocuments = acceptedFiles.map((file, index) => ({
-      id: `${file.name}-${file.size}-${file.lastModified}-${Date.now()}-${index}`,
-      file,
-      documentType,
-    }));
+    setError('');
+    setUploadingDocuments(true);
 
-    setDocuments((current) => [...current, ...nextDocuments]);
+    try {
+      const uploadedDocuments: UploadedDocument[] = [];
 
-    event.target.value = '';
+      for (const file of selectedFiles) {
+        const extension = file.name.split('.').pop()?.toLowerCase() || '';
+        const contentType =
+          file.type || CONTENT_TYPE_BY_EXTENSION[extension] || 'application/octet-stream';
+
+        /*
+         * The CMS upload endpoint generates the pathname server-side.
+         * The browser must send fileName, contentType and fileSize.
+         */
+        const authorizationResponse = await fetch('/api/rfp-documents/upload', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            fileName: file.name,
+            contentType,
+            fileSize: file.size,
+          }),
+          cache: 'no-store',
+        });
+
+        const authorizationContentType = authorizationResponse.headers.get('content-type') || '';
+
+        let authorizationResult: {
+          success?: boolean;
+          message?: string;
+          presignedUrl?: string;
+          pathname?: string;
+          fileName?: string;
+          contentType?: string;
+          expiresAt?: string;
+        };
+
+        if (authorizationContentType.includes('application/json')) {
+          authorizationResult = await authorizationResponse.json();
+        } else {
+          const responseText = await authorizationResponse.text();
+
+          authorizationResult = {
+            success: false,
+            message: responseText || 'Unable to authorize the document upload.',
+          };
+        }
+
+        if (
+          !authorizationResponse.ok ||
+          !authorizationResult.success ||
+          !authorizationResult.presignedUrl ||
+          !authorizationResult.pathname
+        ) {
+          throw new Error(
+            authorizationResult.message || 'Unable to authorize the document upload.',
+          );
+        }
+
+        const signedContentType = authorizationResult.contentType || contentType;
+        const signedPathname = authorizationResult.pathname;
+
+        if (!signedPathname) {
+          throw new Error('The document upload service did not return a secure storage pathname.');
+        }
+
+        const blobResponse = await fetch(authorizationResult.presignedUrl, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': signedContentType,
+          },
+          body: file,
+        });
+        console.log('[TRYVION RFP Blob PUT]', {
+          status: blobResponse.status,
+          statusText: blobResponse.statusText,
+          ok: blobResponse.ok,
+          pathname: authorizationResult.pathname,
+          responseHeaders: Object.fromEntries(blobResponse.headers.entries()),
+        });
+
+        if (!blobResponse.ok) {
+          const blobError = await blobResponse.text().catch(() => '');
+
+          throw new Error(
+            blobError
+              ? `Unable to upload "${file.name}" to secure storage. ${blobError}`
+              : `Unable to upload "${file.name}" to secure storage.`,
+          );
+        }
+
+        uploadedDocuments.push({
+          id: `${file.name}-${file.size}-${file.lastModified}-${Date.now()}-${uploadedDocuments.length}`,
+          file,
+          documentType,
+          blobPathname: authorizationResult.pathname,
+          contentType: signedContentType,
+          fileSize: file.size,
+        });
+      }
+
+      setDocuments((current) => [...current, ...uploadedDocuments]);
+    } catch (uploadError) {
+      console.error('[TRYVION RFP Document Upload]', uploadError);
+
+      setError(
+        uploadError instanceof Error
+          ? uploadError.message
+          : 'Unable to upload the document. Please try again.',
+      );
+    } finally {
+      setUploadingDocuments(false);
+      event.target.value = '';
+    }
   };
 
   const removeDocument = (id: string) => {
@@ -923,10 +1100,29 @@ export default function RequestAProposalPage() {
     event.preventDefault();
     setError('');
 
-    if (submitting) return;
+    if (submitting || uploadingDocuments) {
+      return;
+    }
 
     if (!form.privacyConsent) {
       setError('Please accept the Privacy Policy acknowledgement.');
+      return;
+    }
+
+    if (
+      !form.businessFunction ||
+      form.affectedFunctions.length === 0 ||
+      !form.targetGeography ||
+      !form.procurementStage
+    ) {
+      setError('Please complete all required RFP fields before submitting.');
+      return;
+    }
+
+    if (documents.some((document) => !document.blobPathname)) {
+      setError(
+        'One or more documents are not securely uploaded. Please remove and upload them again.',
+      );
       return;
     }
 
@@ -980,12 +1176,33 @@ export default function RequestAProposalPage() {
       'deliveryLocations',
     ];
 
+    if (form.estimatedUserCount.trim()) {
+      const normalizedUserCount = form.estimatedUserCount.replace(/,/g, '').trim();
+      const numericUserCount = Number(normalizedUserCount);
+
+      if (!Number.isFinite(numericUserCount) || numericUserCount < 0) {
+        setError('Estimated user count must be a valid number.');
+        return;
+      }
+    }
+
     textFields.forEach((key) => {
       const value = form[key];
 
-      if (typeof value === 'string' && value.trim()) {
-        payload.append(key, value.trim());
+      if (typeof value !== 'string' || !value.trim()) {
+        return;
       }
+
+      if (key === 'estimatedUserCount') {
+        const normalizedUserCount = value.replace(/,/g, '').trim();
+        const numericUserCount = Number(normalizedUserCount);
+
+        payload.append(key, String(Math.floor(numericUserCount)));
+
+        return;
+      }
+
+      payload.append(key, value.trim());
     });
 
     form.secondaryCapabilities.forEach((value) => {
@@ -1001,13 +1218,20 @@ export default function RequestAProposalPage() {
     });
 
     payload.append('privacyConsent', String(form.privacyConsent));
+
     payload.append('marketingConsent', String(form.marketingConsent));
 
-    documents.forEach((document) => {
-      payload.append('documents', document.file, document.file.name);
-      payload.append('documentTypes', document.documentType);
-      payload.append('documentDescriptions', '');
-    });
+    payload.append(
+      'uploadedDocuments',
+      JSON.stringify(
+        documents.map((document) => ({
+          documentType: document.documentType,
+          documentDescription: '',
+          fileName: document.file.name,
+          blobPathname: document.blobPathname,
+        })),
+      ),
+    );
 
     setSubmitting(true);
 
@@ -1019,6 +1243,7 @@ export default function RequestAProposalPage() {
       });
 
       const contentType = response.headers.get('content-type') || '';
+
       let result: {
         success?: boolean;
         message?: string;
@@ -1030,6 +1255,7 @@ export default function RequestAProposalPage() {
         result = await response.json();
       } else {
         const text = await response.text();
+
         result = {
           success: response.ok,
           message: text || undefined,
@@ -1043,8 +1269,13 @@ export default function RequestAProposalPage() {
       }
 
       setSubmissionId(result.submissionId || '');
+
       setSubmitted(true);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
     } catch (submitError) {
       console.error('[TRYVION RFP Submission]', submitError);
 
@@ -1078,9 +1309,17 @@ export default function RequestAProposalPage() {
             }}
           >
             <motion.div
-              initial={{ scale: 0.85, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.45 }}
+              initial={{
+                scale: 0.85,
+                opacity: 0,
+              }}
+              animate={{
+                scale: 1,
+                opacity: 1,
+              }}
+              transition={{
+                duration: 0.45,
+              }}
               style={{
                 width: 76,
                 height: 76,
@@ -1137,7 +1376,14 @@ export default function RequestAProposalPage() {
                   fontSize: '0.78rem',
                 }}
               >
-                <strong style={{ color: 'var(--content-primary)' }}>Submission ID:</strong>
+                <strong
+                  style={{
+                    color: 'var(--content-primary)',
+                  }}
+                >
+                  Submission ID:
+                </strong>
+
                 <span>{submissionId}</span>
               </div>
             )}
@@ -1180,9 +1426,6 @@ export default function RequestAProposalPage() {
           fontFamily: 'var(--family-text)',
         }}
       >
-        {/* ═══════════════════════════════════════════════════════════
-            HERO
-        ═══════════════════════════════════════════════════════════ */}
         <section
           className="rfp-hero"
           style={{
@@ -1217,9 +1460,18 @@ export default function RequestAProposalPage() {
             }}
           >
             <motion.div
-              initial={{ opacity: 0, y: 22 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.65, ease: 'easeOut' }}
+              initial={{
+                opacity: 0,
+                y: 22,
+              }}
+              animate={{
+                opacity: 1,
+                y: 0,
+              }}
+              transition={{
+                duration: 0.65,
+                ease: 'easeOut',
+              }}
               style={{
                 maxWidth: 650,
                 color: '#fff',
@@ -1241,7 +1493,15 @@ export default function RequestAProposalPage() {
                 >
                   Home
                 </Link>
-                <span style={{ margin: '0 0.5rem' }}>›</span>
+
+                <span
+                  style={{
+                    margin: '0 0.5rem',
+                  }}
+                >
+                  ›
+                </span>
+
                 <Link
                   href="/contact"
                   style={{
@@ -1251,8 +1511,23 @@ export default function RequestAProposalPage() {
                 >
                   Contact
                 </Link>
-                <span style={{ margin: '0 0.5rem', color: '#fff' }}>›</span>
-                <span style={{ color: '#fff' }}>Request a Proposal</span>
+
+                <span
+                  style={{
+                    margin: '0 0.5rem',
+                    color: '#fff',
+                  }}
+                >
+                  ›
+                </span>
+
+                <span
+                  style={{
+                    color: '#fff',
+                  }}
+                >
+                  Request a Proposal
+                </span>
               </div>
 
               <h1
@@ -1347,7 +1622,7 @@ export default function RequestAProposalPage() {
                     <strong
                       style={{
                         display: 'block',
-                        fontSize: '1.00rem',
+                        fontSize: '1rem',
                         color: '#fff',
                         marginBottom: '0.25rem',
                       }}
@@ -1359,7 +1634,7 @@ export default function RequestAProposalPage() {
                       style={{
                         display: 'block',
                         color: 'rgba(255,255,255,0.62)',
-                        fontSize: '0.90rem',
+                        fontSize: '0.9rem',
                         lineHeight: 1.5,
                       }}
                     >
@@ -1372,9 +1647,6 @@ export default function RequestAProposalPage() {
           </div>
         </section>
 
-        {/* ═══════════════════════════════════════════════════════════
-            WHAT YOU CAN SUBMIT
-        ═══════════════════════════════════════════════════════════ */}
         <section
           style={{
             padding: 'clamp(3.5rem,7vw,5.5rem) clamp(1.25rem,4vw,2.5rem)',
@@ -1387,7 +1659,12 @@ export default function RequestAProposalPage() {
               margin: '0 auto',
             }}
           >
-            <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+            <div
+              style={{
+                textAlign: 'center',
+                marginBottom: '2.5rem',
+              }}
+            >
               <div
                 style={{
                   width: 24,
@@ -1442,8 +1719,12 @@ export default function RequestAProposalPage() {
               ].map((item) => (
                 <motion.div
                   key={item.title}
-                  whileHover={{ y: -4 }}
-                  transition={{ duration: 0.2 }}
+                  whileHover={{
+                    y: -4,
+                  }}
+                  transition={{
+                    duration: 0.2,
+                  }}
                   style={{
                     minHeight: 155,
                     padding: '1.35rem',
@@ -1469,7 +1750,7 @@ export default function RequestAProposalPage() {
                     style={{
                       margin: 0,
                       color: 'var(--content-primary)',
-                      fontSize: '1.00rem',
+                      fontSize: '1rem',
                       fontWeight: 700,
                     }}
                   >
@@ -1480,7 +1761,7 @@ export default function RequestAProposalPage() {
                     style={{
                       margin: '0.5rem 0 0',
                       color: 'var(--content-secondary)',
-                      fontSize: '0.90rem',
+                      fontSize: '0.9rem',
                       lineHeight: 1.6,
                     }}
                   >
@@ -1492,9 +1773,6 @@ export default function RequestAProposalPage() {
           </div>
         </section>
 
-        {/* ═══════════════════════════════════════════════════════════
-            FORM
-        ═══════════════════════════════════════════════════════════ */}
         <section
           id="proposal-form"
           style={{
@@ -1508,7 +1786,12 @@ export default function RequestAProposalPage() {
               margin: '0 auto',
             }}
           >
-            <div style={{ textAlign: 'center', marginBottom: '2.75rem' }}>
+            <div
+              style={{
+                textAlign: 'center',
+                marginBottom: '2.75rem',
+              }}
+            >
               <h2
                 style={{
                   margin: 0,
@@ -1525,7 +1808,7 @@ export default function RequestAProposalPage() {
                 style={{
                   margin: '0.65rem 0 0',
                   color: 'var(--content-secondary)',
-                  fontSize: '1.10rem',
+                  fontSize: '1.1rem',
                 }}
               >
                 Complete the form below and our team will get back to you.
@@ -1544,14 +1827,25 @@ export default function RequestAProposalPage() {
               >
                 <StepRail currentStep={step} onSelect={setStep} />
 
-                <div style={{ minWidth: 0 }}>
+                <div
+                  style={{
+                    minWidth: 0,
+                  }}
+                >
                   <motion.div
                     key={step}
-                    initial={{ opacity: 0, x: 12 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.25 }}
+                    initial={{
+                      opacity: 0,
+                      x: 12,
+                    }}
+                    animate={{
+                      opacity: 1,
+                      x: 0,
+                    }}
+                    transition={{
+                      duration: 0.25,
+                    }}
                   >
-                    {/* ═══ STEP 1 ═══ */}
                     {step === 1 && (
                       <FormCard>
                         <SectionTitle
@@ -1603,13 +1897,6 @@ export default function RequestAProposalPage() {
                           />
 
                           <SelectInput
-                            label="Operating Footprint"
-                            value={form.operatingFootprint}
-                            onChange={(value) => update('operatingFootprint', value)}
-                            options={OPERATING_FOOTPRINTS}
-                          />
-
-                          <SelectInput
                             label="Organisation Size"
                             required
                             value={form.organisationSize}
@@ -1617,12 +1904,12 @@ export default function RequestAProposalPage() {
                             options={ORGANISATION_SIZES}
                           />
 
-                          <TextInput
+                          <SelectInput
                             label="Business Unit / Function"
                             required
                             value={form.businessFunction}
                             onChange={(value) => update('businessFunction', value)}
-                            placeholder="e.g. Digital Transformation"
+                            options={BUSINESS_FUNCTIONS}
                           />
 
                           <TextInput
@@ -1678,7 +1965,6 @@ export default function RequestAProposalPage() {
                       </FormCard>
                     )}
 
-                    {/* ═══ STEP 2 ═══ */}
                     {step === 2 && (
                       <FormCard>
                         <SectionTitle
@@ -1740,6 +2026,7 @@ export default function RequestAProposalPage() {
 
                           <MultiSelect
                             label="Affected Functions"
+                            required
                             options={AFFECTED_FUNCTIONS}
                             selected={form.affectedFunctions}
                             onChange={(value) => update('affectedFunctions', value)}
@@ -1748,6 +2035,7 @@ export default function RequestAProposalPage() {
                           <div className="rfp-grid-2">
                             <TextInput
                               label="Target Geography"
+                              required
                               value={form.targetGeography}
                               onChange={(value) => update('targetGeography', value)}
                               placeholder="Countries / regions"
@@ -1787,7 +2075,6 @@ export default function RequestAProposalPage() {
                       </FormCard>
                     )}
 
-                    {/* ═══ STEP 3 ═══ */}
                     {step === 3 && (
                       <FormCard>
                         <SectionTitle
@@ -1949,7 +2236,6 @@ export default function RequestAProposalPage() {
                       </FormCard>
                     )}
 
-                    {/* ═══ STEP 4 ═══ */}
                     {step === 4 && (
                       <FormCard>
                         <SectionTitle
@@ -1976,6 +2262,7 @@ export default function RequestAProposalPage() {
 
                             <SelectInput
                               label="Procurement Stage"
+                              required
                               value={form.procurementStage}
                               onChange={(value) => update('procurementStage', value)}
                               options={PROCUREMENT_STAGES}
@@ -2061,7 +2348,6 @@ export default function RequestAProposalPage() {
                             rows={3}
                           />
 
-                          {/* Upload */}
                           <div>
                             <FieldLabel>Documents</FieldLabel>
 
@@ -2091,6 +2377,7 @@ export default function RequestAProposalPage() {
                                   <select
                                     value={documentType}
                                     onChange={(event) => setDocumentType(event.target.value)}
+                                    disabled={uploadingDocuments}
                                     style={{
                                       ...inputStyle,
                                       appearance: 'none',
@@ -2129,16 +2416,22 @@ export default function RequestAProposalPage() {
                                     color: 'var(--action-primary-on-action)',
                                     fontSize: '0.82rem',
                                     fontWeight: 700,
-                                    cursor: 'pointer',
+                                    cursor: uploadingDocuments ? 'wait' : 'pointer',
+                                    opacity: uploadingDocuments ? 0.7 : 1,
                                   }}
                                 >
                                   <Upload size={17} />
-                                  Add Documents
+
+                                  {uploadingDocuments ? 'Uploading…' : 'Add Documents'}
+
                                   <input
                                     type="file"
                                     multiple
+                                    disabled={uploadingDocuments}
                                     onChange={handleDocuments}
-                                    style={{ display: 'none' }}
+                                    style={{
+                                      display: 'none',
+                                    }}
                                     accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv"
                                   />
                                 </label>
@@ -2152,9 +2445,9 @@ export default function RequestAProposalPage() {
                                   lineHeight: 1.5,
                                 }}
                               >
-                                Accepted formats: PDF, Word, Excel, PowerPoint, TXT and CSV.
-                                Credentials, banking information, passwords and source code should
-                                not be uploaded.
+                                Accepted formats: PDF, Word, Excel, PowerPoint, TXT and CSV. Maximum
+                                10 MB per document, up to 10 documents. Credentials, banking
+                                information, passwords and source code should not be uploaded.
                               </p>
 
                               {documents.length > 0 && (
@@ -2221,6 +2514,7 @@ export default function RequestAProposalPage() {
                                       <button
                                         type="button"
                                         onClick={() => removeDocument(document.id)}
+                                        disabled={uploadingDocuments || submitting}
                                         style={{
                                           border: 0,
                                           background: 'transparent',
@@ -2242,7 +2536,6 @@ export default function RequestAProposalPage() {
                       </FormCard>
                     )}
 
-                    {/* ═══ STEP 5 ═══ */}
                     {step === 5 && (
                       <FormCard>
                         <SectionTitle
@@ -2254,19 +2547,30 @@ export default function RequestAProposalPage() {
                         <div className="rfp-stack">
                           <div className="rfp-review-grid">
                             <ReviewItem label="Organisation" value={form.organisationLegalName} />
+
                             <ReviewItem label="Industry" value={form.industrySector} />
+
                             <ReviewItem label="Proposal Contact" value={form.proposalContactName} />
+
                             <ReviewItem label="Contact Email" value={form.proposalContactEmail} />
+
                             <ReviewItem label="Initiative" value={form.initiativeName} />
+
                             <ReviewItem label="Primary Capability" value={form.primaryCapability} />
+
                             <ReviewItem
                               label="Transformation Stage"
                               value={form.transformationStage}
                             />
+
                             <ReviewItem label="Procurement Stage" value={form.procurementStage} />
+
                             <ReviewItem label="Commercial Model" value={form.commercialModel} />
+
                             <ReviewItem label="Budget Range" value={form.budgetRange} />
+
                             <ReviewItem label="Delivery Model" value={form.deliveryModel} />
+
                             <ReviewItem
                               label="Documents"
                               value={
@@ -2294,10 +2598,12 @@ export default function RequestAProposalPage() {
                                 label="Transformation Objective"
                                 value={form.transformationObjective}
                               />
+
                               <ReviewText
                                 label="Business Challenge"
                                 value={form.businessChallenge}
                               />
+
                               <ReviewText label="Desired Outcomes" value={form.desiredOutcomes} />
                             </div>
                           </InfoAccordion>
@@ -2318,6 +2624,7 @@ export default function RequestAProposalPage() {
                               }}
                             >
                               <ReviewText label="Scope of Work" value={form.scopeOfWork} />
+
                               <ReviewText
                                 label="Expected Deliverables"
                                 value={form.expectedDeliverables}
@@ -2351,6 +2658,7 @@ export default function RequestAProposalPage() {
                                     }}
                                   >
                                     <FileText size={15} color="var(--content-accent)" />
+
                                     <span>{document.file.name}</span>
                                   </div>
                                 ))}
@@ -2477,7 +2785,6 @@ export default function RequestAProposalPage() {
                       </div>
                     )}
 
-                    {/* ═══ FORM NAVIGATION ═══ */}
                     <div
                       style={{
                         display: 'flex',
@@ -2491,6 +2798,7 @@ export default function RequestAProposalPage() {
                         <button
                           type="button"
                           onClick={goBack}
+                          disabled={submitting || uploadingDocuments}
                           style={{
                             minHeight: 46,
                             display: 'inline-flex',
@@ -2516,6 +2824,7 @@ export default function RequestAProposalPage() {
                         <button
                           type="button"
                           onClick={goNext}
+                          disabled={submitting || uploadingDocuments}
                           style={{
                             minHeight: 46,
                             display: 'inline-flex',
@@ -2538,7 +2847,7 @@ export default function RequestAProposalPage() {
                       ) : (
                         <button
                           type="submit"
-                          disabled={submitting}
+                          disabled={submitting || uploadingDocuments}
                           style={{
                             minHeight: 48,
                             display: 'inline-flex',
@@ -2552,12 +2861,17 @@ export default function RequestAProposalPage() {
                             fontFamily: 'var(--family-text)',
                             fontSize: '0.82rem',
                             fontWeight: 700,
-                            cursor: submitting ? 'wait' : 'pointer',
-                            opacity: submitting ? 0.7 : 1,
+                            cursor: submitting || uploadingDocuments ? 'wait' : 'pointer',
+                            opacity: submitting || uploadingDocuments ? 0.7 : 1,
                           }}
                         >
-                          {submitting ? 'Submitting…' : 'Submit Proposal Request'}
-                          {!submitting && <ArrowRight size={17} />}
+                          {uploadingDocuments
+                            ? 'Uploading…'
+                            : submitting
+                              ? 'Submitting…'
+                              : 'Submit Proposal Request'}
+
+                          {!submitting && !uploadingDocuments && <ArrowRight size={17} />}
                         </button>
                       )}
                     </div>
@@ -2568,9 +2882,6 @@ export default function RequestAProposalPage() {
           </div>
         </section>
 
-        {/* ═══════════════════════════════════════════════════════════
-            SECURITY
-        ═══════════════════════════════════════════════════════════ */}
         <section
           style={{
             padding: 'clamp(2.5rem,5vw,4rem) clamp(1.25rem,4vw,2.5rem)',
@@ -2624,7 +2935,7 @@ export default function RequestAProposalPage() {
                   margin: '0.45rem 0 0',
                   maxWidth: 520,
                   color: 'var(--content-secondary)',
-                  fontSize: '0.90rem',
+                  fontSize: '0.9rem',
                   lineHeight: 1.65,
                 }}
               >
@@ -2654,9 +2965,6 @@ export default function RequestAProposalPage() {
           </div>
         </section>
 
-        {/* ═══════════════════════════════════════════════════════════
-            FINAL CTA
-        ═══════════════════════════════════════════════════════════ */}
         <section
           style={{
             background: '#031A33',
@@ -2708,9 +3016,6 @@ export default function RequestAProposalPage() {
           </Link>
         </section>
 
-        {/* ═══════════════════════════════════════════════════════════
-            VALUE STRIP
-        ═══════════════════════════════════════════════════════════ */}
         <section
           style={{
             background: 'var(--surface-default)',
@@ -2732,16 +3037,19 @@ export default function RequestAProposalPage() {
               title="Global Expertise"
               text="Access specialists across industries and technologies."
             />
+
             <ValueItem
               icon={<ShieldCheck size={28} />}
               title="Proven Experience"
               text="Delivering complex transformation programmes worldwide."
             />
+
             <ValueItem
               icon={<Users size={28} />}
               title="End-to-End Support"
               text="From strategy to implementation and beyond."
             />
+
             <ValueItem
               icon={<Target size={28} />}
               title="Business Outcomes"
@@ -2857,7 +3165,7 @@ function SecurityItem({ icon, title, text }: { icon: ReactNode; title: string; t
             display: 'block',
             marginTop: 2,
             color: 'var(--content-secondary)',
-            fontSize: '0.90rem',
+            fontSize: '0.9rem',
             lineHeight: 1.45,
           }}
         >
@@ -2904,7 +3212,7 @@ function ValueItem({ icon, title, text }: { icon: ReactNode; title: string; text
           style={{
             display: 'block',
             color: 'var(--content-tertiary)',
-            fontSize: '0.90rem',
+            fontSize: '0.9rem',
             lineHeight: 1.45,
           }}
         >
@@ -2957,7 +3265,7 @@ const responsiveStyles = `
     display: block;
     margin-top: 0.35rem;
     color: var(--content-tertiary);
-    font-size: 0.90rem;
+    font-size: 0.9rem;
     line-height: 1.4;
   }
 

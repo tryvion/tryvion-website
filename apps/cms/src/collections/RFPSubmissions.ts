@@ -927,6 +927,10 @@ export const RFPSubmissions: CollectionConfig = {
     {
       name: 'documents',
       type: 'array',
+      labels: {
+        singular: 'Document',
+        plural: 'Documents',
+      },
       fields: [
         {
           name: 'documentType',
@@ -937,16 +941,78 @@ export const RFPSubmissions: CollectionConfig = {
             value,
           })),
         },
+
         {
           name: 'documentDescription',
           type: 'text',
           maxLength: 500,
         },
+
         {
-          name: 'file',
-          type: 'upload',
-          relationTo: 'media',
+          name: 'fileName',
+          type: 'text',
           required: true,
+          maxLength: 255,
+          admin: {
+            readOnly: true,
+          },
+        },
+
+        {
+          name: 'blobPathname',
+          type: 'text',
+          required: true,
+          maxLength: 1000,
+          admin: {
+            readOnly: true,
+          },
+        },
+
+        {
+          name: 'blobUrl',
+          type: 'text',
+          required: true,
+          maxLength: 2000,
+          admin: {
+            readOnly: true,
+          },
+        },
+
+        {
+          name: 'contentType',
+          type: 'text',
+          required: true,
+          maxLength: 150,
+          admin: {
+            readOnly: true,
+          },
+        },
+
+        {
+          name: 'fileSize',
+          type: 'number',
+          required: true,
+          admin: {
+            readOnly: true,
+          },
+        },
+
+        {
+          name: 'etag',
+          type: 'text',
+          maxLength: 500,
+          admin: {
+            readOnly: true,
+          },
+        },
+
+        {
+          name: 'uploadedAt',
+          type: 'date',
+          required: true,
+          admin: {
+            readOnly: true,
+          },
         },
       ],
     },

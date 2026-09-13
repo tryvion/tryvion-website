@@ -1,5 +1,7 @@
+import { head } from '@vercel/blob'
 import { NextRequest, NextResponse } from 'next/server'
 import { getPayload } from 'payload'
+import { getRFPBlobAuthOptions } from '../../../../lib/rfpBlob'
 
 import config from '@payload-config'
 
@@ -261,9 +263,7 @@ const EXISTING_TECHNOLOGY_OPTIONS = [
 
 const MAX_REQUEST_SIZE = 25 * 1024 * 1024
 const MAX_FILE_SIZE = 10 * 1024 * 1024
-const MAX_FILES = 10
-
-const ALLOWED_FILE_TYPES = new Set([
+const ALLOWED_CONTENT_TYPES = [
   'application/pdf',
   'application/msword',
   'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
@@ -273,7 +273,8 @@ const ALLOWED_FILE_TYPES = new Set([
   'application/vnd.openxmlformats-officedocument.presentationml.presentation',
   'text/plain',
   'text/csv',
-])
+]
+const MAX_FILES = 10
 
 /*
  * ================================================================
@@ -329,12 +330,6 @@ function getStringArray(formData: FormData, fieldName: string): string[] {
     .filter((value): value is string => typeof value === 'string')
     .map((value) => value.trim())
     .filter(Boolean)
-}
-
-function getFiles(formData: FormData): File[] {
-  return formData
-    .getAll('documents')
-    .filter((value): value is File => value instanceof File && value.size > 0)
 }
 
 /*
@@ -789,44 +784,6 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
     /*
      * ==============================================================
-     * DOCUMENT VALIDATION
-     * ==============================================================
-     */
-
-    const files = getFiles(formData)
-
-    if (files.length > MAX_FILES) {
-      return jsonError(`A maximum of ${MAX_FILES} documents can be uploaded.`)
-    }
-
-    for (const file of files) {
-      if (file.size > MAX_FILE_SIZE) {
-        return jsonError(`The file "${file.name}" exceeds the 10 MB maximum size.`)
-      }
-
-      if (!ALLOWED_FILE_TYPES.has(file.type)) {
-        return jsonError(`The file type "${file.type || 'unknown'}" is not supported.`)
-      }
-    }
-
-    const documentTypes = getStringArray(formData, 'documentTypes')
-
-    const documentDescriptions = getStringArray(formData, 'documentDescriptions')
-
-    if (documentTypes.length > files.length) {
-      return jsonError('The document metadata does not match the uploaded files.')
-    }
-
-    const invalidDocumentType = documentTypes.find(
-      (value) => !isOneOf(value, DOCUMENT_TYPE_OPTIONS),
-    )
-
-    if (invalidDocumentType) {
-      return jsonError('One or more document types are invalid.')
-    }
-
-    /*
-     * ==============================================================
      * PAYLOAD
      * ==============================================================
      */
@@ -845,39 +802,110 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
     const documents: NonNullable<RfpSubmission['documents']> = []
 
-    for (let index = 0; index < files.length; index += 1) {
-      const file = files[index]
+    const uploadedDocumentsRaw = formData.get('uploadedDocuments')
 
-      const arrayBuffer = await file.arrayBuffer()
+    if (typeof uploadedDocumentsRaw !== 'string') {
+      return jsonError('No uploaded documents were provided.')
+    }
 
-      const media = await payload.create({
-        collection: 'media',
-        overrideAccess: true,
+    let uploadedDocuments: Array<{
+      documentType?: string
+      documentDescription?: string
+      fileName?: string
+      blobPathname?: string
+    }>
 
-        data: {
-          alt: file.name,
-        },
+    try {
+      uploadedDocuments = JSON.parse(uploadedDocumentsRaw)
+    } catch {
+      return jsonError('The uploaded document information is invalid.')
+    }
 
-        file: {
-          data: Buffer.from(arrayBuffer),
+    if (!Array.isArray(uploadedDocuments)) {
+      return jsonError('The uploaded document information is invalid.')
+    }
 
-          mimetype: file.type || 'application/octet-stream',
+    if (uploadedDocuments.length > MAX_FILES) {
+      return jsonError(`A maximum of ${MAX_FILES} documents may be uploaded.`)
+    }
 
-          name: file.name,
+    for (let index = 0; index < uploadedDocuments.length; index += 1) {
+      const uploadedDocument = uploadedDocuments[index]
 
-          size: file.size,
-        },
-      })
+      const fileName = uploadedDocument.fileName?.trim()
 
-      const documentTypeValue = documentTypes[index] || 'Supporting Document'
+      if (!fileName) {
+        return jsonError(`The file name for document ${index + 1} is missing.`)
+      }
+
+      if (fileName.length > 255) {
+        return jsonError(`The file name for "${fileName}" is too long.`)
+      }
+
+      const blobPathname = uploadedDocument.blobPathname?.trim()
+
+      if (!blobPathname) {
+        return jsonError(`The Blob pathname for "${fileName}" is missing.`)
+      }
+
+      if (!blobPathname.startsWith('rfp-pending/') || blobPathname.includes('..')) {
+        return jsonError(`The Blob pathname for "${fileName}" is invalid.`)
+      }
+
+      const documentTypeValue = uploadedDocument.documentType || 'Supporting Document'
 
       if (!isOneOf(documentTypeValue, DOCUMENT_TYPE_OPTIONS)) {
-        return jsonError(`The document type for "${file.name}" is invalid.`)
+        return jsonError(`The document type for "${fileName}" is invalid.`)
       }
 
       const documentType: DocumentType = documentTypeValue
 
-      const documentDescription = documentDescriptions[index] || undefined
+      const documentDescription = uploadedDocument.documentDescription?.trim() || undefined
+
+      let blob
+
+      try {
+        blob = await head(blobPathname, {
+          ...getRFPBlobAuthOptions(),
+        })
+      } catch (blobError) {
+        console.error(
+          `[TRYVION RFP Blob Verification] Unable to verify "${blobPathname}"`,
+          blobError,
+        )
+
+        return jsonError(
+          `The uploaded document "${fileName}" could not be verified in secure storage.`,
+        )
+      }
+
+      if (!blob) {
+        return jsonError(
+          `The uploaded document "${fileName}" could not be found in secure storage.`,
+        )
+      }
+
+      if (blob.pathname !== blobPathname) {
+        return jsonError(
+          `The uploaded document "${fileName}" could not be verified in secure storage.`,
+        )
+      }
+
+      if (!blob.pathname.startsWith('rfp-pending/')) {
+        return jsonError(`The uploaded document "${fileName}" is not a valid RFP document.`)
+      }
+
+      if (blob.size <= 0) {
+        return jsonError(`The uploaded document "${fileName}" is empty.`)
+      }
+
+      if (blob.size > MAX_FILE_SIZE) {
+        return jsonError(`"${fileName}" exceeds the 10 MB file size limit.`)
+      }
+
+      if (!ALLOWED_CONTENT_TYPES.includes(blob.contentType)) {
+        return jsonError(`The file type for "${fileName}" is not allowed.`)
+      }
 
       documents.push({
         documentType,
@@ -886,7 +914,17 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
               documentDescription,
             }
           : {}),
-        file: Number(media.id),
+        fileName,
+        blobPathname: blob.pathname,
+        blobUrl: blob.url,
+        contentType: blob.contentType,
+        fileSize: blob.size,
+        ...(blob.etag
+          ? {
+              etag: blob.etag,
+            }
+          : {}),
+        uploadedAt: blob.uploadedAt.toISOString(),
       })
     }
 
