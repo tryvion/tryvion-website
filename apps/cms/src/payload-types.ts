@@ -74,6 +74,7 @@ export interface Config {
     'contact-submissions': ContactSubmission;
     'rfp-submissions': RfpSubmission;
     'sales-enquiries': SalesEnquiry;
+    'customer-support': CustomerSupport;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -88,6 +89,7 @@ export interface Config {
     'contact-submissions': ContactSubmissionsSelect<false> | ContactSubmissionsSelect<true>;
     'rfp-submissions': RfpSubmissionsSelect<false> | RfpSubmissionsSelect<true>;
     'sales-enquiries': SalesEnquiriesSelect<false> | SalesEnquiriesSelect<true>;
+    'customer-support': CustomerSupportSelect<false> | CustomerSupportSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -779,6 +781,65 @@ export interface SalesEnquiry {
   createdAt: string;
 }
 /**
+ * Customer support requests submitted through the TRYVION Customer Support page.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "customer-support".
+ */
+export interface CustomerSupport {
+  id: number;
+  /**
+   * Public-facing support ticket identifier.
+   */
+  ticketId: string;
+  fullName: string;
+  company: string;
+  workEmail: string;
+  phone?: string | null;
+  /**
+   * Primary support service area used for routing.
+   */
+  supportArea: 'SAP Applications' | 'AI & Automation' | 'Integration & Technology' | 'Operate' | 'Other Enquiry';
+  /**
+   * Priority selected by the customer based on business impact.
+   */
+  supportPriority: 'Low' | 'Medium' | 'High' | 'Critical / Urgent';
+  /**
+   * Optional customer, project, contract or reference identifier.
+   */
+  customerProjectReference?: string | null;
+  issue: string;
+  /**
+   * Private Vercel Blob metadata. Files are uploaded directly to Blob and verified before the ticket is created.
+   */
+  attachments?:
+    | {
+        fileName: string;
+        blobPathname: string;
+        contentType: string;
+        fileSize: number;
+        uploadedAt: string;
+        id?: string | null;
+      }[]
+    | null;
+  privacyConsent: boolean;
+  privacyConsentAt?: string | null;
+  marketingConsent?: boolean | null;
+  /**
+   * Honeypot anti-spam field.
+   */
+  website?: string | null;
+  /**
+   * Support team selected automatically from the support area.
+   */
+  routingTeam: 'SAP Applications' | 'AI & Automation' | 'Integration & Technology' | 'Operate' | 'Customer Support';
+  status: 'new' | 'in_progress' | 'awaiting_customer' | 'resolved' | 'closed' | 'spam';
+  source?: string | null;
+  submittedAt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -829,6 +890,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'sales-enquiries';
         value: number | SalesEnquiry;
+      } | null)
+    | ({
+        relationTo: 'customer-support';
+        value: number | CustomerSupport;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -1091,6 +1156,41 @@ export interface SalesEnquiriesSelect<T extends boolean = true> {
   privacyConsentAt?: T;
   marketingConsent?: T;
   website?: T;
+  status?: T;
+  source?: T;
+  submittedAt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "customer-support_select".
+ */
+export interface CustomerSupportSelect<T extends boolean = true> {
+  ticketId?: T;
+  fullName?: T;
+  company?: T;
+  workEmail?: T;
+  phone?: T;
+  supportArea?: T;
+  supportPriority?: T;
+  customerProjectReference?: T;
+  issue?: T;
+  attachments?:
+    | T
+    | {
+        fileName?: T;
+        blobPathname?: T;
+        contentType?: T;
+        fileSize?: T;
+        uploadedAt?: T;
+        id?: T;
+      };
+  privacyConsent?: T;
+  privacyConsentAt?: T;
+  marketingConsent?: T;
+  website?: T;
+  routingTeam?: T;
   status?: T;
   source?: T;
   submittedAt?: T;

@@ -402,7 +402,7 @@ export default function SalesEnquiriesPage() {
     const timeout = window.setTimeout(() => controller.abort(), 20_000);
 
     try {
-      const response = await fetch('/api/sales-enquiries', {
+      const response = await fetch('/api/sales-enquiries/submit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -603,7 +603,9 @@ export default function SalesEnquiriesPage() {
           <div className="se-container se-form-container">
             <div className="se-section-heading se-form-heading">
               <h2 id="enquiry-title">Send us your enquiry</h2>
-              <p>Please share your details below and our team will be in touch.</p>
+              <p style={{ fontSize: '1rem' }}>
+                Please share your details below and our team will be in touch.
+              </p>
             </div>
 
             {status === 'success' ? (

@@ -76,3 +76,5 @@ pnpm-debug.log*
 next-env.d.ts
 # Turbo cache
 .turbo/
+.vercel
+.env*
