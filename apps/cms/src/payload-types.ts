@@ -73,6 +73,7 @@ export interface Config {
     team: Team;
     'contact-submissions': ContactSubmission;
     'rfp-submissions': RfpSubmission;
+    'sales-enquiries': SalesEnquiry;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -86,6 +87,7 @@ export interface Config {
     team: TeamSelect<false> | TeamSelect<true>;
     'contact-submissions': ContactSubmissionsSelect<false> | ContactSubmissionsSelect<true>;
     'rfp-submissions': RfpSubmissionsSelect<false> | RfpSubmissionsSelect<true>;
+    'sales-enquiries': SalesEnquiriesSelect<false> | SalesEnquiriesSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -711,6 +713,72 @@ export interface RfpSubmission {
   createdAt: string;
 }
 /**
+ * Sales and commercial enquiries submitted through the TRYVION Sales Enquiries page.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sales-enquiries".
+ */
+export interface SalesEnquiry {
+  id: number;
+  /**
+   * Full name provided by the website visitor.
+   */
+  fullName: string;
+  /**
+   * Optional job title or role.
+   */
+  jobTitle?: string | null;
+  /**
+   * Company or organisation name.
+   */
+  company: string;
+  /**
+   * Country or region entered as free text.
+   */
+  countryRegion: string;
+  /**
+   * Business email address.
+   */
+  workEmail: string;
+  /**
+   * Commercial intent selected by the website visitor.
+   */
+  enquiryType:
+    'Services & Solutions' | 'Commercial Enquiries' | 'Existing Opportunities' | 'Partnerships' | 'General Enquiries';
+  /**
+   * Optional international telephone number.
+   */
+  phone?: string | null;
+  /**
+   * Business requirement, question, or commercial enquiry.
+   */
+  message: string;
+  /**
+   * Mandatory privacy consent supplied by the website visitor.
+   */
+  privacyConsent: boolean;
+  /**
+   * Timestamp at which mandatory privacy consent was accepted.
+   */
+  privacyConsentAt?: string | null;
+  /**
+   * Optional consent to receive TRYVION insights, updates, and promotional communications.
+   */
+  marketingConsent?: boolean | null;
+  /**
+   * Honeypot anti-spam field. Genuine submissions must leave this empty.
+   */
+  website?: string | null;
+  status: 'new' | 'in_progress' | 'contacted' | 'qualified' | 'closed' | 'spam';
+  /**
+   * Submission source.
+   */
+  source?: string | null;
+  submittedAt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -757,6 +825,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'rfp-submissions';
         value: number | RfpSubmission;
+      } | null)
+    | ({
+        relationTo: 'sales-enquiries';
+        value: number | SalesEnquiry;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -999,6 +1071,29 @@ export interface RfpSubmissionsSelect<T extends boolean = true> {
   accountStatus?: T;
   internalNotes?: T;
   followUpDate?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sales-enquiries_select".
+ */
+export interface SalesEnquiriesSelect<T extends boolean = true> {
+  fullName?: T;
+  jobTitle?: T;
+  company?: T;
+  countryRegion?: T;
+  workEmail?: T;
+  enquiryType?: T;
+  phone?: T;
+  message?: T;
+  privacyConsent?: T;
+  privacyConsentAt?: T;
+  marketingConsent?: T;
+  website?: T;
+  status?: T;
+  source?: T;
+  submittedAt?: T;
   updatedAt?: T;
   createdAt?: T;
 }

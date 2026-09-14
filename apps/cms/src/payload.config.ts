@@ -13,6 +13,7 @@ import { Insights } from './collections/Insights'
 import { Team } from './collections/Team'
 import { ContactSubmissions } from './collections/ContactSubmissions'
 import { RFPSubmissions } from './collections/RFPSubmissions'
+import { SalesEnquiries } from './collections/SalesEnquiries'
 import { SiteSettings } from './globals/SiteSettings'
 
 const filename = fileURLToPath(import.meta.url)
@@ -53,7 +54,7 @@ export default buildConfig({
     },
   },
 
-  collections: [Users, Media, Insights, Team, ContactSubmissions, RFPSubmissions],
+  collections: [Users, Media, Insights, Team, ContactSubmissions, RFPSubmissions, SalesEnquiries],
 
   globals: [SiteSettings],
 
