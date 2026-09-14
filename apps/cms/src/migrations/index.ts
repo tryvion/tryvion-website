@@ -2,6 +2,7 @@ import * as migration_20260911_071221 from './20260911_071221';
 import * as migration_20260911_100801 from './20260911_100801';
 import * as migration_20260912_115949 from './20260912_115949';
 import * as migration_20260914_065924 from './20260914_065924';
+import * as migration_20260914_104721_add_customer_support_locked_documents_relation from './20260914_104721_add_customer_support_locked_documents_relation';
 
 export const migrations = [
   {
@@ -22,6 +23,11 @@ export const migrations = [
   {
     up: migration_20260914_065924.up,
     down: migration_20260914_065924.down,
-    name: '20260914_065924'
+    name: '20260914_065924',
+  },
+  {
+    up: migration_20260914_104721_add_customer_support_locked_documents_relation.up,
+    down: migration_20260914_104721_add_customer_support_locked_documents_relation.down,
+    name: '20260914_104721_add_customer_support_locked_documents_relation'
   },
 ];
