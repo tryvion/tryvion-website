@@ -104,7 +104,7 @@ export async function POST(request: NextRequest) {
     }, TIMEOUT_MS);
 
     try {
-      const cmsResponse = await fetch(`${cmsUrl}/api/sales-enquiries`, {
+      const cmsResponse = await fetch(`${cmsUrl}/api/sales-enquiries/submit`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

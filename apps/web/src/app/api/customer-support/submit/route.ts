@@ -15,12 +15,7 @@ const SUPPORT_AREAS = new Set([
   'Other Enquiry',
 ]);
 
-const SUPPORT_PRIORITIES = new Set([
-  'Low',
-  'Medium',
-  'High',
-  'Critical / Urgent',
-]);
+const SUPPORT_PRIORITIES = new Set(['Low', 'Medium', 'High', 'Critical / Urgent']);
 
 type RateEntry = {
   count: number;
@@ -31,9 +26,7 @@ const globalStore = globalThis as typeof globalThis & {
   __tryvionCustomerSupportRateLimit?: Map<string, RateEntry>;
 };
 
-const rateLimit =
-  globalStore.__tryvionCustomerSupportRateLimit ??
-  new Map<string, RateEntry>();
+const rateLimit = globalStore.__tryvionCustomerSupportRateLimit ?? new Map<string, RateEntry>();
 
 globalStore.__tryvionCustomerSupportRateLimit = rateLimit;
 
@@ -226,14 +219,23 @@ export async function POST(request: Request) {
         );
       }
 
-      if (!blobPathname || blobPathname.includes('..') || !blobPathname.startsWith('support-pending/')) {
+      if (
+        !blobPathname ||
+        blobPathname.includes('..') ||
+        !blobPathname.startsWith('support-pending/')
+      ) {
         return NextResponse.json(
           { success: false, message: 'One or more attachment storage paths are invalid.' },
           { status: 400 },
         );
       }
 
-      if (!contentType || !Number.isFinite(fileSize) || fileSize <= 0 || fileSize > 2 * 1024 * 1024) {
+      if (
+        !contentType ||
+        !Number.isFinite(fileSize) ||
+        fileSize <= 0 ||
+        fileSize > 2 * 1024 * 1024
+      ) {
         return NextResponse.json(
           { success: false, message: `The attachment "${fileName}" is invalid.` },
           { status: 400 },
@@ -246,7 +248,7 @@ export async function POST(request: Request) {
       process.env.NEXT_PUBLIC_CMS_URL?.trim().replace(/\/+$/, '') ||
       'http://localhost:3001';
 
-    const response = await fetch(`${configuredCmsUrl}/api/customer-support`, {
+    const response = await fetch(`${configuredCmsUrl}/api/customer-support/submit`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
