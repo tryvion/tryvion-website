@@ -329,7 +329,7 @@ export default function ApplicationsPage() {
                   strokeLinejoin="round"
                 />
               </svg>
-              <span style={{ color: '#fff' }}>Tryvion Applications</span>
+              <span style={{ color: '#fff' }}>Tryvion Transformation/Advisory</span>
             </nav>
             <p
               style={{
@@ -341,7 +341,7 @@ export default function ApplicationsPage() {
                 margin: '0 0 1.25rem',
               }}
             >
-              Tryvion Applications
+              Tryvion Transformation/Advisory
             </p>
             <h1
               style={{
@@ -355,7 +355,7 @@ export default function ApplicationsPage() {
                 maxWidth: '22ch',
               }}
             >
-              Enterprise Applications. Built for What Comes Next.
+              Shape the transformation. Deliver with confidence.
             </h1>
             <p
               style={{
@@ -366,8 +366,8 @@ export default function ApplicationsPage() {
                 maxWidth: '46ch',
               }}
             >
-              Modernise the enterprise with intelligent applications that connect business
-              processes, people and technology.
+              Turn transformation ambition into a clear strategy, architecture and roadmap for
+              change.
             </p>
             <p
               style={{
@@ -378,8 +378,9 @@ export default function ApplicationsPage() {
                 maxWidth: '52ch',
               }}
             >
-              TRYVION helps organisations transform the systems at the heart of their business —
-              creating a stronger digital foundation for growth, intelligence and continuous change.
+              TRYVION brings senior practitioner-led insight across business, SAP and technology to
+              help organisations make better decisions, reduce complexity and create a foundation
+              for sustainable transformation.
             </p>
             <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
               <Link href="/contact" style={goldBtn}>
@@ -417,12 +418,12 @@ export default function ApplicationsPage() {
             >
               Enterprise transformation is no longer about technology alone. It is about creating a
               connected foundation that enables organisations to operate with greater agility, make
-              better decisions and continuously adapt to change.
+              better decisions and continuously adapt.
             </p>
             <p style={{ fontSize: '0.9375rem', lineHeight: 1.8, color: t.body, margin: 0 }}>
-              TRYVION brings together SAP enterprise applications and transformation expertise to
-              help organisations modernise their core, connect critical business capabilities and
-              create a foundation for intelligent growth.
+              TRYVION combines SAP enterprise application expertise with business-led transformation
+              thinking to modernise the core, connect critical business capabilities and create the
+              platform for intelligent, sustainable growth.
             </p>
           </Reveal>
           <Reveal delay={120} style={{ justifySelf: 'center' }}>
@@ -441,7 +442,7 @@ export default function ApplicationsPage() {
         <div style={wrap}>
           <Reveal>
             <Eyebrow label="Our Applications Capabilities" />
-            <h2 style={h2}>Three Foundations for a More Connected Enterprise.</h2>
+            <h2 style={h2}>Foundations for a More Connected Enterprise.</h2>
           </Reveal>
           <div
             style={{
@@ -457,7 +458,7 @@ export default function ApplicationsPage() {
                 title: 'SAP S/4HANA',
                 tag: 'Modernise the enterprise core.',
                 desc: 'Transform the systems and processes that run your business with a modern SAP ERP foundation designed for greater standardisation, intelligence and continuous innovation.',
-                href: '/services/sap',
+                href: '/services/applications/sap-s4hana',
                 cta: 'Explore SAP S/4HANA',
                 icon: 'cube-outline',
               },
@@ -466,7 +467,7 @@ export default function ApplicationsPage() {
                 title: 'SAP SuccessFactors',
                 tag: 'Connect people with the business.',
                 desc: 'Create a more connected workforce experience by bringing people, processes, workforce information and enterprise strategy together.',
-                href: '/services/sap/successfactors',
+                href: '/services/applications/sap-successfactors',
                 cta: 'Explore SAP SuccessFactors',
                 icon: 'account-group-outline',
               },
@@ -475,7 +476,7 @@ export default function ApplicationsPage() {
                 title: 'SAP Business Technology Platform',
                 tag: 'Connect. Extend. Innovate.',
                 desc: 'Connect applications and data, extend the digital core and create new capabilities without compromising the integrity of the enterprise landscape.',
-                href: '/services/sap/btp',
+                href: '/services/applications/sap-btp',
                 cta: 'Explore SAP BTP',
                 icon: 'cloud-outline',
               },
@@ -535,7 +536,7 @@ export default function ApplicationsPage() {
         </div>
       </section>
 
-      {/* ═══ ECOSYSTEM — node icons matched to each pillar ═══ */}
+      {/* ═══ ECOSYSTEM — node icons matched to each pillar 
       <section style={{ ...sectionPad, background: t.bg1 }}>
         <div style={wrap}>
           <Reveal>
@@ -668,9 +669,9 @@ export default function ApplicationsPage() {
             </div>
           </Reveal>
         </div>
-      </section>
+      </section> ═══ */}
 
-      {/* ═══ FOUNDATION — icons matched to each principle ═══ */}
+      {/* ═══ FOUNDATION — icons matched to each principle 
       <section style={{ ...sectionPad, background: t.bg2 }}>
         <div style={wrap}>
           <Reveal>
@@ -741,7 +742,7 @@ export default function ApplicationsPage() {
             ))}
           </div>
         </div>
-      </section>
+      </section> ═══ */}
 
       {/* ═══ APPROACH (dark) ═══ */}
       <section style={{ ...sectionPad, background: '#0B1E3D' }}>
@@ -749,33 +750,37 @@ export default function ApplicationsPage() {
           <Reveal>
             <Eyebrow label="The Tryvion Approach" color={t.gold} />
             <h2 style={h2w}>From Complexity to Clarity.</h2>
+            <p style={{ color: '#fff' }}>
+              A pragmatic, business-led approach that challenges assumptions, protects the core and
+              keeps transformation focused on outcomes.
+            </p>
           </Reveal>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', marginTop: '3rem' }}>
             {[
               {
                 n: '01',
                 t: 'Understand',
-                d: 'Understand the business, operating model and enterprise applications and transformation objectives.',
+                d: 'Understand what matters : Understand the business, operating model, technology landscape and outcomes before defining the solution',
               },
               {
                 n: '02',
-                t: 'Envision',
-                d: 'Define the future-state enterprise and the capabilities required to achieve it.',
+                t: 'Challenge',
+                d: 'Challenge before you change : Question requirements, assumptions and customisation before complexity and cost become embedded',
               },
               {
                 n: '03',
-                t: 'Transform',
-                d: 'Modernise applications and processes around the right enterprise architecture.',
+                t: 'Envision',
+                d: 'Design for what comes next : Define a SaaS-first future state built around standard capabilities, Clean Core principles and sustainable architecture',
               },
               {
                 n: '04',
-                t: 'Connect',
-                d: 'Integrate applications, data, people and processes across the organisation.',
+                t: 'Transform',
+                d: 'Turn strategy into outcomes : Modernise applications, processes and data with experienced practitioners focused on business value—not simply delivery activity',
               },
               {
                 n: '05',
                 t: 'Evolve',
-                d: 'Continuously improve the enterprise as new opportunities emerge.',
+                d: 'Keep transformation moving : Continuously optimise, innovate and independently challenge decisions as the business and technology landscape evolve',
               },
             ].map((s, i, arr) => (
               <Reveal key={s.n} delay={i * 80} style={{ flex: '1 1 180px', minWidth: '180px' }}>
@@ -793,7 +798,7 @@ export default function ApplicationsPage() {
                     <div style={{ flex: 1 }}>
                       <p
                         style={{
-                          fontSize: '0.8125rem',
+                          fontSize: '1rem',
                           fontWeight: 800,
                           color: t.gold,
                           margin: '0 0 0.625rem',
@@ -803,7 +808,7 @@ export default function ApplicationsPage() {
                       </p>
                       <h3
                         style={{
-                          fontSize: '0.9375rem',
+                          fontSize: '1.15rem',
                           fontWeight: 800,
                           color: '#fff',
                           margin: '0 0 0.625rem',
@@ -813,7 +818,7 @@ export default function ApplicationsPage() {
                       </h3>
                       <p
                         style={{
-                          fontSize: '0.75rem',
+                          fontSize: '0.80rem',
                           lineHeight: 1.6,
                           color: 'rgba(255,255,255,0.55)',
                           margin: 0,
@@ -824,7 +829,7 @@ export default function ApplicationsPage() {
                     </div>
                     {i < arr.length - 1 && (
                       <span className="app-step-arrow" aria-hidden="true">
-                        <Arrow size={14} color="rgba(255,255,255,0.35)" />
+                        <Arrow size={16} color="rgba(255,255,255,0.35)" />
                       </span>
                     )}
                   </div>
@@ -840,7 +845,11 @@ export default function ApplicationsPage() {
         <div style={wrap}>
           <Reveal>
             <Eyebrow label="Why Tryvion" />
-            <h2 style={h2}>Application Transformation With a Business-First Mindset.</h2>
+            <h2 style={h2}>Transform the Business. Modernise the Core.</h2>
+            <p>
+              Business-led, practitioner-driven transformation that challenges complexity and keeps
+              technology decisions focused on outcomes
+            </p>
           </Reveal>
           <div
             style={{
@@ -857,24 +866,19 @@ export default function ApplicationsPage() {
                 icon: 'briefcase-outline',
               },
               {
-                t: 'SAP Expertise',
-                d: 'Bring specialist SAP knowledge across enterprise applications and technology.',
+                t: 'Practitioner-Led Expertise',
+                d: 'Bring senior SAP and transformation expertise to the decisions that shape successful outcomes.',
                 icon: 'medal-outline',
               },
               {
-                t: 'Connected Thinking',
-                d: 'Look beyond individual systems to understand how applications work together across the enterprise.',
+                t: 'Change to Independent Challenge',
+                d: 'Challenge assumptions, requirements and design decisions before they become costly complexity.',
                 icon: 'graph-outline',
               },
               {
-                t: 'Cleaner Foundations',
-                d: 'Reduce unnecessary complexity and create an application landscape designed for long-term adaptability.',
+                t: 'Clean Core by Design',
+                d: 'Protect the core through SaaS-first thinking, standard capabilities and architecture built for continuous change.',
                 icon: 'layers-outline',
-              },
-              {
-                t: 'Continuous Transformation',
-                d: 'Treat implementation as the beginning of an ongoing transformation journey.',
-                icon: 'autorenew',
               },
             ].map((w, i) => (
               <Reveal key={w.t} delay={i * 80}>
@@ -1031,7 +1035,7 @@ export default function ApplicationsPage() {
           background: '#030D22',
         }}
       >
-        <div style={{ ...wrap, maxWidth: '92rem' }}>
+        <div style={{ ...wrap, maxWidth: '92rem', marginTop: '3rem', marginBottom: '3rem' }}>
           <Reveal>
             <div
               style={{
@@ -1046,17 +1050,17 @@ export default function ApplicationsPage() {
               <div>
                 <Eyebrow label="Proof" color={t.gold} />
                 <h2 style={{ ...h2w, fontSize: 'clamp(1.5rem,2.6vw,2.125rem)', margin: 0 }}>
-                  Experience That Creates Value.
+                  Experience That Stands Behind Our Advice
                 </h2>
               </div>
             </div>
-            <div className="proof-grid">
+            <div className="proof-grid" style={{ marginTop: '3rem', marginBottom: '3rem' }}>
               {[
-                { t: 'Verified\nClient Logos', icon: 'office-building-outline' },
-                { t: 'Verified\nCredentials', icon: 'certificate-outline' },
-                { t: 'Verified\nCase Studies', icon: 'file-document-outline' },
-                { t: 'Verified\nClient Outcomes', icon: 'chart-line' },
-                { t: 'Verified\nIndustry Experience', icon: 'earth' },
+                { t: 'Enterprise Client Experience', icon: 'office-building-outline' },
+                { t: 'Proven Expertise', icon: 'certificate-outline' },
+                { t: 'Transformation Experience', icon: 'file-document-outline' },
+                { t: 'Proven Outcomes', icon: 'chart-line' },
+                { t: 'Cross-Industry Experience', icon: 'earth' },
               ].map((p) => (
                 <div key={p.t} className="proof-item">
                   <span
@@ -1075,7 +1079,7 @@ export default function ApplicationsPage() {
                   </span>
                   <span
                     style={{
-                      fontSize: '0.8125rem',
+                      fontSize: '1rem',
                       lineHeight: 1.4,
                       color: 'rgba(255,255,255,0.7)',
                       whiteSpace: 'pre-line',
@@ -1090,7 +1094,7 @@ export default function ApplicationsPage() {
         </div>
       </section>
 
-      {/* ═══ PERSPECTIVE ═══ */}
+      {/* ═══ PERSPECTIVE 
       <section style={{ ...sectionPad, background: t.bg1 }}>
         <div style={wrap}>
           <Reveal>
@@ -1193,7 +1197,7 @@ export default function ApplicationsPage() {
             ))}
           </div>
         </div>
-      </section>
+      </section> ═══ */}
 
       {/* ═══ CAREERS ═══ */}
       <section style={{ background: '#0B1E3D', overflow: 'hidden' }}>
@@ -1315,7 +1319,7 @@ export default function ApplicationsPage() {
               <Link href="/contact" style={goldBtn}>
                 Talk to an Expert <Arrow />
               </Link>
-              <Link href="/contact/consultation" style={goldOutline}>
+              <Link href="/contact/book-a-consultation" style={goldOutline}>
                 Book a Consultation <Arrow />
               </Link>
             </div>

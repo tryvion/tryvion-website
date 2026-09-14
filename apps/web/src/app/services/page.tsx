@@ -87,6 +87,14 @@ function Icon({ name, color }: { name: string; color: string }) {
           <circle cx="12" cy="12" r="3" />
         </>
       )}
+      {name === 'evolve' && (
+        <>
+          <path d="M21 12a9 9 0 0 0-15.6-6.1L3 8" />
+          <path d="M3 3v5h5" />
+          <path d="M3 12a9 9 0 0 0 15.6 6.1L21 16" />
+          <path d="M21 21v-5h-5" />
+        </>
+      )}
       {name === 'rocket' && (
         <>
           <path d="M14 4c3.5 0 6 2.5 6 6-2.5 1-4.5 2.5-6.5 4.5L9 10c2-2 3.5-4 5-6z" />
@@ -137,9 +145,9 @@ const SERVICES = [
   {
     icon: 'cube',
     color: BLUE,
-    eyebrow: 'TRYVION TRANSFORMATION',
-    title: 'Modernise the enterprise.',
-    body: 'Transform the systems at the heart of your business with intelligent enterprise applications.',
+    eyebrow: 'TRYVION TRANSFORMATION/ADVISORY',
+    title: 'Transform with clarity. Deliver with confidence.',
+    body: 'Shape the right strategy, architecture and roadmap to turn transformation ambition into measurable value.',
     href: '/services/applications',
   },
   {
@@ -148,7 +156,7 @@ const SERVICES = [
     eyebrow: 'TRYVION AI',
     title: 'Turn intelligence into action.',
     body: 'Move from AI experimentation to enterprise value with strategy, platforms and intelligent automation.',
-    href: '/services/artificial-intelligence',
+    href: '/services/artificial-intelligence/enterprise-ai-strategy',
   },
   {
     icon: 'users',
@@ -162,15 +170,15 @@ const SERVICES = [
     icon: 'cap',
     color: PURPLE,
     eyebrow: 'TRYVION ACADEMY',
-    title: 'Build transformation-ready capability.',
-    body: 'Develop the skills, confidence and expertise to thrive in an evolving digital world.',
+    title: 'Learn. Apply. Advance.',
+    body: 'Build practical AI and transformation skills through expert-led learning and real-world enablement.',
     href: '/services/academy',
   },
   {
     icon: 'operate',
     color: TEAL,
     eyebrow: 'TRYVION OPERATE',
-    title: 'Run today. Improve tomorrow.',
+    title: 'Run better. Improve continuously.',
     body: 'Stabilise, automate, optimise and continuously improve your SAP environments.',
     href: '/services/operate',
   },
@@ -178,17 +186,17 @@ const SERVICES = [
     icon: 'rocket',
     color: BLUE,
     eyebrow: 'TRYVION LABS',
-    title: 'Innovate. Accelerate. Create impact.',
-    body: 'Leverage accelerators and reusable assets to drive innovation at speed and scale.',
-    href: '/services/labs',
+    title: 'Imagine. Build. Accelerate.',
+    body: 'Turn ideas into practical solutions with accelerators, reusable assets and emerging technology',
+    href: '#',
   },
   {
     icon: 'cert',
     color: GOLD,
     eyebrow: 'TRYVION DATA',
-    title: 'Analyse. Decisions. Lead.',
+    title: 'Analyse. Decision. Lead.',
     body: 'Turn data into decisions and new opportunities.',
-    href: '/services/data',
+    href: '#',
   },
   {
     icon: 'cloud',
@@ -196,49 +204,86 @@ const SERVICES = [
     eyebrow: 'TRYVION CLOUD',
     title: 'Secure. Scale. Capture.',
     body: 'Build a secure, scalable and future-ready enterprise.',
-    href: '/services/cloud',
+    href: '#',
   },
 ];
 
 const ECOSYSTEM = [
-  { icon: 'cube', color: BLUE, label: 'Applications', desc: 'Modernise the enterprise.' },
-  { icon: 'sparkle', color: INDIGO, label: 'AI', desc: 'Make intelligence actionable.' },
+  {
+    icon: 'cube',
+    color: BLUE,
+    label: 'Transformation & Advisory',
+    desc: 'Shape the transformation.',
+  },
+  {
+    icon: 'sparkle',
+    color: INDIGO,
+    label: 'AI',
+    desc: 'Put intelligence to work.',
+  },
   {
     icon: 'users',
     color: GOLD,
     label: 'Talent',
-    desc: 'Build the capabilities transformation demands.',
+    desc: 'Access the expertise transformation demands.',
   },
-  { icon: 'cap', color: PURPLE, label: 'Academy', desc: 'Develop transformation-ready skills.' },
+  {
+    icon: 'cap',
+    color: PURPLE,
+    label: 'Academy',
+    desc: 'Build transformation-ready capability.',
+  },
   {
     icon: 'operate',
     color: TEAL,
     label: 'Operate',
-    desc: 'Continuously improve what you have built.',
+    desc: 'Operate better. Improve continuously.',
+  },
+  {
+    icon: 'evolve',
+    color: GOLD,
+    label: 'Evolve',
+    desc: 'Accelerate innovation. Evolve continuously.',
   },
 ];
 
 const JOURNEY = [
-  { n: '01', color: BLUE, label: 'MODERNISE', desc: 'Transform the enterprise foundation.' },
+  {
+    n: '01',
+    color: BLUE,
+    label: 'ADVISE',
+    desc: 'Transform the enterprise foundation.',
+  },
   {
     n: '02',
     color: BLUE,
-    label: 'INTELLIGENT',
+    label: 'SIMPLIFY',
     desc: 'Apply AI and automation where they create meaningful value.',
   },
   {
     n: '03',
     color: GOLD,
-    label: 'ENABLE',
+    label: 'TRANSFORM',
     desc: 'Build the people and skills required to sustain transformation.',
   },
   {
     n: '04',
     color: PURPLE,
-    label: 'OPERATE',
+    label: 'AUTOMATE',
     desc: 'Run, optimise and continuously improve the enterprise.',
   },
-  { n: '05', color: TEAL, label: 'EVOLVE', desc: 'Turn transformation into lasting momentum.' },
+  {
+    n: '05',
+    color: TEAL,
+    label: 'OPERATE',
+    desc: 'Turn transformation into lasting momentum.',
+  },
+  {
+    n: '06',
+    color: TEAL,
+    label: 'EVOLVE',
+    desc: 'Turn transformation into lasting momentum.',
+  },
 ];
 
 export default function ServicesPage() {
@@ -258,10 +303,51 @@ export default function ServicesPage() {
         .svc-card:hover{transform:translateY(-4px);box-shadow:var(--elevation-02);border-color:var(--border-strong)}
         .eco-dash{flex:1;border-top:2px dashed rgba(255,255,255,.22);margin-top:44px;min-width:1.5rem}
         .eco-item{width:150px;display:flex;flex-direction:column;align-items:center;gap:.875rem;flex-shrink:0}
-        .journey-line{position:absolute;top:27px;left:8%;right:8%;height:2px;
-          background:linear-gradient(90deg,${BLUE} 0%,${BLUE} 32%,${GOLD} 50%,${PURPLE} 70%,${TEAL} 100%);}
-        .j-item{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;text-align:center;gap:.875rem}
-        .j-body{display:flex;flex-direction:column;align-items:center;gap:.875rem}
+        /* ── TRYVION JOURNEY — responsive layout ── */
+        .tryvion-journey-inner{
+          max-width:var(--layout-content-wide);
+          margin:0 auto;
+          display:grid;
+          grid-template-columns:2fr 3fr;
+          gap:clamp(2.5rem,4vw,4.5rem);
+          align-items:center;
+        }
+        .tryvion-journey-grid{
+          position:relative;
+          min-width:0;
+          display:grid;
+          grid-template-columns:repeat(6,minmax(0,1fr));
+          gap:clamp(.5rem,1vw,.9rem);
+          align-items:start;
+        }
+        .journey-line{
+          position:absolute;
+          z-index:1;
+          top:28px;
+          left:calc(8.333% + 28px);
+          right:calc(8.333% + 28px);
+          height:1.5px;
+          background:linear-gradient(90deg,${BLUE} 0%,${BLUE} 20%,${GOLD} 40%,${PURPLE} 70%,${TEAL} 100%);
+          pointer-events:none;
+        }
+        .tryvion-journey-grid .j-item{
+          position:relative;
+          z-index:2;
+          min-width:0;
+          display:flex;
+          flex-direction:column;
+          align-items:center;
+          text-align:center;
+          gap:0;
+        }
+        .tryvion-journey-grid .j-body{
+          width:100%;
+          margin-top:1.25rem;
+          display:flex;
+          flex-direction:column;
+          align-items:center;
+          gap:.65rem;
+        }
         .j-circle{flex-shrink:0}
         .cta-wave{position:absolute;right:0;bottom:0;width:min(58%,720px);height:100%;object-fit:cover;opacity:.85;pointer-events:none;
           -webkit-mask-image:linear-gradient(to left,rgba(0,0,0,1) 45%,rgba(0,0,0,0) 100%);
@@ -290,6 +376,28 @@ export default function ServicesPage() {
         @media(max-width:1100px){.svcs-grid{grid-template-columns:repeat(2,1fr)}}
 
         /* ── tablet & mobile ── */
+        @media(max-width:1199px){
+          /* Journey → full-width below the intro, 3 × 2 grid */
+          .tryvion-journey-inner{
+            grid-template-columns:1fr;
+            gap:3.5rem;
+          }
+          .tryvion-journey-intro{
+            max-width:620px;
+          }
+          .tryvion-journey-grid{
+            grid-template-columns:repeat(3,minmax(0,1fr));
+            column-gap:clamp(1.25rem,4vw,3rem);
+            row-gap:3rem;
+          }
+          .tryvion-journey-grid .j-desc{
+            max-width:22ch;
+          }
+          .tryvion-journey-grid .journey-line{
+            display:none;
+          }
+        }
+
         @media(max-width:900px){
           .svcs-hero-img{display:none}
 
@@ -300,18 +408,130 @@ export default function ServicesPage() {
           .eco-item{min-width:160px;scroll-snap-align:center}
           .eco-dash{display:none}
 
-          /* Journey → vertical timeline with left rail */
-          .journey-grid{display:flex !important;flex-direction:column;gap:1.75rem}
-          .journey-line{display:none}
-          .j-item{flex-direction:row;align-items:flex-start;text-align:left;gap:1rem}
-          .j-body{align-items:flex-start;gap:.625rem}
-          .j-item::before{content:'';position:absolute;left:27px;top:62px;bottom:-30px;width:2px;background:var(--border-default)}
-          .j-item:last-child::before{display:none}
-
           /* CTA → stacked, full-width, nothing clips */
           .cta-grid{grid-template-columns:1fr !important;gap:2rem;align-items:start !important}
           .cta-actions{justify-self:stretch;max-width:none}
           .cta-wave{width:100%;opacity:.45}
+        }
+
+        /* ── mobile → single-column vertical timeline ── */
+        @media(max-width:767px){
+          .tryvion-journey-section{
+            padding-top:3.5rem !important;
+            padding-bottom:4rem !important;
+          }
+
+          .tryvion-journey-inner{
+            display:block;
+          }
+
+          .tryvion-journey-intro{
+            width:100%;
+            max-width:100%;
+            margin-bottom:3rem;
+          }
+
+          .tryvion-journey-intro p{
+            max-width:42ch !important;
+          }
+
+          .tryvion-journey-grid{
+            display:flex;
+            flex-direction:column;
+            gap:0;
+            width:100%;
+            padding-left:0;
+          }
+
+          .tryvion-journey-grid .j-item{
+            position:relative;
+            min-height:88px;
+            width:100%;
+            display:grid;
+            grid-template-columns:56px minmax(0,1fr);
+            column-gap:1.25rem;
+            align-items:start;
+            text-align:left;
+          }
+
+          .tryvion-journey-grid .j-circle{
+            position:relative;
+            z-index:3;
+            grid-column:1;
+            grid-row:1;
+          }
+
+          .tryvion-journey-grid .j-body{
+            grid-column:2;
+            grid-row:1;
+            width:auto;
+            margin:0;
+            padding-top:.35rem;
+            display:flex;
+            flex-direction:column;
+            align-items:flex-start;
+            gap:.45rem;
+            text-align:left;
+          }
+
+          .tryvion-journey-grid .j-body > span:first-child{
+            font-size:.6875rem;
+            line-height:1.35;
+          }
+
+          .tryvion-journey-grid .j-body > span:last-child{
+            max-width:42ch;
+            width:100%;
+            font-size:.75rem;
+            line-height:1.6;
+          }
+
+          /* Vertical timeline rail */
+          .tryvion-journey-grid .journey-line{
+            display:block;
+            position:absolute;
+            z-index:1;
+            top:28px;
+            bottom:28px;
+            left:27px;
+            right:auto;
+            width:1.5px;
+            height:auto;
+            background:linear-gradient(180deg,${BLUE} 0%,${BLUE} 20%,${GOLD} 40%,${PURPLE} 70%,${TEAL} 100%);
+          }
+        }
+
+        /* ── very small phones ── */
+        @media(max-width:480px){
+          .tryvion-journey-section{
+            padding-left:1.25rem !important;
+            padding-right:1.25rem !important;
+          }
+
+          .tryvion-journey-intro{
+            margin-bottom:2.75rem;
+          }
+
+          .tryvion-journey-grid .j-item{
+            grid-template-columns:48px minmax(0,1fr);
+            column-gap:1rem;
+            min-height:92px;
+          }
+
+          .tryvion-journey-grid .j-circle{
+            width:48px !important;
+            height:48px !important;
+          }
+
+          .tryvion-journey-grid .journey-line{
+            left:23px;
+            top:24px;
+            bottom:24px;
+          }
+
+          .tryvion-journey-grid .j-body{
+            padding-top:.15rem;
+          }
         }
         @media(max-width:640px){
           .svcs-grid{grid-template-columns:1fr}
@@ -520,7 +740,7 @@ export default function ServicesPage() {
               }}
             >
               Technology creates possibility. People create progress. Intelligence creates momentum.
-              TRYVION connects transformation across the enterprise.
+              TRYVION connects them to turn transformation into lasting value.
             </p>
             <div
               className="eco-row"
@@ -581,17 +801,8 @@ export default function ServicesPage() {
           padding: 'clamp(3rem,6vw,5rem) clamp(1.5rem,5vw,3rem) clamp(4rem,7vw,6rem)',
         }}
       >
-        <div
-          style={{
-            maxWidth: 'var(--layout-content-wide)',
-            margin: '0 auto',
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,380px),1fr))',
-            gap: 'clamp(2.5rem,5vw,4.5rem)',
-            alignItems: 'center',
-          }}
-        >
-          <div className="rv">
+        <div className="tryvion-journey-inner">
+          <div className="tryvion-journey-intro rv">
             <p
               style={{
                 fontSize: '0.6875rem',
@@ -603,6 +814,7 @@ export default function ServicesPage() {
             >
               FROM TRANSFORMATION TO MOMENTUM
             </p>
+
             <h2
               style={{
                 fontFamily: 'var(--family-display)',
@@ -618,6 +830,7 @@ export default function ServicesPage() {
               <br />
               journey
             </h2>
+
             <p
               style={{
                 fontSize: '0.9375rem',
@@ -629,6 +842,7 @@ export default function ServicesPage() {
             >
               A connected approach that turns transformation into lasting momentum.
             </p>
+
             <Link
               href="/about"
               style={{
@@ -644,23 +858,28 @@ export default function ServicesPage() {
               Learn our approach <ArrowRight color={BLUE} />
             </Link>
           </div>
-          <div
-            className="journey-grid rv-late"
-            style={{
-              position: 'relative',
-              display: 'grid',
-              gridTemplateColumns: 'repeat(5,1fr)',
-              gap: '1rem',
-            }}
-          >
+
+          <div className="tryvion-journey-grid journey-grid rv-late">
             <div className="journey-line" aria-hidden="true" />
+
             {JOURNEY.map((j) => (
-              <div key={j.n} className="j-item">
+              <div
+                key={j.n}
+                className="j-item"
+                style={{
+                  minWidth: 0,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  textAlign: 'center',
+                }}
+              >
                 <span
                   className="j-circle"
                   style={{
                     width: 56,
                     height: 56,
+                    flexShrink: 0,
                     borderRadius: '50%',
                     border: `1.5px solid ${j.color}`,
                     background: 'var(--surface-default)',
@@ -674,7 +893,18 @@ export default function ServicesPage() {
                 >
                   {j.n}
                 </span>
-                <div className="j-body">
+
+                <div
+                  className="j-body"
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: '0.65rem',
+                    marginTop: '1.25rem',
+                    width: '100%',
+                  }}
+                >
                   <span
                     style={{
                       fontSize: '0.6875rem',
@@ -685,6 +915,7 @@ export default function ServicesPage() {
                   >
                     {j.label}
                   </span>
+
                   <span
                     style={{
                       fontSize: '0.75rem',
