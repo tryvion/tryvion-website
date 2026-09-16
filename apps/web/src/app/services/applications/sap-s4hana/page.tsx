@@ -571,7 +571,7 @@ export default function S4HanaPage() {
                 textDecoration: 'none',
               }}
             >
-              Talk to an Expert <Arrow />
+              Contact Now <Arrow />
             </Link>
             <Link
               href="#paths"
@@ -928,7 +928,7 @@ export default function S4HanaPage() {
                 tag: 'Best-practice ERP. Delivered at speed.',
                 d: 'A standardised, fit-to-standard approach for organisations seeking faster implementation, lower operating complexity and continuous access to innovation.',
                 cta: 'Explore Public Edition',
-                href: '/services/sap/public-edition',
+                href: '/services/applications/sap-s4hana/public-edition',
               },
               {
                 img: IMG.cloudOrange,
@@ -937,7 +937,7 @@ export default function S4HanaPage() {
                 tag: 'Enterprise depth. Cloud flexibility.',
                 d: 'A dedicated cloud environment for organisations with complex, differentiated or highly regulated processes requiring greater configuration flexibility.',
                 cta: 'Explore Private Edition',
-                href: '/services/sap/private-edition',
+                href: '/services/applications/sap-s4hana/private-edition',
               },
             ].map((e, i) => (
               <Reveal key={e.name} delay={i * 120}>
@@ -1343,7 +1343,7 @@ export default function S4HanaPage() {
                   }}
                 >
                   <Link
-                    href="/contact"
+                    href="/contact/talk-to-an-expert"
                     style={{
                       display: 'inline-flex',
                       alignItems: 'center',
@@ -1362,7 +1362,7 @@ export default function S4HanaPage() {
                     Talk to an SAP Expert <Arrow />
                   </Link>
                   <Link
-                    href="/contact/consultation"
+                    href="/contact/book-a-consultation"
                     style={{
                       display: 'inline-flex',
                       alignItems: 'center',

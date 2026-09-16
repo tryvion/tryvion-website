@@ -556,7 +556,7 @@ export default function BtpPage() {
               <span aria-hidden="true" style={{ color: '#fff' }}>
                 ›
               </span>
-              <span style={{ color: '#fff', fontWeight: 700 }}>SAP BPT</span>
+              <span style={{ color: '#fff', fontWeight: 700 }}>SAP BTP</span>
             </nav>
             <p
               style={{
@@ -599,7 +599,7 @@ export default function BtpPage() {
               processes, and build intelligent experiences—without adding complexity to the core.
             </p>
             <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-              <Link href="/contact" style={goldBtn}>
+              <Link href="/contact/talk-to-an-expert" style={goldBtn}>
                 Talk to an Expert <Arrow />
               </Link>
               <Link href="/services/applications" style={outlineBtn('rgba(255,255,255,0.4)')}>
@@ -834,9 +834,6 @@ export default function BtpPage() {
                   We help you design a secure, governed and clean-core aligned BTP landscape built
                   for long-term innovation.
                 </p>
-                <Link href="/contact" style={outlineBtn(GOLD)}>
-                  Explore BTP Strategy <Arrow color={GOLD} />
-                </Link>
               </div>
               {/* cubes — background removed via screen blend, floating with halo */}
               <div style={{ display: 'flex', justifyContent: 'center' }}>
@@ -1119,14 +1116,17 @@ export default function BtpPage() {
                   </p>
                 </div>
                 <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-                  <Link href="/contact" style={{ ...goldBtn, background: BLUE, color: '#fff' }}>
-                    Talk to a SAP Expert <Arrow color="#fff" />
+                  <Link
+                    href="/contact/sales-enquiries"
+                    style={{ ...goldBtn, background: BLUE, color: '#fff' }}
+                  >
+                    Contact Sales <Arrow color="#fff" />
                   </Link>
-                  <Link href="/contact/consultation" style={outlineBtn(BLUE)}>
+                  <Link href="/contact/book-a-consultation" style={outlineBtn(BLUE)}>
                     Book a Consultation <Arrow color={BLUE} />
                   </Link>
-                  <Link href="/services/applications" style={outlineBtn(BLUE)}>
-                    Explore TRYVION Applications <Arrow color={BLUE} />
+                  <Link href="/contact" style={outlineBtn(BLUE)}>
+                    Contact Now <Arrow color={BLUE} />
                   </Link>
                 </div>
               </div>

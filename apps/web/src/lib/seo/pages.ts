@@ -3,9 +3,9 @@ import { buildMetadata } from '@/lib/metadata';
 
 export const pageMetadata = {
   home: buildMetadata({
-    title: 'Enterprise Transformation Partner | TRYVION',
+    title: 'Enterprise Transformation Partner',
     description:
-      'TRYVION is an independent enterprise transformation partner specialising in SAP, enterprise AI, cloud, talent and intelligent operations — helping organisations create clarity, build momentum and shape what comes next.',
+      'TRYVION is a global enterprise transformation partner delivering SAP, enterprise AI, cloud, data, digital engineering, talent and managed services to help organisations modernise, innovate and grow.',
     path: '/',
   }),
   services: buildMetadata({
@@ -101,7 +101,7 @@ export const pageMetadata = {
   applications: buildMetadata({
     title: 'Enterprise Applications & SAP Services',
     description:
-      'Modernise your enterprise core with TRYVION SAP S/4HANA, SAP SuccessFactors and SAP Business Technology Platform services.',
+      'Modernise your enterprise with TRYVION enterprise transformation and advisory services across SAP S/4HANA, SAP SuccessFactors and SAP Business Technology Platform.',
     path: '/services/applications',
   }),
   sapS4HanaPublicEdition: buildMetadata({

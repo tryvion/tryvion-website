@@ -839,7 +839,7 @@ export default function ArtificialIntelligencePage() {
               that run the enterprise.
             </p>
             <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-              <Link href="/contact" style={btnPrimary}>
+              <Link href="/contact/talk-to-an-expert" style={btnPrimary}>
                 Talk to an AI Expert <Arrow />
               </Link>
               <Link
@@ -889,6 +889,7 @@ export default function ArtificialIntelligencePage() {
                 title: 'Enterprise AI Strategy',
                 desc: 'Define where AI creates value and build a prioritised roadmap to scale it across the enterprise.',
                 img: IMG_AGENDA_1,
+                href: '/services/artificial-intelligence/enterprise-ai-strategy',
                 tags: 'Artificial Intelligence • Enterprise Strategy • Enterprise AI',
               },
               {
@@ -896,6 +897,7 @@ export default function ArtificialIntelligencePage() {
                 title: 'Enterprise AI Platforms',
                 desc: 'Build the right AI ecosystem across SAP and non-SAP technologies.',
                 img: IMG_AGENDA_2,
+                href: '/services/artificial-intelligence/enterprise-ai-platforms',
                 tags: 'Enteprise AI • AI Platforms • Artificial Intelligence',
               },
               {
@@ -903,14 +905,21 @@ export default function ArtificialIntelligencePage() {
                 title: 'Intelligent Automation',
                 desc: 'Turn intelligence into action across business processes with AI and automation.',
                 img: IMG_AGENDA_3,
+                href: '/services/artificial-intelligence/intelligent-automation',
                 tags: 'Artificial Intelligence • AI Automation • AI Agents',
               },
             ].map((item, index) => (
-              <div
+              <Link
+                href={item.href}
                 key={item.n}
                 className={`agenda-item ${activeAgendaIndex === index ? 'active' : 'inactive'}`}
                 onMouseEnter={() => setActiveAgendaIndex(index)}
                 onClick={() => setActiveAgendaIndex(index)}
+                style={{
+                  textDecoration: 'none',
+                  color: 'inherit',
+                  display: 'block',
+                }}
               >
                 <div
                   style={{
@@ -978,7 +987,7 @@ export default function ArtificialIntelligencePage() {
                     {item.tags}
                   </p>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
@@ -1622,11 +1631,11 @@ export default function ArtificialIntelligencePage() {
             </p>
           </Reveal>
           <Reveal delay={100} style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-            <Link href="/contact" style={btnPrimary}>
-              Talk to an AI Expert <Arrow />
+            <Link href="/contact/sales-enquiries" style={btnPrimary}>
+              Contact Sales <Arrow />
             </Link>
             <Link
-              href="/contact/consultation"
+              href="/contact/book-a-consultation"
               style={{ ...btnOutline, color: '#fff', borderColor: 'rgba(255,255,255,0.3)' }}
             >
               Book a Consultation <Arrow />

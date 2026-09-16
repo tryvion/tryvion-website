@@ -571,7 +571,7 @@ export default function S4HanaPublicEditionPage() {
             </p>
             <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '2rem' }}>
               <Link
-                href="/contact"
+                href="/contact/talk-to-an-expert"
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
@@ -589,7 +589,7 @@ export default function S4HanaPublicEditionPage() {
                 Talk to an SAP Expert <Arrow />
               </Link>
               <Link
-                href="/contact/consultation"
+                href="/contact/book-a-consultation"
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
@@ -801,12 +801,12 @@ export default function S4HanaPublicEditionPage() {
               and continuous innovation.
               <br />
               We help organisations adopt SAP S/4HANA Cloud, Public Edition through a
-              fit-to-standard approach-simplifying processes, reducing unnecessary complexity and
+              fit-to-standard approach—simplifying processes, reducing unnecessary complexity and
               creating a scalable ERP foundation designed for what comes next.
             </p>
             <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
               <Link
-                href="/contact"
+                href="/contact/talk-to-an-expert"
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
@@ -1023,7 +1023,7 @@ export default function S4HanaPublicEditionPage() {
                   }}
                 >
                   <Link
-                    href="/contact"
+                    href="/contact/sales-enquiries"
                     style={{
                       display: 'inline-flex',
                       alignItems: 'center',
@@ -1039,10 +1039,10 @@ export default function S4HanaPublicEditionPage() {
                       textDecoration: 'none',
                     }}
                   >
-                    Talk to an SAP Expert <Arrow />
+                    Contact Sales <Arrow />
                   </Link>
                   <Link
-                    href="/contact/consultation"
+                    href="/contact/book-a-consultation"
                     style={{
                       display: 'inline-flex',
                       alignItems: 'center',
@@ -1082,7 +1082,7 @@ export default function S4HanaPublicEditionPage() {
                     Explore SAP S/4HANA <Arrow />
                   </Link>
                   <Link
-                    href="/services/applications/sap-s4hana/private-cloud"
+                    href="/services/applications/sap-s4hana/private-edition"
                     style={{
                       display: 'inline-flex',
                       alignItems: 'center',

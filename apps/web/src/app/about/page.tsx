@@ -758,7 +758,7 @@ function ClientsShowcase() {
                 aria-hidden
               />
               <span className="text-[13px] font-bold uppercase tracking-[0.22em] text-[#C9A24B]">
-                Trusted Partnerships
+                Experience That Shapes Tryvion
               </span>
               <span
                 className="h-px w-12 flex-shrink-0"
@@ -770,15 +770,15 @@ function ClientsShowcase() {
               className="text-[34px] font-extrabold tracking-[-0.04em] sm:text-[46px] lg:text-[52px]"
               style={{ color: isDark ? '#E8EDF5' : '#0B1E3D' }}
             >
-              Empowering World-Class Organisations
+              Build on Real Transformation Experience
             </h2>
             <br />
             <p
               className="mt-4 text-[15px] sm:text-[16px] leading-[1.7]"
               style={{ color: isDark ? '#A0AAB8' : '#5F6875' }}
             >
-              Collaborating with market leaders globally to deliver mission-critical <br />
-              transformations and resilient enterprise operations.
+              Our leadership brings first-hand experience from complex enterprise <br />{' '}
+              transformations across some of the world's leading organisations.
             </p>
           </div>
         </Reveal>

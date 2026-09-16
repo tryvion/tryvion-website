@@ -324,7 +324,7 @@ export function HomePage() {
               {slide.tag}
             </p>
 
-            <div
+            <h2
               role="heading"
               aria-level={2}
               style={{
@@ -338,7 +338,7 @@ export function HomePage() {
               }}
             >
               {slide.title}
-            </div>
+            </h2>
             <Link
               href={slide.href}
               style={{
@@ -679,8 +679,9 @@ export function HomePage() {
                 maxWidth: '46ch',
               }}
             >
-              TRYVION is an enterprise transformation partner, connecting technology, intelligence
-              and people to create lasting value.
+              TRYVION is an enterprise transformation partner connecting technology, intelligence
+              and people to create lasting value across SAP, enterprise AI, cloud, data, digital
+              engineering, talent and managed services.
             </p>
             <Link href="/about" style={goldBtn}>
               About TRYVION <Arrow />
@@ -708,7 +709,7 @@ export function HomePage() {
             {[
               {
                 title: 'Transformation/Advisory',
-                desc: 'Modernise with SAP and enterprise platforms.',
+                desc: 'Modernise the enterprise with SAP and intelligent enterprise platforms.',
                 href: '/services/applications',
                 cta: 'Explore Applications',
                 icon: (
@@ -722,7 +723,7 @@ export function HomePage() {
               },
               {
                 title: 'Artificial Intelligence',
-                desc: 'From automation to the agentic enterprise.',
+                desc: 'Move from enterprise AI strategy and automation to the agentic enterprise.',
                 href: '/services/artificial-intelligence',
                 cta: 'Explore AI',
                 icon: (
@@ -985,8 +986,8 @@ export function HomePage() {
                 maxWidth: '46ch',
               }}
             >
-              We help enterprises evolve from automation to the agentic enterprise, where
-              intelligence acts, learns and delivers ongoing value.
+              We help enterprises move from AI experimentation and automation to the agentic
+              enterprise, where intelligence acts, learns and delivers measurable business value.
             </p>
             <Link href="/services/artificial-intelligence" style={goldBtn}>
               Explore TRYVION AI <Arrow />
@@ -1175,7 +1176,9 @@ export function HomePage() {
         <div style={{ maxWidth: '82rem', margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
             <h2 style={sectionTitle}>Transformation has to work in your world.</h2>
-            <p style={sectionSub}>Deep industry expertise. Real business outcomes.</p>
+            <p style={sectionSub}>
+              Industry-focused enterprise transformation designed around real business outcomes.
+            </p>
           </div>
           <div className="ind-grid">
             {[
@@ -1204,7 +1207,7 @@ export function HomePage() {
                 <div style={{ height: '150px', overflow: 'hidden' }}>
                   <img
                     src={ind.img}
-                    alt={ind.label}
+                    alt={`${ind.label} enterprise transformation`}
                     style={{
                       width: '100%',
                       height: '100%',
@@ -1495,7 +1498,7 @@ export function HomePage() {
               margin: '0 0 2.25rem',
             }}
           >
-            Let&apos;s turn your vision into sustained momentum.
+            Let&apos;s turn your transformation priorities into sustained business momentum.
           </p>
           <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
             <Link href="/contact" style={goldBtn}>

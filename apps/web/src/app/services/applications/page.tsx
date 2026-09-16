@@ -341,7 +341,7 @@ export default function ApplicationsPage() {
                 margin: '0 0 1.25rem',
               }}
             >
-              Tryvion Transformation/Advisory
+              Enterprise Transformation & Advisory
             </p>
             <h1
               style={{
@@ -383,7 +383,7 @@ export default function ApplicationsPage() {
               for sustainable transformation.
             </p>
             <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-              <Link href="/contact" style={goldBtn}>
+              <Link href="/contact/talk-to-an-expert" style={goldBtn}>
                 Talk to an Expert <Arrow />
               </Link>
               <Link href="#capabilities" style={goldOutline}>

@@ -164,6 +164,475 @@ const INDUSTRIES: IndustryGroup[] = [
   },
 ];
 
+const INDUSTRY_TAB_CONTENT: Record<
+  IndustryGroup['id'],
+  {
+    eyebrow: string;
+    headline: string;
+    intro: string;
+    support: string;
+    segments: { name: string; description: string }[];
+    futureTitle: string;
+    futureText: string;
+    cta: string;
+  }
+> = {
+  'service-industries': {
+    eyebrow: 'INDUSTRIES – SERVICE',
+    headline: 'From Timesheet to Invoice — Finance You Can Trust',
+    intro:
+      'For service-led businesses, revenue is earned project by project, milestone by milestone and hour by hour. Your finance systems must keep pace. Service organisations must balance growth, profitability, client satisfaction, and employee experience—all while managing complex projects and rapidly changing resource demands.',
+    support:
+      'TRYVION helps organisations across professional services, engineering and construction, media, real estate, telecommunications, travel and leisure, sports and entertainment, and transportation and logistics connect project delivery, billing, revenue recognition and finance through SAP S/4HANA Cloud Public Edition.',
+    segments: [
+      {
+        name: 'Professional Services',
+        description:
+          'firms managing complex engagements, rate structures, resource utilisation, time recording, project profitability and intercompany delivery.',
+      },
+      {
+        name: 'Engineering & Construction',
+        description:
+          'firms seeking greater control over long-term projects, milestones, costs, commitments, billing schedules and revenue recognition.',
+      },
+      {
+        name: 'Media & Telecommunications',
+        description:
+          'companies managing productions, talent, rights, sponsorships, multi-party revenue arrangements, and subscription- or usage-based business models.',
+      },
+      {
+        name: 'Transportation & Logistics',
+        description:
+          'operators seeking real-time visibility into revenue, costs and margins by route, load, service or customer contract.',
+      },
+      {
+        name: 'Travel, Leisure, Sports & Entertainment',
+        description:
+          'businesses managing dynamic demand, partner arrangements, customer experiences and diverse revenue streams across locations and channels.',
+      },
+    ],
+    futureTitle: 'The Future Is a Choice',
+    futureText:
+      'Choose finance systems designed around how your business delivers value—not processes that force your business to fit the technology.',
+    cta: 'Let’s map your current billing and revenue processes against SAP S/4HANA Cloud Public Edition best practices—and identify where greater control, automation and value can be achieved.',
+  },
+  'financial-services': {
+    eyebrow: 'INDUSTRIES – FINANCIAL SERVICES',
+    headline: 'Finance Transformation, Led by People Who Understand Finance',
+    intro:
+      'For banking and insurance organisations, financial close, regulatory reporting and auditability are more than back-office functions—they are fundamental to trust, control and performance.',
+    support:
+      'TRYVION brings finance-first expertise to SAP transformation, helping regulated organisations build connected, transparent and audit-ready finance operations.',
+    segments: [
+      {
+        name: 'Retail & Commercial Banking',
+        description:
+          'organisations managing complex products, entities, jurisdictions and regulatory reporting obligations.',
+      },
+      {
+        name: 'Insurance Providers',
+        description:
+          'requiring accurate accounting for premiums, claims, commissions, provisions and reserves.',
+      },
+      {
+        name: 'Multi-Entity Financial Groups',
+        description:
+          'consolidating subsidiaries operating across different currencies and local accounting requirements.',
+      },
+      {
+        name: 'Finance & Risk Functions',
+        description:
+          'under pressure to shorten close cycles while strengthening governance, control and transparency.',
+      },
+      {
+        name: 'Audit and Compliance-Driven Organisations',
+        description:
+          'seeking to resolve reconciliation gaps, improve traceability and reduce dependence on manual adjustments.',
+      },
+    ],
+    futureTitle: 'The Future Is a Choice',
+    futureText:
+      'Choose finance systems that do more than pass an audit. Build a financial core designed from the outset to be controlled, transparent, traceable and ready for change.',
+    cta: 'Let’s assess your current close cycle, regulatory reporting and control environment against SAP S/4HANA Cloud best practices—and identify where risk, complexity and inefficiency can be reduced.',
+  },
+  'energy-natural-resources': {
+    eyebrow: 'INDUSTRIES – ENERGY & NATURAL RESOURCES',
+    headline: 'Built for Assets That Outlive the Systems That Track Them',
+    intro:
+      'For chemicals, mill products, mining, oil and gas, and utilities organisations, financial control must extend across decades—not simply reporting periods.',
+    support:
+      'TRYVION helps asset-intensive businesses establish a connected, transparent financial core that strengthens capital governance, operational control and regulatory reporting across the asset lifecycle.',
+    segments: [
+      {
+        name: 'Utilities',
+        description:
+          'managing regulated asset bases, infrastructure investment, maintenance costs and multi-entity reporting.',
+      },
+      {
+        name: 'Oil & Gas',
+        description:
+          'organisations operating capital-intensive assets, complex partner arrangements, and joint ventures across multiple jurisdictions.',
+      },
+      {
+        name: 'Mining',
+        description:
+          'companies requiring greater control over capital projects, operational costs, asset performance, and partner accounting.',
+      },
+      {
+        name: 'Chemicals',
+        description:
+          'manufacturers managing complex production environments, compliance obligations, product costing and high-value assets.',
+      },
+      {
+        name: 'Mill Products',
+        description:
+          'businesses seeking improved visibility across raw materials, production costs, inventory, assets, and margin performance.',
+      },
+    ],
+    futureTitle: 'The Future Is a Choice',
+    futureText:
+      'Choose a financial core designed to remain controlled, transparent, and adaptable throughout the life of your assets—not simply through implementation and go-live.',
+    cta: 'Let’s assess your asset accounting, capital investment, operational finance and regulatory reporting processes against SAP best practices—and identify where greater visibility, control and long-term value can be achieved.',
+  },
+  'consumer-industries': {
+    eyebrow: 'INDUSTRIES – CONSUMER',
+    headline: 'Margins Are Won in Every Transaction',
+    intro:
+      'For agribusiness, consumer products, wholesale distribution, life sciences, fashion and retail organisations, profitability depends on controlling cost and protecting margin across every product, channel and customer interaction.',
+    support:
+      'TRYVION helps high-volume businesses establish a connected, scalable financial core—bringing finance, inventory, procurement, sales and performance insight together through SAP.',
+    segments: [
+      {
+        name: 'Retail',
+        description:
+          'organisations managing high transaction volumes, omnichannel operations, dynamic pricing, promotions and complex inventory flows.',
+      },
+      {
+        name: 'Wholesale Distribution',
+        description:
+          'businesses seeking stronger control over inventory, fulfilment, working capital and margin by customer or channel.',
+      },
+      {
+        name: 'Consumer Products',
+        description:
+          'companies managing diverse brands, product portfolios, trade promotions, rebates and demand volatility.',
+      },
+      {
+        name: 'Fashion',
+        description:
+          'businesses balancing seasonal collections, short product lifecycles, multiple channels and inventory risk.',
+      },
+      {
+        name: 'Agribusiness',
+        description:
+          'organisations managing commodity-driven costs, seasonal demand, complex supply networks and margin volatility.',
+      },
+      {
+        name: 'Life Sciences',
+        description:
+          'companies requiring precise product costing, inventory traceability, controlled financial processes and regulatory readiness.',
+      },
+    ],
+    futureTitle: 'The Future Is a Choice',
+    futureText:
+      'Choose a financial core that keeps pace with growth—connecting every transaction, stock movement and commercial decision to trusted financial insight.',
+    cta: 'Let’s assess your finance, inventory, working-capital and margin-management processes against SAP best practices—and identify where greater efficiency, visibility and scalable growth can be achieved.',
+  },
+  'discrete-industries': {
+    eyebrow: 'INDUSTRIES – DISCRETE INDUSTRIES',
+    headline: 'Finance That Keeps Pace with Production',
+    intro:
+      'For aerospace and defence, automotive, high-tech and industrial manufacturing organisations, financial performance depends on understanding the true cost of every product, project and production decision.',
+    support:
+      'TRYVION helps manufacturers connect engineering, production, supply chain and finance through SAP—creating a transparent financial core that keeps pace with operational change.',
+    segments: [
+      {
+        name: 'Aerospace & Defence',
+        description:
+          'organisations managing long-term programmes, complex product structures, project-based production, regulatory controls and contract profitability.',
+      },
+      {
+        name: 'Automotive',
+        description:
+          'manufacturers and suppliers operating high-volume production networks with complex costing, quality, supply-chain and intercompany requirements.',
+      },
+      {
+        name: 'High Tech',
+        description:
+          'companies managing rapid innovation cycles, engineering changes, outsourced manufacturing and short product lifecycles.',
+      },
+      {
+        name: 'Industrial Manufacturing',
+        description:
+          'businesses seeking greater control over product cost, work in progress, production variances and multi-site performance.',
+      },
+    ],
+    futureTitle: 'The Future Is a Choice',
+    futureText:
+      'Choose a financial core that moves at the speed of production—connecting every material movement, engineering change and manufacturing decision to trusted financial insight.',
+    cta: 'Let’s assess your product costing, work-in-progress, production variance and intercompany processes against SAP best practices—and identify where greater accuracy, control and manufacturing profitability can be achieved.',
+  },
+  'public-services': {
+    eyebrow: 'INDUSTRIES – PUBLIC SERVICES',
+    headline: 'Built for Scrutiny, Not Just Compliance',
+    intro:
+      'For defence and security, education and research, healthcare, and public sector organisations, accountability and transparency are not simply reporting requirements—they are fundamental to public trust.',
+    support:
+      'TRYVION helps public-serving organisations establish a controlled, transparent financial core that strengthens budget governance, funding accountability and audit readiness through SAP.',
+    segments: [
+      {
+        name: 'Defence & Security',
+        description:
+          'organisations requiring rigorous financial controls, secure processes, detailed cost visibility and complete auditability across programmes and operations.',
+      },
+      {
+        name: 'Education & Research',
+        description:
+          'institutions managing grants, restricted funds, research programmes, departmental budgets and complex stakeholder reporting.',
+      },
+      {
+        name: 'Healthcare',
+        description:
+          'organisations balancing clinical priorities with budget pressures, procurement control, funding accountability and regulatory reporting.',
+      },
+      {
+        name: 'Central & Local Government',
+        description:
+          'bodies requiring transparent management of public funds, departmental budgets, commitments, programmes and statutory reporting.',
+      },
+      {
+        name: 'Public Agencies & Non-Departmental Bodies',
+        description:
+          'managing diverse funding sources, service-delivery obligations and high levels of public and regulatory scrutiny.',
+      },
+    ],
+    futureTitle: 'The Future Is a Choice',
+    futureText:
+      'Choose a financial core designed to withstand scrutiny at any moment—not one prepared for it only at year-end.',
+    cta: 'Let’s assess your funding, budget management, financial control and reporting processes against SAP best practices—and identify where greater transparency, accountability and public value can be achieved.',
+  },
+};
+
+const INDUSTRY_SEGMENT_ICONS: Record<string, IconType> = {
+  'Professional Services': BriefcaseBusiness,
+  'Engineering & Construction': Building2,
+  'Media & Telecommunications': Radio,
+  'Transportation & Logistics': Truck,
+  'Travel, Leisure, Sports & Entertainment': Trophy,
+  'Retail & Commercial Banking': CircleDollarSign,
+  'Insurance Providers': ShieldCheck,
+  'Multi-Entity Financial Groups': Layers3,
+  'Finance & Risk Functions': Landmark,
+  'Audit and Compliance-Driven Organisations': Shield,
+  Utilities: Zap,
+  'Oil & Gas': Flame,
+  Mining: Pickaxe,
+  Chemicals: FlaskConical,
+  'Mill Products': Factory,
+  Retail: Store,
+  'Wholesale Distribution': Layers3,
+  'Consumer Products': ShoppingBag,
+  Fashion: ShoppingBag,
+  Agribusiness: Sprout,
+  'Life Sciences': Dna,
+  'Aerospace & Defence': Plane,
+  Automotive: CarFront,
+  'High Tech': Cpu,
+  'Industrial Manufacturing': Factory,
+  'Defence & Security': ShieldCheck,
+  'Education & Research': GraduationCap,
+  Healthcare: HeartPulse,
+  'Central & Local Government': Landmark,
+  'Public Agencies & Non-Departmental Bodies': Building2,
+};
+
+function IndustryContentPanel({ group, isDark }: { group: IndustryGroup; isDark: boolean }) {
+  const reduce = useReducedMotion();
+  const content = INDUSTRY_TAB_CONTENT[group.id];
+  if (!content) return null;
+
+  return (
+    <motion.div
+      initial={reduce ? false : { opacity: 0, y: 12 }}
+      animate={reduce ? undefined : { opacity: 1, y: 0 }}
+      transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+      style={{
+        padding: 'clamp(1.25rem, 3vw, 2.25rem)',
+        borderBottom: isDark ? '1px solid rgba(255,255,255,.07)' : '1px solid #E2E8F0',
+      }}
+    >
+      <div
+        style={{
+          padding: 'clamp(1.4rem, 3vw, 2.15rem)',
+          borderRadius: 18,
+          background: isDark ? '#0D1727' : '#FFFFFF',
+          border: isDark ? '1px solid rgba(255,255,255,.07)' : '1px solid #E2E8F0',
+          boxShadow: '0 8px 28px rgba(15,23,42,.035)',
+        }}
+      >
+        <span
+          className="text-[10px] font-extrabold tracking-[.2em] sm:text-[11px]"
+          style={{ color: '#2563EB' }}
+        >
+          {content.eyebrow}
+        </span>
+        <h3
+          className="mt-3 m-0 font-extrabold tracking-[-.035em]"
+          style={{
+            color: isDark ? '#FFFFFF' : '#0F172A',
+            fontSize: 'clamp(1.55rem, 3.4vw, 2.5rem)',
+            lineHeight: 1.08,
+            maxWidth: 920,
+          }}
+        >
+          {content.headline}
+        </h3>
+        <div className="mt-5 grid grid-cols-1 gap-4 lg:grid-cols-[1.05fr_.95fr] lg:gap-8">
+          <p
+            className="m-0 text-[15px] leading-7 sm:text-[16px] sm:leading-7"
+            style={{ color: isDark ? '#CBD5E1' : '#475569' }}
+          >
+            {content.intro}
+          </p>
+          <p
+            className="m-0 border-l-0 pl-0 text-[15px] leading-7 sm:text-[16px] sm:leading-7 lg:border-l lg:pl-7"
+            style={{
+              color: isDark ? '#AEBBCD' : '#64748B',
+              borderColor: isDark ? 'rgba(255,255,255,.10)' : '#E2E8F0',
+            }}
+          >
+            {content.support}
+          </p>
+        </div>
+      </div>
+
+      <div className="mt-7">
+        <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <span
+              className="text-[10px] font-extrabold uppercase tracking-[.18em] sm:text-[11px]"
+              style={{ color: '#2563EB' }}
+            >
+              Industry focus
+            </span>
+            <h4
+              className="mt-1 m-0 text-[17px] font-extrabold tracking-[-.02em] sm:text-[20px] mb-6"
+              style={{ color: isDark ? '#FFFFFF' : '#0F172A' }}
+            >
+              Built for Your Industry
+            </h4>
+          </div>
+          <span
+            className="text-[11px] font-bold uppercase tracking-[.14em] sm:text-[12px] mb-6"
+            style={{ color: '#C9A24B' }}
+          >
+            {String(content.segments.length).padStart(2, '0')} focus areas
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {content.segments.map((segment, index) => {
+            const Icon = INDUSTRY_SEGMENT_ICONS[segment.name] ?? Layers3;
+
+            return (
+              <motion.div
+                key={segment.name}
+                initial={reduce ? false : { opacity: 0, y: 8 }}
+                animate={reduce ? undefined : { opacity: 1, y: 0 }}
+                transition={{ duration: 0.28, delay: index * 0.025 }}
+                className="min-w-0 rounded-xl"
+                style={{
+                  padding: '1.25rem 1.3rem',
+                  background: isDark ? 'rgba(255,255,255,.035)' : '#F8FAFC',
+                  border: isDark ? '1px solid rgba(255,255,255,.07)' : '1px solid #E2E8F0',
+                  boxShadow: '0 4px 18px rgba(15,23,42,.025)',
+                }}
+              >
+                <div className="flex items-start gap-6">
+                  <span
+                    className="flex h-32 w-32 shrink-0 items-center justify-center rounded-xl sm:h-32 sm:w-32"
+                    style={{
+                      background: isDark ? 'rgba(37,99,235,.12)' : '#F1F5F9',
+                      color: '#2563EB',
+                    }}
+                    aria-hidden="true"
+                  >
+                    <Icon size={32} strokeWidth={1.8} />
+                  </span>
+                  <div className="min-w-0">
+                    <p
+                      className="m-0 text-[15px] font-extrabold leading-6 sm:text-[16px]"
+                      style={{ color: isDark ? '#F8FAFC' : '#172033' }}
+                    >
+                      {segment.name}
+                    </p>
+                    <p
+                      className="mt-1.5 m-0 text-[14px] leading-[1.65] sm:text-[15px]"
+                      style={{ color: isDark ? '#CBD5E1' : '#475569' }}
+                    >
+                      {segment.description}
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
+      </div>
+
+      <div
+        className="relative mt-7 overflow-hidden"
+        style={{
+          padding: 'clamp(1.45rem, 3vw, 2.15rem)',
+          borderRadius: 18,
+          background: isDark ? 'linear-gradient(145deg, #0B1E3D 0%, #102B53 100%)' : '#0B1E3D',
+          border: '1px solid rgba(201,162,75,.32)',
+          color: '#FFFFFF',
+        }}
+      >
+        <div
+          aria-hidden="true"
+          style={{
+            position: 'absolute',
+            width: 150,
+            height: 150,
+            borderRadius: '50%',
+            border: '1px solid rgba(201,162,75,.25)',
+            right: -55,
+            top: -55,
+          }}
+        />
+        <div className="relative grid grid-cols-1 gap-6 lg:grid-cols-[.72fr_1.28fr] lg:items-center lg:gap-10">
+          <div>
+            <span
+              className="text-[11px] font-extrabold tracking-[.16em] sm:text-[12px]"
+              style={{ color: '#C9A24B' }}
+            >
+              The Future Is a Choice
+            </span>
+            <h4
+              className="mt-3 m-0 font-extrabold tracking-[-.025em]"
+              style={{ fontSize: 'clamp(1.35rem, 2.5vw, 1.9rem)', lineHeight: 1.12, color: '#fff' }}
+            >
+              {content.futureTitle}
+            </h4>
+          </div>
+          <div>
+            <p className="m-0 text-[15px] leading-7 sm:text-[16px]" style={{ color: '#CBD5E1' }}>
+              {content.futureText}
+            </p>
+            <p
+              className="mt-5 m-0 text-[14px] font-semibold leading-6 sm:text-[15px]"
+              style={{ color: '#FFFFFF' }}
+            >
+              {content.cta}
+            </p>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
 const CAPABILITIES = [
   {
     step: '01',
@@ -426,62 +895,7 @@ function IndustryCard({
               background: isDark ? '#080F1C' : '#F8FAFC',
             }}
           >
-            <div
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"
-              style={{ padding: 'clamp(1.25rem, 3vw, 2rem)', columnGap: '1rem', rowGap: '1rem' }}
-            >
-              {group.subIndustries.map((sub, index) => {
-                const Icon = sub.icon;
-                return (
-                  <motion.div
-                    key={sub.name}
-                    initial={reduce ? false : { opacity: 0, y: 12 }}
-                    animate={reduce ? undefined : { opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3, delay: index * 0.035, ease: [0.16, 1, 0.3, 1] }}
-                    className="min-w-0"
-                  >
-                    <Link
-                      href={sub.href}
-                      className="group/sub flex min-h-[88px] items-center justify-between gap-4 rounded-xl"
-                      style={{
-                        padding: '1.25rem 1.35rem',
-                        textDecoration: 'none',
-                        background: isDark ? '#0D1727' : '#FFFFFF',
-                        border: isDark ? '1px solid rgba(255,255,255,.07)' : '1px solid #E2E8F0',
-                        color: isDark ? '#FFFFFF' : '#0F172A',
-                        boxShadow: '0 4px 18px rgba(15,23,42,.025)',
-                        transition:
-                          'transform .22s ease, border-color .22s ease, box-shadow .22s ease, background .22s ease',
-                      }}
-                    >
-                      <span className="flex min-w-0 items-center gap-4">
-                        <span
-                          className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl"
-                          style={{
-                            background: isDark ? 'rgba(37,99,235,.12)' : '#F1F5F9',
-                            color: '#2563EB',
-                          }}
-                        >
-                          <Icon size={28} strokeWidth={1.75} />
-                        </span>
-                        <span
-                          className="text-[14px] font-bold leading-[1.35]"
-                          style={{ color: isDark ? '#F8FAFC' : '#172033' }}
-                        >
-                          {sub.name}
-                        </span>
-                      </span>
-                      <ArrowRight
-                        size={20}
-                        strokeWidth={2}
-                        className="shrink-0 transition-transform duration-200 group-hover/sub:translate-x-1"
-                        style={{ color: '#C9A24B' }}
-                      />
-                    </Link>
-                  </motion.div>
-                );
-              })}
-            </div>
+            <IndustryContentPanel group={group} isDark={isDark} />
           </motion.div>
         )}
       </AnimatePresence>
@@ -709,7 +1123,7 @@ function IndustriesCTA() {
       <div className="relative z-10 mx-auto" style={{ maxWidth: 900 }}>
         <Reveal>
           <span className="text-[11px] font-extrabold tracking-[.2em]" style={{ color: '#C9A24B' }}>
-            THE NEXT MOVE
+            THE FUTURE IS A CHOICE
           </span>
           <h2
             className="mt-3 m-0 font-extrabold tracking-[-.045em]"
@@ -719,10 +1133,7 @@ function IndustriesCTA() {
               lineHeight: 1.02,
             }}
           >
-            Your Industry Is Changing.
-            <span className="mt-2 block" style={{ color: '#FFFFFF' }}>
-              Is Your Enterprise Ready For What Comes Next?
-            </span>
+            Choose systems designed around how your business creates value.
           </h2>
           <br />
           <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
@@ -731,13 +1142,7 @@ function IndustriesCTA() {
               className="inline-flex items-center justify-center gap-2 rounded-md px-6 py-3.5 font-bold text-white no-underline transition hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-[#03050C]"
               style={{ background: '#2563EB' }}
             >
-              Talk to an Expert <ArrowRight size={20} />
-            </Link>
-            <Link
-              href="/services"
-              className="inline-flex items-center justify-center gap-2 rounded-md border border-white/20 bg-white/5 px-6 py-3.5 font-bold text-white no-underline transition hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-[#03050C]"
-            >
-              Explore TRYVION Services <ArrowRight size={20} />
+              Book a Fit-to-Standard Discovery <ArrowRight size={20} />
             </Link>
           </div>
         </Reveal>

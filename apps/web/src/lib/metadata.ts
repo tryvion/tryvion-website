@@ -118,7 +118,7 @@ export function buildMetadata({
   };
 
   return {
-    title,
+    title: `${title} | TRYVION`,
     description,
 
     alternates: {

@@ -166,7 +166,7 @@ function HeroSection({ isDark }: { isDark: boolean }) {
               <ArrowRight className="ml-2 h-3.5 w-3.5" />
             </Link>
             <Link
-              href="/capabilities"
+              href="/services"
               className="inline-flex min-h-[50px] items-center justify-center border border-white/30 px-7 text-[11px] font-bold uppercase tracking-[0.1em] text-white transition-colors hover:bg-white/10"
             >
               Explore Our Capabilities
@@ -773,7 +773,7 @@ function PrinciplesSection({ isDark }: { isDark: boolean }) {
               <span
                 className={`font-mono text-[16px] font-bold ${isDark ? 'text-[#C9A24B]' : 'text-[#1458F2]'}`}
               >
-                05 THE PRINCIPLES BEHIND OUR PROMISE
+                06 THE PRINCIPLES BEHIND OUR PROMISE
               </span>
             </div>
           </Reveal>
@@ -898,7 +898,7 @@ function EngagementModelSection({ isDark }: { isDark: boolean }) {
               <span
                 className={`font-mono text-[16px] font-bold ${isDark ? 'text-[#C9A24B]' : 'text-[#1458F2]'}`}
               >
-                06 OUR MODEL
+                07 OUR MODEL
               </span>
             </div>
           </Reveal>
@@ -1037,7 +1037,7 @@ function ConnectsItAllSection({ isDark }: { isDark: boolean }) {
                     isDark ? 'text-[#C9A24B]' : 'text-[#1458F2]'
                   }`}
                 >
-                  07 TRANSFORMATION PHILOSOPHY & CYCLE
+                  08 TRANSFORMATION PHILOSOPHY & CYCLE
                 </span>
               </div>
             </Reveal>
@@ -1179,9 +1179,8 @@ function WhereWeAreGoingSection({ isDark }: { isDark: boolean }) {
               <span
                 className={`font-mono text-[16px] font-bold ${isDark ? 'text-[#C9A24B]' : 'text-[#1458F2]'}`}
               >
-                06 WHERE WE ARE GOING
+                09 WHERE WE ARE GOING
               </span>
-              <span className="text-whit">|</span>
             </div>
 
             <h2

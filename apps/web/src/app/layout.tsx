@@ -37,10 +37,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: {
-    template: '%s | TRYVION',
-    default: 'TRYVION — The Future Is a Choice',
-  },
+  title: 'TRYVION — The Future Is a Choice',
 
   description:
     'TRYVION is a global Enterprise Transformation Partner specialising in SAP, AI, Data & Analytics, Cloud, Digital Engineering, Talent Solutions, and Managed Services.',

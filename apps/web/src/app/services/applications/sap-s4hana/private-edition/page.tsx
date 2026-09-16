@@ -755,7 +755,10 @@ export default function S4HanaPrivateEditionPage() {
               <span aria-hidden="true" style={{ color: '#fff' }}>
                 ›
               </span>
-              <Link href="/services/sap" style={{ color: '#fff', textDecoration: 'none' }}>
+              <Link
+                href="/services/applications/sap-s4hana"
+                style={{ color: '#fff', textDecoration: 'none' }}
+              >
                 SAP S/4HANA
               </Link>
               <span aria-hidden="true" style={{ color: '#fff' }}>
@@ -822,7 +825,7 @@ export default function S4HanaPrivateEditionPage() {
             </p>
             <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
               <Link
-                href="/contact"
+                href="/contact/talk-to-an-expert"
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
@@ -1017,7 +1020,7 @@ export default function S4HanaPrivateEditionPage() {
                   }}
                 >
                   <Link
-                    href="/contact"
+                    href="/contact/sales-enquirires"
                     style={{
                       display: 'inline-flex',
                       alignItems: 'center',
@@ -1033,10 +1036,10 @@ export default function S4HanaPrivateEditionPage() {
                       textDecoration: 'none',
                     }}
                   >
-                    Talk to an SAP Expert <Arrow />
+                    Contact Sales <Arrow />
                   </Link>
                   <Link
-                    href="/contact/consultation"
+                    href="/contact/book-a-consultation"
                     style={{
                       display: 'inline-flex',
                       alignItems: 'center',

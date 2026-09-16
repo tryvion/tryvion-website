@@ -361,7 +361,7 @@ function RequestConsultationSection({ isDark }: { isDark: boolean }) {
         <Reveal delay={0.4}>
           <div className="text-center">
             <Link
-              href="/contact/form"
+              href="/contact"
               className={`inline-flex items-center justify-center gap-3 px-10 py-6 rounded-md font-bold text-[14px] transition-all hover:scale-[1.02] ${isDark ? 'bg-white text-[#07162C]' : 'bg-[#0B1E3D] text-white'}`}
             >
               Request a Consultation
