@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'motion/react';
 import { ChevronDown, Cookie, ArrowUp } from 'lucide-react';
 import { useSiteTheme } from '@/providers/SiteThemeProvider';
+import { getSiteOrigin } from '@/lib/seo/config';
 
 interface CookieSection {
   id: string;
@@ -14,6 +15,7 @@ interface CookieSection {
 }
 
 export default function CookiePolicyPage() {
+  const SITE_URL = getSiteOrigin();
   const { theme } = useSiteTheme();
   const isDark = theme === 'dark';
 
@@ -111,10 +113,7 @@ export default function CookiePolicyPage() {
           <p>
             Some cookies may involve information that constitutes personal data. Where this occurs,
             the processing of that information is also governed by our{' '}
-            <Link
-              href="/privacy-policy"
-              className="text-blue-600 dark:text-blue-400 hover:underline"
-            >
+            <Link href="/privacy" className="text-blue-600 dark:text-blue-400 hover:underline">
               Privacy Policy
             </Link>{' '}
             and applicable data-protection law.
@@ -273,7 +272,7 @@ export default function CookiePolicyPage() {
             <p>
               <strong>Website:</strong>{' '}
               <a
-                href="https://www.thetryvion.com"
+                href={SITE_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-600 dark:text-blue-400 hover:underline"

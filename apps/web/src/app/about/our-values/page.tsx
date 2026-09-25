@@ -562,7 +562,7 @@ function FinalCTASection({ isDark }: { isDark: boolean }) {
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <Link
-            href="/contact"
+            href="/contact/customer-support?intent=expert"
             className="inline-flex min-h-[50px] items-center justify-center bg-[#1458F2] px-8 text-[11px] font-bold uppercase tracking-[0.1em] text-white transition-colors hover:bg-[#0444D4] rounded-sm"
           >
             Talk to an Expert

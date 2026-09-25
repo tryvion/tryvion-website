@@ -1,4 +1,12 @@
-import type { WithContext, Organization, WebSite, WebPage, BreadcrumbList } from 'schema-dts';
+import type {
+  BreadcrumbList,
+  ContactPage,
+  Organization,
+  WebPage,
+  WebSite,
+  WithContext,
+} from 'schema-dts';
+
 import { getSiteOrigin } from '@/lib/seo/config';
 
 // ---------------------------------------------------------------------------
@@ -37,6 +45,7 @@ export function websiteSchema(): WithContext<WebSite> {
     publisher: {
       '@id': `${origin}/#organization`,
     },
+    inLanguage: 'en-IN',
   };
 }
 
@@ -71,6 +80,42 @@ export function webPageSchema({
     about: {
       '@id': `${origin}/#organization`,
     },
+    inLanguage: 'en-IN',
+  };
+}
+
+// ---------------------------------------------------------------------------
+// ContactPage
+// ---------------------------------------------------------------------------
+
+export interface ContactPageSchemaInput {
+  name: string;
+  description: string;
+  path: string;
+}
+
+export function contactPageSchema({
+  name,
+  description,
+  path,
+}: ContactPageSchemaInput): WithContext<ContactPage> {
+  const origin = getSiteOrigin();
+  const url = new URL(path, origin).toString();
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ContactPage',
+    '@id': `${url}#contactpage`,
+    name,
+    description,
+    url,
+    isPartOf: {
+      '@id': `${origin}/#website`,
+    },
+    about: {
+      '@id': `${origin}/#organization`,
+    },
+    inLanguage: 'en-IN',
   };
 }
 
@@ -97,6 +142,10 @@ export function breadcrumbSchema(items: BreadcrumbItem[]): WithContext<Breadcrum
     })),
   };
 }
+
+// ---------------------------------------------------------------------------
+// JSON-LD serialization
+// ---------------------------------------------------------------------------
 
 export function jsonLdScript(data: unknown): string {
   return JSON.stringify(data).replace(/</g, '\\u003c');

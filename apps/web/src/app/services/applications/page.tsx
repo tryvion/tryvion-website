@@ -383,7 +383,7 @@ export default function ApplicationsPage() {
               for sustainable transformation.
             </p>
             <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-              <Link href="/contact/talk-to-an-expert" style={goldBtn}>
+              <Link href="/contact/customer-support?intent=expert" style={goldBtn}>
                 Talk to an Expert <Arrow />
               </Link>
               <Link href="#capabilities" style={goldOutline}>
@@ -1094,111 +1094,6 @@ export default function ApplicationsPage() {
         </div>
       </section>
 
-      {/* ═══ PERSPECTIVE 
-      <section style={{ ...sectionPad, background: t.bg1 }}>
-        <div style={wrap}>
-          <Reveal>
-            <div
-              style={{
-                display: 'flex',
-                flexWrap: 'wrap',
-                alignItems: 'flex-end',
-                justifyContent: 'space-between',
-                gap: '1rem',
-                marginBottom: '2.5rem',
-              }}
-            >
-              <div>
-                <Eyebrow label="Perspective" />
-                <h2 style={{ ...h2, margin: 0 }}>Thinking About What Comes Next.</h2>
-              </div>
-              <Link href="/insights" style={textLink}>
-                Explore Perspectives <Arrow size={12} />
-              </Link>
-            </div>
-          </Reveal>
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,300px),1fr))',
-              gap: '1.25rem',
-            }}
-          >
-            {[
-              {
-                t: 'From Systems to Intelligence: Why the Next Advantage Will Be Enterprise Context',
-                img: IMG.insight1,
-              },
-              {
-                t: 'Designing Modern ERP Foundations for Agility, Resilience and Growth',
-                img: IMG.insight2,
-              },
-              {
-                t: 'The Human Side of Transformation: Building Capability That Lasts',
-                img: IMG.insight3,
-              },
-            ].map((n, i) => (
-              <Reveal key={n.t} delay={i * 80}>
-                <Link
-                  href="/insights"
-                  className="lift"
-                  style={{
-                    display: 'flex',
-                    gap: '1rem',
-                    background: t.cardBg,
-                    border: `1px solid ${t.border}`,
-                    borderRadius: 'var(--radius-md)',
-                    padding: '1.25rem',
-                    textDecoration: 'none',
-                    alignItems: 'flex-start',
-                    height: '100%',
-                  }}
-                >
-                  <img
-                    src={n.img}
-                    alt=""
-                    loading="lazy"
-                    style={{
-                      width: '88px',
-                      height: '88px',
-                      objectFit: 'cover',
-                      borderRadius: 'var(--radius-sm)',
-                      flexShrink: 0,
-                    }}
-                  />
-                  <div style={{ flex: 1 }}>
-                    <p
-                      style={{
-                        fontSize: '0.625rem',
-                        fontWeight: 700,
-                        letterSpacing: '0.12em',
-                        textTransform: 'uppercase',
-                        color: t.faint,
-                        margin: '0 0 0.5rem',
-                      }}
-                    >
-                      Published Tryvion Insight
-                    </p>
-                    <p
-                      style={{
-                        fontSize: '0.875rem',
-                        fontWeight: 700,
-                        lineHeight: 1.45,
-                        color: t.heading,
-                        margin: '0 0 0.5rem',
-                      }}
-                    >
-                      {n.t}
-                    </p>
-                    <Arrow size={12} color={t.faint} />
-                  </div>
-                </Link>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section> ═══ */}
-
       {/* ═══ CAREERS ═══ */}
       <section style={{ background: '#0B1E3D', overflow: 'hidden' }}>
         <div
@@ -1316,10 +1211,10 @@ export default function ApplicationsPage() {
           </Reveal>
           <Reveal delay={120} style={{ justifySelf: 'end' }}>
             <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-              <Link href="/contact" style={goldBtn}>
+              <Link href="/contact/customer-support?intent=expert" style={goldBtn}>
                 Talk to an Expert <Arrow />
               </Link>
-              <Link href="/contact/book-a-consultation" style={goldOutline}>
+              <Link href="/contact/customer-support?intent=consultation" style={goldOutline}>
                 Book a Consultation <Arrow />
               </Link>
             </div>

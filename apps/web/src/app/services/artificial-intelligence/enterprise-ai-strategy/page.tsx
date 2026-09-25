@@ -578,8 +578,9 @@ export default function EnterpriseAIStrategyPage() {
                       WebkitTextFillColor: 'transparent',
                     }}
                   >
-                    To Scalable Enterprise Impact.
+                    To Scalable Enterprise Impact
                   </span>
+                  .
                 </h1>
               </Reveal>
 
@@ -601,7 +602,7 @@ export default function EnterpriseAIStrategyPage() {
               <Reveal delay={320}>
                 <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
                   <Link
-                    href="/contact"
+                    href="/contact/customer-support?intent=expert"
                     style={{
                       backgroundColor: '#2563EB',
                       color: '#FFFFFF',
@@ -1561,7 +1562,7 @@ export default function EnterpriseAIStrategyPage() {
                 style={{ display: 'flex', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap' }}
               >
                 <Link
-                  href="/contact"
+                  href="/contact/customer-support?intent=consultant"
                   style={{
                     backgroundColor: '#2563EB',
                     color: '#FFFFFF',
@@ -1576,7 +1577,7 @@ export default function EnterpriseAIStrategyPage() {
                     boxShadow: '0 12px 30px -6px rgba(37, 99, 235, 0.6)',
                   }}
                 >
-                  Schedule Executive Session <ArrowRight size={20} />
+                  Book a Cosultation <ArrowRight size={20} />
                 </Link>
               </div>
             </Reveal>

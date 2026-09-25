@@ -4,13 +4,13 @@ import type { ReactNode } from 'react';
 import { PageStructuredData } from '@/components/seo/PageStructuredData';
 import { pageMetadata, pageSeo } from '@/lib/seo/pages';
 
-export const metadata: Metadata = pageMetadata.sapSuccessFactors;
+export const metadata: Metadata = pageMetadata.accessibility;
 
-export default function SapSuccessFactorsLayout({ children }: { children: ReactNode }) {
+export default function AccessibilityLayout({ children }: { children: ReactNode }) {
   return (
     <>
       {children}
-      <PageStructuredData page={pageSeo.sapSuccessFactors} />
+      <PageStructuredData page={pageSeo.accessibility} />
     </>
   );
 }

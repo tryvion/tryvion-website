@@ -825,7 +825,7 @@ export default function S4HanaPrivateEditionPage() {
             </p>
             <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
               <Link
-                href="/contact/talk-to-an-expert"
+                href="/contact/customer-support?intent=expert"
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
@@ -1020,7 +1020,7 @@ export default function S4HanaPrivateEditionPage() {
                   }}
                 >
                   <Link
-                    href="/contact/sales-enquirires"
+                    href="/contact/sales-enquiries"
                     style={{
                       display: 'inline-flex',
                       alignItems: 'center',
@@ -1039,7 +1039,7 @@ export default function S4HanaPrivateEditionPage() {
                     Contact Sales <Arrow />
                   </Link>
                   <Link
-                    href="/contact/book-a-consultation"
+                    href="/contact/customer-support?intent=consultation"
                     style={{
                       display: 'inline-flex',
                       alignItems: 'center',

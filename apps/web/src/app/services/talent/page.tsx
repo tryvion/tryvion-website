@@ -12,8 +12,6 @@ import {
   ChevronRight,
   ChevronDown,
   ArrowRight,
-  Activity,
-  TrendingUp,
   CheckCircle2,
   Globe,
   UserCheck,
@@ -29,48 +27,6 @@ import {
   Target,
 } from 'lucide-react';
 import { useSiteTheme } from '@/providers/SiteThemeProvider';
-
-// ── HERO TELEMETRY ───────────────────────────────────────────────────────────
-
-const TELEMETRY_HUD_TABS = [
-  {
-    id: 'skill-alignment',
-    label: 'Skill Alignment Engine',
-    icon: Target,
-    badge: 'Coverage & Readiness',
-    metrics: [
-      { name: 'SAP S/4HANA & BTP Readiness', value: '98.4%', status: 'Optimal' },
-      { name: 'Domain Role Match Precision', value: '96.2%', status: 'Validated' },
-      { name: 'Enterprise Culture Fit Score', value: '94.8%', status: 'Aligned' },
-    ],
-    highlight:
-      'AI-assisted skill graph matching candidates to enterprise transformation requirements.',
-  },
-  {
-    id: 'global-mobility',
-    label: 'Global Mobility & Deployment',
-    icon: Globe,
-    badge: 'Time-To-Deploy',
-    metrics: [
-      { name: 'Niche Role Placement Velocity', value: '14 Days', status: 'Accelerated' },
-      { name: 'Cross-Border Compliance Rate', value: '100%', status: 'Verified' },
-      { name: 'Follow-the-Sun Timezone Coverage', value: '24/7', status: 'Active' },
-    ],
-    highlight: 'Seamless international onboarding with full regulatory, tax, and visa compliance.',
-  },
-  {
-    id: 'talent-retention',
-    label: 'Talent Retention Index',
-    icon: TrendingUp,
-    badge: 'Predictive Engagement',
-    metrics: [
-      { name: 'Project Continuity Rate', value: '94.2%', status: 'Benchmark' },
-      { name: '12-Month Permanent Retention', value: '96.8%', status: 'Top Tier' },
-      { name: 'Consultant Satisfaction Score', value: '4.9/5', status: 'Exceptional' },
-    ],
-    highlight: 'Predictive engagement modeling reducing turnover during critical project phases.',
-  },
-];
 
 const POD_ROLES = [
   {
@@ -225,7 +181,6 @@ export default function EnterpriseTalentPage() {
   const { theme } = useSiteTheme();
   const isDark = theme === 'dark';
 
-  const [activeHudTab, setActiveHudTab] = useState(0);
   const [podCounts, setPodCounts] = useState<Record<string, number>>(
     Object.fromEntries(POD_ROLES.map((role) => [role.id, 1])),
   );
@@ -255,21 +210,15 @@ export default function EnterpriseTalentPage() {
 
         .hero-talent-bg {
           background-color: #050811 !important;
-          background-image:
-            radial-gradient(rgba(37, 99, 235, 0.15) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(5, 8, 17, 0.85), rgba(5, 8, 17, 0.95)),
-            url('/images/talent-hero-bg.png');
-          background-size: 32px 32px, cover, cover;
-          background-position: center, center, center;
-          background-repeat: repeat, no-repeat, no-repeat;
+          background-image: url('/images/tryvion-talent.png');
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
         }
 
         .cta-talent-bg {
           background-color: #050811 !important;
-          background-image:
-            radial-gradient(circle at 50% 50%, rgba(37, 99, 235, 0.25) 0%, transparent 65%),
-            linear-gradient(to bottom, rgba(5, 8, 17, 0.88), rgba(5, 8, 17, 0.96)),
-            url('/images/talent-cta-bg.png');
+          background-image: url('/images/talent-cta-bg.png');
           background-size: 100% 100%, cover, cover;
           background-position: center, center, center;
           background-repeat: no-repeat, no-repeat, no-repeat;
@@ -281,13 +230,6 @@ export default function EnterpriseTalentPage() {
           -webkit-backdrop-filter: blur(16px);
           border: 1px solid ${isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(15, 23, 42, 0.08)'};
           box-shadow: ${isDark ? 'none' : '0 10px 30px -10px rgba(0,0,0,0.05)'};
-        }
-
-        .hero-glass-panel {
-          background: rgba(15, 23, 42, 0.75) !important;
-          backdrop-filter: blur(16px);
-          -webkit-backdrop-filter: blur(16px);
-          border: 1px solid rgba(255, 255, 255, 0.12) !important;
         }
 
         .glass-panel-interactive {
@@ -384,10 +326,6 @@ export default function EnterpriseTalentPage() {
           .hero-grid {
             grid-template-columns: 1fr;
             gap: 2.5rem;
-          }
-
-          .hero-visual-host {
-            margin-top: 0;
           }
 
           .pod-layout {
@@ -561,7 +499,7 @@ export default function EnterpriseTalentPage() {
               <Reveal delay={320}>
                 <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
                   <Link
-                    href="/contact"
+                    href="/contact/customer-support?intent=expert"
                     style={{
                       backgroundColor: '#2563EB',
                       color: '#FFFFFF',
@@ -580,7 +518,7 @@ export default function EnterpriseTalentPage() {
                   </Link>
 
                   <Link
-                    href="#talent-pillars"
+                    href="/contact/sales-enquiries"
                     style={{
                       backgroundColor: 'rgba(255, 255, 255, 0.08)',
                       border: '1px solid rgba(255, 255, 255, 0.2)',
@@ -596,168 +534,6 @@ export default function EnterpriseTalentPage() {
                   >
                     Sales Enquiries <ChevronRight size={18} />
                   </Link>
-                </div>
-              </Reveal>
-            </div>
-
-            {/* Interactive Hero Telemetry Visual HUD */}
-            <div className="hero-visual-host">
-              <Reveal delay={250}>
-                <div
-                  className="hero-glass-panel"
-                  style={{
-                    borderRadius: '16px',
-                    padding: '1.75rem',
-                    position: 'relative',
-                    overflow: 'hidden',
-                  }}
-                >
-                  {/* HUD Top Bar */}
-                  <div
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      marginBottom: '1.25rem',
-                      borderBottom: '1px solid rgba(255,255,255,0.1)',
-                      paddingBottom: '1rem',
-                    }}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                      <Activity size={18} style={{ color: '#10B981' }} />
-                      <span
-                        style={{
-                          fontSize: '0.8rem',
-                          fontFamily: 'monospace',
-                          fontWeight: 700,
-                          color: '#FFFFFF',
-                          letterSpacing: '0.05em',
-                        }}
-                      >
-                        WORKFORCE_TELEMETRY :: REAL-TIME
-                      </span>
-                    </div>
-                    <span
-                      style={{
-                        fontSize: '0.7rem',
-                        color: '#60A5FA',
-                        fontFamily: 'monospace',
-                        padding: '0.2rem 0.5rem',
-                        backgroundColor: 'rgba(59, 130, 246, 0.15)',
-                        borderRadius: '4px',
-                      }}
-                    >
-                      {TELEMETRY_HUD_TABS[activeHudTab].badge}
-                    </span>
-                  </div>
-
-                  {/* Telemetry Tab Pills */}
-                  <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1.5rem' }}>
-                    {TELEMETRY_HUD_TABS.map((tab, idx) => {
-                      const Icon = tab.icon;
-                      const isSelected = activeHudTab === idx;
-                      return (
-                        <button
-                          key={tab.id}
-                          onClick={() => setActiveHudTab(idx)}
-                          style={{
-                            flex: 1,
-                            padding: '0.6rem 0.4rem',
-                            borderRadius: '8px',
-                            border: '1px solid',
-                            borderColor: isSelected ? '#3B82F6' : 'rgba(255,255,255,0.1)',
-                            backgroundColor: isSelected
-                              ? 'rgba(59, 130, 246, 0.2)'
-                              : 'rgba(0,0,0,0.2)',
-                            color: isSelected ? '#FFFFFF' : '#94A3B8',
-                            fontSize: '0.75rem',
-                            fontWeight: 600,
-                            cursor: 'pointer',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            gap: '0.35rem',
-                            transition: 'all 0.2s ease',
-                          }}
-                        >
-                          <Icon size={14} />
-                          <span>{tab.label.split(' ')[0]}</span>
-                        </button>
-                      );
-                    })}
-                  </div>
-
-                  {/* Active Telemetry Display Card */}
-                  <div
-                    style={{
-                      backgroundColor: 'rgba(5, 8, 17, 0.9)',
-                      borderRadius: '10px',
-                      padding: '1.25rem',
-                      border: '1px solid rgba(255,255,255,0.08)',
-                      minHeight: '190px',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'space-between',
-                    }}
-                  >
-                    <div>
-                      {TELEMETRY_HUD_TABS[activeHudTab].metrics.map((m, mIdx) => (
-                        <div
-                          key={mIdx}
-                          style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'space-between',
-                            padding: '0.45rem 0',
-                            borderBottom:
-                              mIdx !== TELEMETRY_HUD_TABS[activeHudTab].metrics.length - 1
-                                ? '1px dashed rgba(255,255,255,0.08)'
-                                : 'none',
-                          }}
-                        >
-                          <span style={{ fontSize: '0.8rem', color: '#CBD5E1' }}>{m.name}</span>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                            <span
-                              style={{
-                                fontSize: '0.85rem',
-                                fontWeight: 700,
-                                fontFamily: 'monospace',
-                                color: '#FFFFFF',
-                              }}
-                            >
-                              {m.value}
-                            </span>
-                            <span
-                              style={{
-                                fontSize: '0.65rem',
-                                color: '#10B981',
-                                backgroundColor: 'rgba(16, 185, 129, 0.15)',
-                                padding: '0.1rem 0.4rem',
-                                borderRadius: '4px',
-                                textTransform: 'uppercase',
-                                fontWeight: 700,
-                              }}
-                            >
-                              {m.status}
-                            </span>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-
-                    <div
-                      style={{
-                        marginTop: '1rem',
-                        paddingTop: '0.75rem',
-                        borderTop: '1px solid rgba(255,255,255,0.08)',
-                        fontSize: '0.75rem',
-                        color: '#94A3B8',
-                        fontStyle: 'italic',
-                      }}
-                    >
-                      💡 {TELEMETRY_HUD_TABS[activeHudTab].highlight}
-                    </div>
-                  </div>
                 </div>
               </Reveal>
             </div>
@@ -1582,7 +1358,7 @@ export default function EnterpriseTalentPage() {
               </p>
 
               <Link
-                href="/contact"
+                href="/contact/customer-support?intent=consultation"
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
@@ -1598,7 +1374,7 @@ export default function EnterpriseTalentPage() {
                   boxShadow: '0 12px 30px -6px rgba(37,99,235,.55)',
                 }}
               >
-                Find the Right Talent <ArrowRight size={19} />
+                Book a Consultation <ArrowRight size={19} />
               </Link>
             </Reveal>
           </div>

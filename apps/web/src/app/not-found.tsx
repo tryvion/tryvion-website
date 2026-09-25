@@ -194,7 +194,7 @@ const NotFoundPage = React.memo(function NotFoundPage() {
                 icon: FileText,
                 label: 'Insights',
                 desc: 'Explore ideas and perspectives.',
-                href: '/insights',
+                href: '#',
               },
               {
                 icon: Mail,

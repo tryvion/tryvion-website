@@ -1,10 +1,11 @@
 import type { Metadata } from 'next';
 
 // metadataBase is set in the root layout.
+
 // All paths are relative to the production site origin.
 
 export interface PageMetadataInput {
-  /** Page title — the root layout template appends " | TRYVION" automatically */
+  /** Page title — the root layout appends " | TRYVION" when needed */
   title: string;
 
   /** Search-engine meta description */
@@ -67,10 +68,10 @@ export function buildMetadata({
   const robots = noIndex
     ? {
         index: false,
-        follow: false,
+        follow: true,
         googleBot: {
           index: false,
-          follow: false,
+          follow: true,
           'max-image-preview': 'large' as const,
           'max-video-preview': -1,
           'max-snippet': -1,
@@ -88,8 +89,14 @@ export function buildMetadata({
         },
       };
 
+  const normalizedTitle = title.trim();
+
+  const finalTitle = /(?:\s*\|\s*TRYVION)$/i.test(normalizedTitle)
+    ? normalizedTitle
+    : `${normalizedTitle} | TRYVION`;
+
   const openGraph: Metadata['openGraph'] = {
-    title,
+    title: normalizedTitle,
     description,
     url: path,
     siteName: 'TRYVION',
@@ -100,16 +107,14 @@ export function buildMetadata({
         url: image,
         width: 1200,
         height: 630,
-        alt: title,
+        alt: normalizedTitle,
       },
     ],
-
     ...(isArticle && publishedAt
       ? {
           publishedTime: publishedAt,
         }
       : {}),
-
     ...(isArticle && modifiedAt
       ? {
           modifiedTime: modifiedAt,
@@ -118,7 +123,7 @@ export function buildMetadata({
   };
 
   return {
-    title: `${title} | TRYVION`,
+    title: finalTitle,
     description,
 
     alternates: {
@@ -131,7 +136,7 @@ export function buildMetadata({
 
     twitter: {
       card: 'summary_large_image',
-      title,
+      title: normalizedTitle,
       description,
       images: [image],
     },

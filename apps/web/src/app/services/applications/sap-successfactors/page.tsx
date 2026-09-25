@@ -721,7 +721,7 @@ export default function SuccessFactorsPage() {
               AI to simplify work for HR teams, managers and employees.
             </p>
             <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-              <Link href="/contact/talk-to-an-expert" style={orangeBtn}>
+              <Link href="/contact/customer-support?intent=expert" style={orangeBtn}>
                 Talk to an Expert <Arrow />
               </Link>
               <Link href="/services/applications" style={outlineBtn(true)}>
@@ -1674,7 +1674,7 @@ export default function SuccessFactorsPage() {
               <Link href="/contact/sales-enquiries" style={orangeBtn}>
                 Contact Sales <Arrow />
               </Link>
-              <Link href="/contact/book-a-consultation" style={outlineBtn(true)}>
+              <Link href="/contact/customer-support?intent=consultation" style={outlineBtn(true)}>
                 Book a Consultation <Arrow />
               </Link>
               <Link href="/services/applications" style={outlineBtn(true)}>

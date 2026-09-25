@@ -183,8 +183,8 @@ const COLUMNS = [
     heading: 'Connect',
     links: [
       { label: 'Contact', href: '/contact' },
-      { label: 'Talk to an Expert', href: '/contact/talk-to-an-expert' },
-      { label: 'Book Consultation', href: '/contact/book-a-consultation' },
+      { label: 'Talk to an Expert', href: '/contact/customer-support?intent=expert' },
+      { label: 'Book Consultation', href: '/contact/customer-support?intent=consultation' },
       { label: 'RFP', href: '/contact/request-a-proposal' },
       { label: 'Global Offices', href: '/contact/global-offices' },
     ],

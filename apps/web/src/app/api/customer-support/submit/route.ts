@@ -6,16 +6,68 @@ export const dynamic = 'force-dynamic';
 const MAX_BODY_BYTES = 32_000;
 const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
 const RATE_LIMIT_MAX = 8;
+const MAX_FILES = 5;
+const MAX_FILE_SIZE = 2 * 1024 * 1024;
+
+const CONTACT_INTENTS = new Set(['expert', 'consultation', 'support']);
+
+const SERVICE_INTERESTS = new Set([
+  'SAP S/4HANA',
+  'SAP SuccessFactors',
+  'SAP Business Technology Platform (BTP)',
+  'SAP Ariba',
+  'SAP Customer Experience',
+  'Enterprise AI Strategy',
+  'Enterprise AI Platforms',
+  'Intelligent Automation',
+  'Data & Analytics',
+  'Cloud Transformation',
+  'Enterprise Integration',
+  'Digital Engineering',
+  'SAP Talent Solutions',
+  'Permanent Hiring',
+  'Executive Search',
+  'TRYVION Academy / Learning',
+  'Managed Services / SAP Run in the New',
+  'Business Transformation',
+  'Multiple / Cross-Capability',
+  'Other',
+]);
 
 const SUPPORT_AREAS = new Set([
-  'SAP Applications',
-  'AI & Automation',
-  'Integration & Technology',
-  'Operate',
-  'Other Enquiry',
+  'SAP S/4HANA',
+  'SAP SuccessFactors',
+  'SAP Business Technology Platform (BTP)',
+  'SAP Ariba',
+  'SAP Customer Experience',
+  'Enterprise AI & Automation',
+  'Data & Analytics',
+  'Cloud & Infrastructure',
+  'Enterprise Integration',
+  'Digital Engineering',
+  'Managed Services / SAP Run in the New',
+  'Talent & Learning Platforms',
+  'Security & Access',
+  'Performance & Availability',
+  'Incident / Service Disruption',
+  'Other Support Enquiry',
 ]);
 
 const SUPPORT_PRIORITIES = new Set(['Low', 'Medium', 'High', 'Critical / Urgent']);
+
+const PREFERRED_CONTACT_METHODS = new Set(['Email', 'Phone', 'Video Call']);
+
+const ALLOWED_ATTACHMENT_CONTENT_TYPES = new Set([
+  'application/pdf',
+  'application/msword',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  'application/vnd.ms-excel',
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  'text/plain',
+  'image/png',
+  'image/jpeg',
+  'application/zip',
+]);
 
 type RateEntry = {
   count: number;
@@ -50,6 +102,7 @@ function checkRateLimit(key: string): boolean {
       count: 1,
       resetAt: now + RATE_LIMIT_WINDOW_MS,
     });
+
     return true;
   }
 
@@ -58,6 +111,7 @@ function checkRateLimit(key: string): boolean {
   }
 
   current.count += 1;
+
   return true;
 }
 
@@ -67,7 +121,30 @@ function isValidEmail(value: string): boolean {
 
 function isValidPhone(value: string): boolean {
   if (!value) return true;
+
   return value.length >= 7 && value.length <= 40 && /^[+0-9().\-\s]+$/.test(value);
+}
+
+function isValidDate(value: string): boolean {
+  if (!value) return false;
+
+  const date = new Date(`${value}T00:00:00`);
+
+  return !Number.isNaN(date.getTime());
+}
+
+function isValidTime(value: string): boolean {
+  return /^([01]\d|2[0-3]):[0-5]\d$/.test(value);
+}
+
+function jsonError(message: string, status = 400) {
+  return NextResponse.json(
+    {
+      success: false,
+      message,
+    },
+    { status },
+  );
 }
 
 export async function POST(request: Request) {
@@ -75,10 +152,7 @@ export async function POST(request: Request) {
     const contentLength = Number(request.headers.get('content-length') || 0);
 
     if (contentLength > MAX_BODY_BYTES) {
-      return NextResponse.json(
-        { success: false, message: 'Request is too large.' },
-        { status: 413 },
-      );
+      return jsonError('Request is too large.', 413);
     }
 
     if (!checkRateLimit(getClientKey(request))) {
@@ -93,130 +167,207 @@ export async function POST(request: Request) {
 
     const body = (await request.json()) as Record<string, unknown>;
 
+    /*
+     * ------------------------------------------------------------------
+     * Honeypot
+     * ------------------------------------------------------------------
+     */
+
     const website = text(body.website);
 
-    // Honeypot: return a successful-looking response without creating a record.
     if (website) {
       return NextResponse.json({
         success: true,
-        message: 'Your support request has been received.',
+        message: 'Your request has been received.',
       });
     }
 
-    const attachments = Array.isArray(body.attachments) ? body.attachments : [];
+    /*
+     * ------------------------------------------------------------------
+     * Common fields
+     * ------------------------------------------------------------------
+     */
 
-    if (attachments.length > 5) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: 'A maximum of 5 files may be attached.',
-        },
-        { status: 400 },
-      );
-    }
+    const intent = text(body.intent);
 
     const fullName = text(body.fullName);
     const company = text(body.company);
     const workEmail = text(body.workEmail).toLowerCase();
     const phone = text(body.phone);
-    const supportArea = text(body.supportArea);
-    const supportPriority = text(body.supportPriority);
-    const customerProjectReference = text(body.customerProjectReference);
-    const issue = text(body.issue);
+
     const privacyConsent = body.privacyConsent === true;
+
     const marketingConsent = body.marketingConsent === true;
 
+    /*
+     * ------------------------------------------------------------------
+     * Intent-specific fields
+     * ------------------------------------------------------------------
+     */
+
+    const serviceInterest = text(body.serviceInterest);
+
+    const businessChallenge = text(body.businessChallenge);
+
+    const preferredConsultationDate = text(body.preferredConsultationDate);
+
+    const preferredConsultationTime = text(body.preferredConsultationTime);
+
+    const preferredContactMethod = text(body.preferredContactMethod);
+
+    const supportArea = text(body.supportArea);
+
+    const supportPriority = text(body.supportPriority);
+
+    const customerProjectReference = text(body.customerProjectReference);
+
+    const issue = text(body.issue);
+
+    /*
+     * ------------------------------------------------------------------
+     * Common validation
+     * ------------------------------------------------------------------
+     */
+
     if (fullName.length < 2 || fullName.length > 100) {
-      return NextResponse.json(
-        { success: false, message: 'Please enter your full name.' },
-        { status: 400 },
-      );
+      return jsonError('Please enter your full name.');
     }
 
     if (company.length < 2 || company.length > 150) {
-      return NextResponse.json(
-        { success: false, message: 'Please enter your company name.' },
-        { status: 400 },
-      );
+      return jsonError('Please enter your company name.');
     }
 
     if (!isValidEmail(workEmail)) {
-      return NextResponse.json(
-        { success: false, message: 'Please enter a valid work email address.' },
-        { status: 400 },
-      );
+      return jsonError('Please enter a valid work email address.');
     }
 
     if (!isValidPhone(phone)) {
-      return NextResponse.json(
-        { success: false, message: 'Please enter a valid phone number.' },
-        { status: 400 },
-      );
-    }
-
-    if (!SUPPORT_AREAS.has(supportArea)) {
-      return NextResponse.json(
-        { success: false, message: 'Please select a valid support area.' },
-        { status: 400 },
-      );
-    }
-
-    if (!SUPPORT_PRIORITIES.has(supportPriority)) {
-      return NextResponse.json(
-        { success: false, message: 'Please select a valid support priority.' },
-        { status: 400 },
-      );
-    }
-
-    if (customerProjectReference.length > 200) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: 'Customer / Project Reference must be 200 characters or fewer.',
-        },
-        { status: 400 },
-      );
-    }
-
-    if (issue.length < 10 || issue.length > 5000) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: 'Please describe the issue in between 10 and 5000 characters.',
-        },
-        { status: 400 },
-      );
+      return jsonError('Please enter a valid phone number.');
     }
 
     if (!privacyConsent) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: 'Please agree to the Privacy Policy before submitting.',
-        },
-        { status: 400 },
-      );
+      return jsonError('Please agree to the Privacy Policy before submitting.');
+    }
+
+    /*
+     * ------------------------------------------------------------------
+     * Intent validation
+     * ------------------------------------------------------------------
+     */
+
+    if (!CONTACT_INTENTS.has(intent)) {
+      return jsonError('Please select a valid engagement type.');
+    }
+
+    /*
+     * ------------------------------------------------------------------
+     * Talk to an Expert
+     * ------------------------------------------------------------------
+     */
+
+    if (intent === 'expert') {
+      if (!SERVICE_INTERESTS.has(serviceInterest)) {
+        return jsonError('Please select a valid area of interest.');
+      }
+
+      if (businessChallenge.length < 10 || businessChallenge.length > 5000) {
+        return jsonError(
+          'Please tell us what you are looking to achieve in between 10 and 5000 characters.',
+        );
+      }
+
+      if (!PREFERRED_CONTACT_METHODS.has(preferredContactMethod)) {
+        return jsonError('Please select a preferred contact method.');
+      }
+    }
+
+    /*
+     * ------------------------------------------------------------------
+     * Book a Consultation
+     * ------------------------------------------------------------------
+     */
+
+    if (intent === 'consultation') {
+      if (!SERVICE_INTERESTS.has(serviceInterest)) {
+        return jsonError('Please select a valid area of interest.');
+      }
+
+      if (businessChallenge.length < 10 || businessChallenge.length > 5000) {
+        return jsonError(
+          'Please describe your business challenge in between 10 and 5000 characters.',
+        );
+      }
+
+      if (!isValidDate(preferredConsultationDate)) {
+        return jsonError('Please select a valid consultation date.');
+      }
+
+      if (!isValidTime(preferredConsultationTime)) {
+        return jsonError('Please select a valid consultation time.');
+      }
+
+      if (!PREFERRED_CONTACT_METHODS.has(preferredContactMethod)) {
+        return jsonError('Please select a preferred contact method.');
+      }
+    }
+
+    /*
+     * ------------------------------------------------------------------
+     * Customer Support
+     * ------------------------------------------------------------------
+     */
+
+    if (intent === 'support') {
+      if (!SUPPORT_AREAS.has(supportArea)) {
+        return jsonError('Please select a valid support area.');
+      }
+
+      if (!SUPPORT_PRIORITIES.has(supportPriority)) {
+        return jsonError('Please select a valid support priority.');
+      }
+
+      if (customerProjectReference.length > 200) {
+        return jsonError('Customer / Project Reference must be 200 characters or fewer.');
+      }
+
+      if (issue.length < 10 || issue.length > 5000) {
+        return jsonError('Please describe the issue in between 10 and 5000 characters.');
+      }
+    }
+
+    /*
+     * ------------------------------------------------------------------
+     * Attachments
+     * ------------------------------------------------------------------
+     */
+
+    const attachments = Array.isArray(body.attachments) ? body.attachments : [];
+
+    if (intent !== 'support' && attachments.length > 0) {
+      return jsonError('Attachments are only available for Customer Support requests.');
+    }
+
+    if (attachments.length > MAX_FILES) {
+      return jsonError(`A maximum of ${MAX_FILES} files may be attached.`);
     }
 
     for (const item of attachments) {
       if (!item || typeof item !== 'object' || Array.isArray(item)) {
-        return NextResponse.json(
-          { success: false, message: 'One or more attachment records are invalid.' },
-          { status: 400 },
-        );
+        return jsonError('One or more attachment records are invalid.');
       }
 
       const attachment = item as Record<string, unknown>;
+
       const fileName = text(attachment.fileName);
+
       const blobPathname = text(attachment.blobPathname);
+
       const contentType = text(attachment.contentType);
+
       const fileSize = Number(attachment.fileSize);
 
       if (!fileName || fileName.length > 255) {
-        return NextResponse.json(
-          { success: false, message: 'One or more attachment file names are invalid.' },
-          { status: 400 },
-        );
+        return jsonError('One or more attachment file names are invalid.');
       }
 
       if (
@@ -224,29 +375,59 @@ export async function POST(request: Request) {
         blobPathname.includes('..') ||
         !blobPathname.startsWith('support-pending/')
       ) {
-        return NextResponse.json(
-          { success: false, message: 'One or more attachment storage paths are invalid.' },
-          { status: 400 },
-        );
+        return jsonError('One or more attachment storage paths are invalid.');
       }
 
-      if (
-        !contentType ||
-        !Number.isFinite(fileSize) ||
-        fileSize <= 0 ||
-        fileSize > 2 * 1024 * 1024
-      ) {
-        return NextResponse.json(
-          { success: false, message: `The attachment "${fileName}" is invalid.` },
-          { status: 400 },
-        );
+      if (!contentType || !ALLOWED_ATTACHMENT_CONTENT_TYPES.has(contentType)) {
+        return jsonError(`The attachment "${fileName}" has an unsupported file type.`);
+      }
+
+      if (!Number.isFinite(fileSize) || fileSize <= 0 || fileSize > MAX_FILE_SIZE) {
+        return jsonError(`The attachment "${fileName}" is invalid.`);
       }
     }
+
+    /*
+     * ------------------------------------------------------------------
+     * Normalize frontend contact-method values for CMS
+     * ------------------------------------------------------------------
+     *
+     * Frontend:
+     *   Email
+     *   Phone
+     *   Video Call
+     *
+     * CMS:
+     *   email
+     *   phone
+     *   video_call
+     */
+
+    const preferredContactMethodForCms =
+      preferredContactMethod === 'Email'
+        ? 'email'
+        : preferredContactMethod === 'Phone'
+          ? 'phone'
+          : preferredContactMethod === 'Video Call'
+            ? 'video_call'
+            : preferredContactMethod;
+
+    /*
+     * ------------------------------------------------------------------
+     * CMS configuration
+     * ------------------------------------------------------------------
+     */
 
     const configuredCmsUrl =
       process.env.CMS_URL?.trim().replace(/\/+$/, '') ||
       process.env.NEXT_PUBLIC_CMS_URL?.trim().replace(/\/+$/, '') ||
       'http://localhost:3001';
+
+    /*
+     * ------------------------------------------------------------------
+     * Forward complete three-intent payload to CMS
+     * ------------------------------------------------------------------
+     */
 
     const response = await fetch(`${configuredCmsUrl}/api/customer-support/submit`, {
       method: 'POST',
@@ -255,21 +436,40 @@ export async function POST(request: Request) {
         Accept: 'application/json',
       },
       body: JSON.stringify({
+        intent,
+
         fullName,
         company,
         workEmail,
         phone,
+
+        serviceInterest,
+        businessChallenge,
+
+        preferredConsultationDate,
+        preferredConsultationTime,
+        preferredContactMethod: preferredContactMethodForCms,
+
         supportArea,
         supportPriority,
         customerProjectReference,
         issue,
+
         privacyConsent: true,
         marketingConsent,
+
         website: '',
-        attachments,
+
+        attachments: intent === 'support' ? attachments : [],
       }),
       cache: 'no-store',
     });
+
+    /*
+     * ------------------------------------------------------------------
+     * CMS response passthrough
+     * ------------------------------------------------------------------
+     */
 
     const contentType = response.headers.get('content-type') || '';
 

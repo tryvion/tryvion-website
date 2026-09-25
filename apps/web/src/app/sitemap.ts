@@ -56,10 +56,6 @@ const ROUTES: Array<{
     path: '/about/what-we-believe',
     priority: 0.7,
   },
-  {
-    path: '/about/locations',
-    priority: 0.8,
-  },
 
   // =========================================================================
   // SERVICES — TRYVION APPLICATIONS
@@ -121,18 +117,6 @@ const ROUTES: Array<{
     path: '/services/talent',
     priority: 0.9,
   },
-  {
-    path: '/services/talent/sap-talent-solutions',
-    priority: 0.8,
-  },
-  {
-    path: '/services/talent/permanent-hiring',
-    priority: 0.8,
-  },
-  {
-    path: '/services/talent/executive-search',
-    priority: 0.8,
-  },
 
   // =========================================================================
   // SERVICES — TRYVION ACADEMY
@@ -140,10 +124,6 @@ const ROUTES: Array<{
 
   {
     path: '/services/academy',
-    priority: 0.8,
-  },
-  {
-    path: '/services/academy/learning-platform',
     priority: 0.8,
   },
 
@@ -177,14 +157,6 @@ const ROUTES: Array<{
   // CONTACT
   // =========================================================================
 
-  {
-    path: '/contact/talk-to-an-expert',
-    priority: 0.8,
-  },
-  {
-    path: '/contact/book-a-consultation',
-    priority: 0.8,
-  },
   {
     path: '/contact/request-a-proposal',
     priority: 0.8,

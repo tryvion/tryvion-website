@@ -1501,11 +1501,11 @@ export function HomePage() {
             Let&apos;s turn your transformation priorities into sustained business momentum.
           </p>
           <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Link href="/contact" style={goldBtn}>
+            <Link href="/contact/customer-support?intent=expert" style={goldBtn}>
               Talk to an Expert <Arrow />
             </Link>
             <Link
-              href="/contact/book-a-consultation"
+              href="/contact/customer-support?intent=consultation"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',

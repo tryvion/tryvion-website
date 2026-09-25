@@ -81,7 +81,7 @@ export const ABOUT_LINKS: NavLink[] = [
 
 export const SERVICES_GROUPS: ServiceGroup[] = [
   {
-    heading: 'Tryvion Transformation/Advisory',
+    heading: 'Tryvion Transformation / Advisory',
     href: '/services/applications',
     links: [
       {
@@ -119,36 +119,6 @@ export const SERVICES_GROUPS: ServiceGroup[] = [
   },
 
   {
-    heading: 'Tryvion Talent',
-    href: '/services/talent',
-    links: [
-      {
-        label: 'SAP Talent Solutions',
-        href: '/services/talent/sap-talent-solutions',
-      },
-      {
-        label: 'Permanent Hiring',
-        href: '/services/talent/permanent-hiring',
-      },
-      {
-        label: 'Executive Search',
-        href: '/services/talent/executive-search',
-      },
-    ],
-  },
-
-  {
-    heading: 'Tryvion Academy',
-    href: '/services/academy',
-    links: [
-      {
-        label: 'Tryvion Learning Platform (TLP)',
-        href: '/services/academy/learning-platform',
-      },
-    ],
-  },
-
-  {
     heading: 'Tryvion Operate',
     href: '/services/operate',
     links: [
@@ -157,6 +127,18 @@ export const SERVICES_GROUPS: ServiceGroup[] = [
         href: '/services/operate/sap-run-in-the-new',
       },
     ],
+  },
+
+  {
+    heading: 'Tryvion Talent',
+    href: '/services/talent',
+    links: [],
+  },
+
+  {
+    heading: 'Tryvion Academy',
+    href: '/services/academy',
+    links: [],
   },
 ];
 
@@ -203,12 +185,8 @@ export const CONTACT_COLUMNS: NavColumn[] = [
     heading: 'Get in touch',
     links: [
       {
-        label: 'Talk to an Expert',
-        href: '/contact/talk-to-an-expert',
-      },
-      {
-        label: 'Book a Consultation',
-        href: '/contact/book-a-consultation',
+        label: 'Sales Enquiries',
+        href: '/contact/sales-enquiries',
       },
       {
         label: 'Request a Proposal (RFP)',
@@ -221,11 +199,7 @@ export const CONTACT_COLUMNS: NavColumn[] = [
     heading: 'Support',
     links: [
       {
-        label: 'Sales Enquiries',
-        href: '/contact/sales-enquiries',
-      },
-      {
-        label: 'Customer Support',
+        label: 'Connect With TRYVION',
         href: '/contact/customer-support',
       },
       {

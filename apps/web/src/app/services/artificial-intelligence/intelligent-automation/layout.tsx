@@ -1,9 +1,16 @@
-import type { Metadata } from 'next'
-import type { ReactNode } from 'react'
-import { pageMetadata } from '@/lib/seo/pages'
+import type { Metadata } from 'next';
+import type { ReactNode } from 'react';
 
-export const metadata: Metadata = pageMetadata.intelligentAutomation
+import { PageStructuredData } from '@/components/seo/PageStructuredData';
+import { pageMetadata, pageSeo } from '@/lib/seo/pages';
+
+export const metadata: Metadata = pageMetadata.intelligentAutomation;
 
 export default function IntelligentAutomationLayout({ children }: { children: ReactNode }) {
-  return children
+  return (
+    <>
+      {children}
+      <PageStructuredData page={pageSeo.intelligentAutomation} />
+    </>
+  );
 }

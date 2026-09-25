@@ -1095,7 +1095,7 @@ function LeadershipCTA({ isDark }: { isDark: boolean }) {
               </p>
               <div>
                 <Link
-                  href="/contact"
+                  href="/contact/customer-support?intent=expert"
                   className="inline-flex items-center justify-center px-6 py-3.5 mb-6 ml-0 sm:ml-6 rounded-full bg-white text-[#040D1A] font-medium text-[15px] hover:bg-white/95 transition-all duration-300 shadow-md hover:scale-[1.02]"
                 >
                   Talk to an expert

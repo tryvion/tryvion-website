@@ -644,7 +644,7 @@ function FinalCTASection({ isDark }: { isDark: boolean }) {
 
           <div className="shrink-0 w-full md:w-auto">
             <Link
-              href="/contact"
+              href="/contact/customer-support?intent=expert"
               className="group inline-flex h-[56px] min-w-[200px] w-full md:w-auto items-center justify-center gap-3 px-8 text-[14px] font-bold tracking-wide transition-all"
               style={{ backgroundColor: t.ctaBg, color: t.ctaText }}
             >

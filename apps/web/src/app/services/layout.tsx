@@ -3,8 +3,8 @@ import type { ReactNode } from 'react';
 
 import { pageMetadata } from '@/lib/seo/pages';
 
-export const metadata: Metadata = pageMetadata.academy;
+export const metadata: Metadata = pageMetadata.services;
 
-export default function AcademyLayout({ children }: { children: ReactNode }) {
+export default function ServicesLayout({ children }: { children: ReactNode }) {
   return <>{children}</>;
 }

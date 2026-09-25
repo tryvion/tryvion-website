@@ -599,7 +599,7 @@ export default function BtpPage() {
               processes, and build intelligent experiences—without adding complexity to the core.
             </p>
             <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-              <Link href="/contact/talk-to-an-expert" style={goldBtn}>
+              <Link href="/contact/customer-support?intent=expert" style={goldBtn}>
                 Talk to an Expert <Arrow />
               </Link>
               <Link href="/services/applications" style={outlineBtn('rgba(255,255,255,0.4)')}>
@@ -1122,7 +1122,10 @@ export default function BtpPage() {
                   >
                     Contact Sales <Arrow color="#fff" />
                   </Link>
-                  <Link href="/contact/book-a-consultation" style={outlineBtn(BLUE)}>
+                  <Link
+                    href="/contact/customer-support?intent=consultation"
+                    style={outlineBtn(BLUE)}
+                  >
                     Book a Consultation <Arrow color={BLUE} />
                   </Link>
                   <Link href="/contact" style={outlineBtn(BLUE)}>

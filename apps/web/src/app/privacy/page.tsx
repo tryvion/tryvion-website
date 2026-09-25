@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'motion/react';
 import { ChevronDown, Shield, ArrowUp } from 'lucide-react';
 import { useSiteTheme } from '@/providers/SiteThemeProvider';
+import { getSiteOrigin } from '@/lib/seo/config';
 
 interface PolicySection {
   id: string;
@@ -14,6 +15,7 @@ interface PolicySection {
 }
 
 export default function PrivacyPolicyPage() {
+  const SITE_URL = getSiteOrigin();
   const { theme } = useSiteTheme();
   const isDark = theme === 'dark';
 
@@ -77,7 +79,7 @@ export default function PrivacyPolicyPage() {
           <p className="mt-4 text-sm" style={{ color: isDark ? '#94A3B8' : '#475569' }}>
             <strong>Website:</strong>{' '}
             <a
-              href="https://www.thetryvion.com"
+              href={SITE_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="text-blue-600 dark:text-blue-400 hover:underline"
@@ -555,7 +557,7 @@ export default function PrivacyPolicyPage() {
           <p>
             <strong>Website:</strong>{' '}
             <a
-              href="https://www.thetryvion.com"
+              href={SITE_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="text-blue-600 dark:text-blue-400 hover:underline"

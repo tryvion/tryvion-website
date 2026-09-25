@@ -1138,7 +1138,7 @@ function IndustriesCTA() {
           <br />
           <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
             <Link
-              href="/contact"
+              href="/contact/customer-support?intent=expert"
               className="inline-flex items-center justify-center gap-2 rounded-md px-6 py-3.5 font-bold text-white no-underline transition hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-[#03050C]"
               style={{ background: '#2563EB' }}
             >

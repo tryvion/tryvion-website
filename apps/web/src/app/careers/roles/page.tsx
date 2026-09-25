@@ -486,25 +486,34 @@ export default function RolesPage() {
               fontWeight: 800,
               letterSpacing: '-0.025em',
               marginBottom: '1.25rem',
+              color: '#fff',
             }}
           >
             Don&rsquo;t see your role?
           </h2>
           <p
             style={{
-              color: 'rgba(255,255,255,0.5)',
               fontSize: '1rem',
               lineHeight: 1.75,
               marginBottom: '3rem',
+              color: '#fff',
             }}
           >
             We are always interested in exceptional enterprise technology talent. Send us your
-            profile and we will be in touch when the right opportunity arises.
+            profile and we will be in touch when the right opportunity arises. You can also email
+            your CV directly to{' '}
+            <a
+              href="mailto:careers@thetryvion.com"
+              className="font-semibold text-[#1458F2] transition-colors hover:text-[#C9A24B]"
+            >
+              careers@thetryvion.com
+            </a>
+            .
           </p>
           <motion.div variants={reveal}>
-            <Link
+            <a
               className="roles-cta-button"
-              href="/contact"
+              href="mailto:careers@thetryvion.com?subject=CV%20Submission%20-%20TRYVION"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -518,8 +527,8 @@ export default function RolesPage() {
                 fontSize: '0.9375rem',
               }}
             >
-              Send your CV
-            </Link>
+              Join the TRYVION Talent Network →
+            </a>
           </motion.div>
         </div>
       </motion.section>

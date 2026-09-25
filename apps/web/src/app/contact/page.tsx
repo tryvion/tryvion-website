@@ -9,6 +9,7 @@ import {
   FileText,
   Store, // Fixed: Changed from Storefront to Store
   Headphones,
+  Users,
   Globe,
   ChevronDown,
   SquareCheck, // Fixed: Changed from CheckSquare to SquareCheck
@@ -135,214 +136,557 @@ function HeroSection({ isDark }: { isDark: boolean }) {
 function ContactCardsSection({ isDark }: { isDark: boolean }) {
   const t = isDark ? DARK : LIGHT;
 
+  const actionCards = [
+    {
+      icon: Calendar,
+      eyebrow: 'STRATEGIC ALIGNMENT',
+      title: 'Book a Consultation',
+      description:
+        'Discuss your business priorities with our experts and explore the right path toward measurable transformation.',
+      href: '/contact/customer-support?intent=consultation',
+      cta: 'Book a Consultation',
+    },
+    {
+      icon: FileText,
+      eyebrow: 'TAILORED SOLUTIONS',
+      title: 'Request a Proposal',
+      description:
+        'Share your requirements with TRYVION and our team will help shape the appropriate response for your business needs.',
+      href: '/contact/request-a-proposal',
+      cta: 'Request a Proposal',
+    },
+  ];
+
+  const directoryItems = [
+    {
+      icon: Store,
+      title: 'Sales Enquiries',
+      desc: 'Connect with our commercial team for new business and partnership enquiries.',
+      href: '/contact/sales-enquiries',
+    },
+    {
+      icon: Headphones,
+      title: 'Customer Support',
+      desc: 'Get assistance with an existing TRYVION engagement or supported service.',
+      href: '/contact/customer-support?intent=support',
+    },
+    {
+      icon: Globe,
+      title: 'Global Offices',
+      desc: 'Find TRYVION locations and connect with the team nearest to you.',
+      href: '/contact/global-offices',
+    },
+  ];
+
   return (
-    <section className="py-28 transition-colors duration-500" style={{ background: t.bg }}>
-      <div className="mx-auto max-w-[1280px] px-6 sm:px-12 lg:px-16">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          {/* LEFT COLUMN - Action Cards */}
-          <div className="lg:col-span-7 space-y-6">
-            {/* Talk to an Expert */}
+    <section
+      className="relative overflow-hidden py-24 transition-colors duration-500 sm:py-28"
+      style={{
+        backgroundColor: t.bg,
+      }}
+    >
+      {/* ------------------------------------------------------------------ */}
+      {/* Ambient background                                                  */}
+      {/* ------------------------------------------------------------------ */}
+
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -right-48 top-0 h-[520px] w-[520px] rounded-full blur-3xl"
+        style={{
+          background: isDark ? 'rgba(201, 162, 75, 0.055)' : 'rgba(20, 88, 242, 0.025)',
+        }}
+      />
+
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -bottom-48 -left-48 h-[500px] w-[500px] rounded-full blur-3xl"
+        style={{
+          background: isDark ? 'rgba(20, 88, 242, 0.045)' : 'rgba(201, 162, 75, 0.025)',
+        }}
+      />
+
+      <div className="relative mx-auto max-w-[1280px] px-6 sm:px-12 lg:px-16">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
+          {/* ================================================================== */}
+          {/* LEFT COLUMN                                                        */}
+          {/* ================================================================== */}
+
+          <div className="flex flex-col gap-6 lg:col-span-7">
+            {/* ---------------------------------------------------------------- */}
+            {/* PRIMARY — TALK TO AN EXPERT                                      */}
+            {/* ---------------------------------------------------------------- */}
+
             <Reveal>
-              <div
-                className="group relative p-10 rounded-xl border transition-all duration-300 hover:-translate-y-1 hover:shadow-lg cursor-pointer"
-                style={{ backgroundColor: t.surface || t.bg, borderColor: t.border }}
+              <Link
+                href="/contact/customer-support?intent=expert"
+                className="group block w-full"
+                aria-label="Talk to an Expert"
               >
-                <div className="flex items-start justify-between mb-6">
+                <div
+                  className="relative min-h-[300px] w-full overflow-hidden rounded-[24px] border transition-all duration-500 group-hover:-translate-y-1"
+                  style={{
+                    background: 'linear-gradient(135deg, #061B34 0%, #0A2849 58%, #153A60 100%)',
+                    borderColor: 'rgba(201,162,75,0.38)',
+                    boxShadow: isDark
+                      ? '0 24px 70px rgba(0,0,0,0.24)'
+                      : '0 22px 60px rgba(7,28,53,0.13)',
+                  }}
+                >
+                  {/* Decorative glow */}
                   <div
-                    className="w-10 h-10 rounded-lg flex items-center justify-center"
-                    style={{ backgroundColor: t.inputBg }}
+                    aria-hidden="true"
+                    className="pointer-events-none absolute -right-32 -top-32 h-[460px] w-[460px] rounded-full blur-3xl transition-transform duration-700 group-hover:scale-110"
+                    style={{
+                      background: 'rgba(201,162,75,0.11)',
+                    }}
+                  />
+
+                  {/* Large orbital circles */}
+                  <div
+                    aria-hidden="true"
+                    className="pointer-events-none absolute -right-20 -top-[250px] h-[520px] w-[520px] rounded-full border"
+                    style={{
+                      borderColor: 'rgba(201,162,75,0.28)',
+                    }}
+                  />
+
+                  <div
+                    aria-hidden="true"
+                    className="pointer-events-none absolute -right-[180px] -top-[190px] h-[500px] w-[500px] rounded-full border"
+                    style={{
+                      borderColor: 'rgba(255,255,255,0.07)',
+                    }}
+                  />
+
+                  {/* Card content — explicit padding */}
+                  <div
+                    className="relative z-10 flex min-h-[300px] flex-col justify-between"
+                    style={{
+                      padding: '40px',
+                    }}
                   >
-                    <ArrowRight
-                      className={`w-6 h-6 ${isDark ? 'text-[#C9A24B]' : 'text-[#1458F2]'}`}
-                    />
+                    {/* Top row */}
+                    <div className="flex items-start justify-between gap-8">
+                      <div className="flex items-start gap-5">
+                        {/* Large icon */}
+                        <div
+                          className="flex h-[58px] w-[58px] shrink-0 items-center justify-center rounded-full border"
+                          style={{
+                            borderColor: 'rgba(201,162,75,0.65)',
+                            backgroundColor: 'rgba(201,162,75,0.08)',
+                          }}
+                        >
+                          <Users
+                            aria-hidden="true"
+                            style={{
+                              width: 28,
+                              height: 28,
+                              color: '#C9A24B',
+                              strokeWidth: 1.8,
+                            }}
+                          />
+                        </div>
+
+                        <div>
+                          <p
+                            className="mb-3"
+                            style={{
+                              color: '#C9A24B',
+                              fontSize: '11px',
+                              lineHeight: 1.2,
+                              fontWeight: 700,
+                              letterSpacing: '0.22em',
+                              textTransform: 'uppercase',
+                            }}
+                          >
+                            Expert Guidance
+                          </p>
+
+                          <h3
+                            className="font-bold tracking-[-0.025em] text-white"
+                            style={{
+                              fontSize: '32px',
+                              lineHeight: 1.15,
+                            }}
+                          >
+                            Talk to an Expert
+                          </h3>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Bottom content */}
+                    <div className="mt-10 max-w-[680px]">
+                      <p
+                        style={{
+                          color: 'rgba(255,255,255,0.72)',
+                          fontSize: '16px',
+                          lineHeight: 1.7,
+                        }}
+                      >
+                        Connect with TRYVION specialists to explore your business priorities,
+                        transformation challenges and technology opportunities.
+                      </p>
+
+                      <div
+                        className="mt-7 inline-flex items-center gap-2 transition-all duration-300 group-hover:gap-3"
+                        style={{
+                          color: '#C9A24B',
+                          fontSize: '13px',
+                          lineHeight: 1.2,
+                          fontWeight: 700,
+                        }}
+                      >
+                        Explore expert guidance
+                        <ArrowRight
+                          aria-hidden="true"
+                          style={{
+                            width: 17,
+                            height: 17,
+                            strokeWidth: 2,
+                          }}
+                        />
+                      </div>
+                    </div>
                   </div>
-                  <Link
-                    href="/contact/talk-to-an-expert"
-                    className="hover:text-[#C9A24B] transition-colors"
-                  >
-                    <ArrowRight
-                      className={`w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity ${isDark ? 'text-white' : 'text-[#0B1E3D]'}`}
-                    />
-                  </Link>
                 </div>
-                <h3
-                  className={`text-[24px] font-bold mb-3 ${isDark ? 'text-white' : 'text-[#0B1E3D]'}`}
-                >
-                  Talk to an Expert
-                </h3>
-                <p
-                  className={`text-[15px] leading-[1.6] ${isDark ? 'text-gray-300' : 'text-[#5F6875]'}`}
-                >
-                  Connect directly with our specialized AI and systems architects to discuss
-                  tailored solutions for your immediate technical hurdles.
-                </p>
-              </div>
+              </Link>
             </Reveal>
 
-            {/* Book Consultation & Request Proposal */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <Reveal delay={0.1}>
-                <div
-                  className="group relative p-10 rounded-xl border transition-all duration-300 hover:-translate-y-1 hover:shadow-lg cursor-pointer h-full"
-                  style={{ backgroundColor: t.surface || t.bg, borderColor: t.border }}
-                >
-                  <div className="flex items-start justify-between mb-6">
-                    <div
-                      className="w-10 h-10 rounded-lg flex items-center justify-center"
-                      style={{ backgroundColor: t.inputBg }}
-                    >
-                      <Calendar
-                        className={`w-6 h-6 ${isDark ? 'text-[#C9A24B]' : 'text-[#1458F2]'}`}
-                      />
-                    </div>
-                    <Link
-                      href="/contact/book-a-consultation"
-                      className="hover:text-[#C9A24B] transition-colors"
-                    >
-                      <ArrowRight
-                        className={`w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity ${isDark ? 'text-white' : 'text-[#0B1E3D]'}`}
-                      />
-                    </Link>
-                  </div>
-                  <h3
-                    className={`text-[20px] font-bold mb-3 ${isDark ? 'text-white' : 'text-[#0B1E3D]'}`}
-                  >
-                    Book a Consultation
-                  </h3>
-                  <p
-                    className={`text-[14px] leading-[1.6] ${isDark ? 'text-gray-300' : 'text-[#5F6875]'}`}
-                  >
-                    Schedule a high-level strategic alignment session for executive leadership.
-                  </p>
-                </div>
-              </Reveal>
+            {/* ---------------------------------------------------------------- */}
+            {/* SECONDARY CARDS                                                  */}
+            {/* ---------------------------------------------------------------- */}
 
-              <Reveal delay={0.2}>
-                <div
-                  className="group relative p-10 rounded-xl border transition-all duration-300 hover:-translate-y-1 hover:shadow-lg cursor-pointer h-full"
-                  style={{ backgroundColor: t.surface || t.bg, borderColor: t.border }}
-                >
-                  <div className="flex items-start justify-between mb-6">
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+              {actionCards.map((item, index) => (
+                <Reveal key={item.title} delay={0.1 + index * 0.1}>
+                  <Link
+                    href={item.href}
+                    className="group block h-full w-full"
+                    aria-label={item.title}
+                  >
                     <div
-                      className="w-10 h-10 rounded-lg flex items-center justify-center"
-                      style={{ backgroundColor: t.inputBg }}
+                      className="relative flex h-full min-h-[320px] w-full flex-col overflow-hidden rounded-[24px] border transition-all duration-500 group-hover:-translate-y-1"
+                      style={{
+                        backgroundColor: t.surface || t.bg,
+                        borderColor: t.border,
+                        boxShadow: isDark
+                          ? '0 16px 45px rgba(0,0,0,0.13)'
+                          : '0 16px 45px rgba(7,28,53,0.065)',
+                      }}
                     >
-                      <FileText
-                        className={`w-6 h-6 ${isDark ? 'text-[#C9A24B]' : 'text-[#1458F2]'}`}
+                      {/* Decorative bottom shape */}
+                      <div
+                        aria-hidden="true"
+                        className="pointer-events-none absolute -bottom-24 -right-16 h-[220px] w-[220px] rounded-full blur-3xl transition-transform duration-700 group-hover:scale-125"
+                        style={{
+                          background: isDark ? 'rgba(201,162,75,0.065)' : 'rgba(20,88,242,0.045)',
+                        }}
                       />
+
+                      {/* Explicit card padding */}
+                      <div
+                        className="relative z-10 flex h-full flex-col"
+                        style={{
+                          padding: '32px',
+                        }}
+                      >
+                        {/* Icon + arrow */}
+                        <div className="flex items-start justify-between">
+                          <div
+                            className="flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-[15px] border"
+                            style={{
+                              backgroundColor: isDark
+                                ? 'rgba(255,255,255,0.045)'
+                                : 'rgba(20,88,242,0.045)',
+                              borderColor: isDark
+                                ? 'rgba(255,255,255,0.09)'
+                                : 'rgba(20,88,242,0.11)',
+                            }}
+                          >
+                            <item.icon
+                              aria-hidden="true"
+                              style={{
+                                width: 25,
+                                height: 25,
+                                color: isDark ? '#C9A24B' : '#1458F2',
+                                strokeWidth: 1.8,
+                              }}
+                            />
+                          </div>
+                        </div>
+
+                        {/* Content */}
+                        <div className="mt-8">
+                          <p
+                            style={{
+                              color: isDark ? '#C9A24B' : '#1458F2',
+                              fontSize: '10px',
+                              lineHeight: 1.2,
+                              fontWeight: 700,
+                              letterSpacing: '0.2em',
+                              textTransform: 'uppercase',
+                            }}
+                          >
+                            {item.eyebrow}
+                          </p>
+
+                          <h3
+                            className={`mt-4 font-bold tracking-[-0.025em] ${
+                              isDark ? 'text-white' : 'text-[#0B1E3D]'
+                            }`}
+                            style={{
+                              fontSize: '22px',
+                              lineHeight: 1.2,
+                            }}
+                          >
+                            {item.title}
+                          </h3>
+
+                          <p
+                            className={`mt-4 ${isDark ? 'text-white/60' : 'text-[#657080]'}`}
+                            style={{
+                              fontSize: '14px',
+                              lineHeight: 1.72,
+                            }}
+                          >
+                            {item.description}
+                          </p>
+                        </div>
+
+                        {/* Bottom CTA */}
+                        <div className="mt-auto pt-8">
+                          <div
+                            className={`inline-flex items-center gap-3 font-semibold transition-all duration-300 group-hover:gap-4 ${
+                              isDark ? 'text-white' : 'text-[#0B1E3D]'
+                            }`}
+                            style={{
+                              fontSize: '13px',
+                              lineHeight: 1.2,
+                            }}
+                          >
+                            <span>{item.cta}</span>
+
+                            <span
+                              className="flex h-[34px] w-[34px] items-center justify-center rounded-full"
+                              style={{
+                                backgroundColor: isDark
+                                  ? 'rgba(201,162,75,0.12)'
+                                  : 'rgba(20,88,242,0.07)',
+                              }}
+                            >
+                              <ArrowRight
+                                aria-hidden="true"
+                                style={{
+                                  width: 16,
+                                  height: 16,
+                                  color: isDark ? '#C9A24B' : '#1458F2',
+                                  strokeWidth: 2,
+                                }}
+                              />
+                            </span>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <Link
-                      href="/contact/request-a-proposal"
-                      className="hover:text-[#C9A24B] transition-colors"
-                    >
-                      <ArrowRight
-                        className={`w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity ${isDark ? 'text-white' : 'text-[#0B1E3D]'}`}
-                      />
-                    </Link>
-                  </div>
-                  <h3
-                    className={`text-[20px] font-bold mb-3 ${isDark ? 'text-white' : 'text-[#0B1E3D]'}`}
-                  >
-                    Request a Proposal
-                  </h3>
-                  <p
-                    className={`text-[14px] leading-[1.6] ${isDark ? 'text-gray-300' : 'text-[#5F6875]'}`}
-                  >
-                    Access our secure procurement portal to submit an RFP or RFQ.
-                  </p>
-                </div>
-              </Reveal>
+                  </Link>
+                </Reveal>
+              ))}
             </div>
           </div>
 
-          {/* RIGHT COLUMN - Directory & Support */}
-          <div className="lg:col-span-5">
-            <Reveal delay={0.3}>
-              <div
-                className="p-10 rounded-xl border h-full flex flex-col"
-                style={{ backgroundColor: t.surface || t.bg, borderColor: t.border }}
-              >
-                <h4
-                  className={`text-[12px] font-bold uppercase tracking-[0.14em] mb-8 ${isDark ? 'text-gray-400' : 'text-[#5F6875]'}`}
-                >
-                  Directory & Support
-                </h4>
-                <br />
+          {/* ================================================================== */}
+          {/* RIGHT COLUMN — CONTACT & SUPPORT                                   */}
+          {/* ================================================================== */}
 
-                <div className="space-y-6 flex-grow">
-                  {[
-                    {
-                      icon: Store,
-                      title: 'Sales Enquiries',
-                      desc: 'Strategic routing for new business.',
-                      href: '/contact/sales-enquiries',
-                    },
-                    {
-                      icon: Headphones,
-                      title: 'Customer Support',
-                      desc: 'AI-augmented concierge services.',
-                      href: '/contact/customer-support',
-                    },
-                    {
-                      icon: Globe,
-                      title: 'Global Offices',
-                      desc: 'Hub directory and global locations.',
-                      href: '/contact/global-offices',
-                    },
-                  ].map((item, idx) => (
-                    <div key={idx} className="group flex items-center gap-5 cursor-pointer">
-                      <div
-                        className={`w-10 h-10 rounded-full flex items-center justify-center ${isDark ? 'bg-white/5' : 'bg-gray-100'}`}
-                      >
-                        <item.icon
-                          className={`w-6 h-6 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}
-                        />
-                      </div>
-                      <div className="flex-1">
-                        <h5
-                          className={`text-[16px] font-bold ${isDark ? 'text-white' : 'text-[#0B1E3D]'}`}
+          <div className="lg:col-span-5">
+            <Reveal delay={0.25}>
+              <div
+                className="relative flex h-full min-h-[646px] w-full flex-col overflow-hidden rounded-[24px] border"
+                style={{
+                  backgroundColor: t.surface || t.bg,
+                  borderColor: t.border,
+                  boxShadow: isDark
+                    ? '0 18px 55px rgba(0,0,0,0.14)'
+                    : '0 18px 55px rgba(7,28,53,0.06)',
+                }}
+              >
+                {/* Background glow */}
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute -bottom-28 -right-28 h-[360px] w-[360px] rounded-full blur-3xl"
+                  style={{
+                    background: isDark ? 'rgba(201,162,75,0.055)' : 'rgba(20,88,242,0.035)',
+                  }}
+                />
+
+                <div
+                  className="relative z-10 flex h-full flex-col"
+                  style={{
+                    padding: '40px',
+                  }}
+                >
+                  {/* Header */}
+                  <div>
+                    <p
+                      style={{
+                        color: isDark ? '#C9A24B' : '#1458F2',
+                        fontSize: '10px',
+                        lineHeight: 1.2,
+                        fontWeight: 700,
+                        letterSpacing: '0.22em',
+                        textTransform: 'uppercase',
+                      }}
+                    >
+                      Contact & Support
+                    </p>
+
+                    <h3
+                      className={`mt-4 font-bold tracking-[-0.03em] ${
+                        isDark ? 'text-white' : 'text-[#0B1E3D]'
+                      }`}
+                      style={{
+                        fontSize: '28px',
+                        lineHeight: 1.15,
+                      }}
+                    >
+                      We are here to help
+                    </h3>
+
+                    <p
+                      className={`mt-3 ${isDark ? 'text-white/55' : 'text-[#6B7280]'}`}
+                      style={{
+                        fontSize: '14px',
+                        lineHeight: 1.6,
+                      }}
+                    >
+                      Find the right team for your needs.
+                    </p>
+                    <br />
+                  </div>
+
+                  {/* Directory items */}
+                  <div className="mt-8 flex-1">
+                    {directoryItems.map((item, index) => (
+                      <Link key={item.title} href={item.href} className="group block">
+                        <div
+                          className={`flex items-center gap-5 ${
+                            index === 0 ? 'pt-0' : 'pt-6'
+                          } pb-6`}
+                          style={{
+                            borderBottom:
+                              index < directoryItems.length - 1
+                                ? `1px solid ${isDark ? 'rgba(255,255,255,0.08)' : '#E6EAF0'}`
+                                : 'none',
+                          }}
                         >
-                          {item.title}
-                        </h5>
-                        <p className={`text-[13px] ${isDark ? 'text-gray-400' : 'text-[#5F6875]'}`}>
-                          {item.desc}
+                          {/* Large icon */}
+                          <div
+                            className="flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-full border transition-all duration-300 group-hover:scale-105"
+                            style={{
+                              backgroundColor: isDark ? 'rgba(255,255,255,0.045)' : '#F5F7FA',
+                              borderColor: isDark ? 'rgba(255,255,255,0.08)' : '#E3E8EF',
+                            }}
+                          >
+                            <item.icon
+                              aria-hidden="true"
+                              style={{
+                                width: 25,
+                                height: 25,
+                                color: isDark ? '#C9A24B' : '#526173',
+                                strokeWidth: 1.8,
+                              }}
+                            />
+                          </div>
+
+                          {/* Text */}
+                          <div className="min-w-0 flex-1">
+                            <h4
+                              className={`font-bold ${isDark ? 'text-white' : 'text-[#0B1E3D]'}`}
+                              style={{
+                                fontSize: '16px',
+                                lineHeight: 1.3,
+                              }}
+                            >
+                              {item.title}
+                            </h4>
+
+                            <p
+                              className={`mt-2 ${isDark ? 'text-white/50' : 'text-[#697484]'}`}
+                              style={{
+                                fontSize: '13px',
+                                lineHeight: 1.55,
+                              }}
+                            >
+                              {item.desc}
+                            </p>
+                          </div>
+
+                          {/* Visible arrow */}
+                          <div
+                            className="flex h-[42px] w-[42px] shrink-0 items-center justify-center rounded-full border transition-all duration-300 group-hover:translate-x-1"
+                            style={{
+                              borderColor: isDark ? 'rgba(201,162,75,0.30)' : '#E0E6EE',
+                              backgroundColor: isDark ? 'rgba(201,162,75,0.045)' : '#FAFBFC',
+                            }}
+                          >
+                            <ArrowRight
+                              aria-hidden="true"
+                              style={{
+                                width: 18,
+                                height: 18,
+                                color: isDark ? '#C9A24B' : '#7A8594',
+                                strokeWidth: 1.9,
+                              }}
+                            />
+                          </div>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+
+                  {/* Support status */}
+                  <div
+                    className="relative mt-4 overflow-hidden rounded-[20px] border"
+                    style={{
+                      padding: '24px',
+                      backgroundColor: isDark ? 'rgba(255,255,255,0.025)' : '#F8FAFC',
+                      borderColor: isDark ? 'rgba(255,255,255,0.08)' : '#E6EBF1',
+                    }}
+                  >
+                    <div className="flex items-start gap-4">
+                      <span className="relative mt-[3px] flex h-[12px] w-[12px] shrink-0">
+                        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-50" />
+                        <span className="relative inline-flex h-[12px] w-[12px] rounded-full bg-emerald-500" />
+                      </span>
+
+                      <div>
+                        <p
+                          style={{
+                            color: '#10B981',
+                            fontSize: '10px',
+                            lineHeight: 1.2,
+                            fontWeight: 700,
+                            letterSpacing: '0.18em',
+                            textTransform: 'uppercase',
+                          }}
+                        >
+                          TRYVION Support
+                        </p>
+
+                        <p
+                          className={`mt-3 ${isDark ? 'text-white/65' : 'text-[#657080]'}`}
+                          style={{
+                            fontSize: '13px',
+                            lineHeight: 1.65,
+                          }}
+                        >
+                          Our teams are available to help with your enquiries and ongoing
+                          engagements.
                         </p>
                       </div>
-                      <Link
-                        href={item.href}
-                        aria-label={`Go to ${item.title}`}
-                        className="flex-shrink-0"
-                      >
-                        <ArrowRight
-                          className={`w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity ${
-                            isDark ? 'text-white' : 'text-[#0B1E3D]'
-                          }`}
-                        />
-                      </Link>
                     </div>
-                  ))}
-                </div>
-                <br />
-                <br />
-
-                {/* Systems Status */}
-                <div
-                  className={`mt-10 pt-8 border-t ${isDark ? 'border-white/10' : 'border-gray-200'}`}
-                >
-                  <div className="flex items-center gap-3 mb-2">
-                    <span className="relative flex h-3 w-3">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
-                    </span>
-                    <span
-                      className={`text-[12px] font-bold uppercase tracking-[0.1em] text-emerald-500`}
-                    >
-                      Systems Fully Operational
-                    </span>
                   </div>
-                  <p className={`text-[13px] ${isDark ? 'text-gray-400' : 'text-[#5F6875]'}`}>
-                    Current average response time: &lt; 2 hours.
-                  </p>
                 </div>
               </div>
             </Reveal>
@@ -1212,8 +1556,8 @@ export default function ContactPage() {
       className={`min-h-screen antialiased transition-colors duration-500 ${isDark ? 'bg-[#07162C] text-white' : 'bg-white text-[#0B1E3D]'}`}
     >
       <HeroSection isDark={isDark} />
-      <ContactCardsSection isDark={isDark} />
       <ContactFormSection isDark={isDark} />
+      <ContactCardsSection isDark={isDark} />
     </main>
   );
 }

@@ -571,7 +571,7 @@ export default function S4HanaPublicEditionPage() {
             </p>
             <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '2rem' }}>
               <Link
-                href="/contact/talk-to-an-expert"
+                href="/contact/customer-support?intent=expert"
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
@@ -589,7 +589,7 @@ export default function S4HanaPublicEditionPage() {
                 Talk to an SAP Expert <Arrow />
               </Link>
               <Link
-                href="/contact/book-a-consultation"
+                href="/contact/customer-support?intent=consultation"
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
@@ -806,7 +806,7 @@ export default function S4HanaPublicEditionPage() {
             </p>
             <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
               <Link
-                href="/contact/talk-to-an-expert"
+                href="/contact/customer-support?intent=expert"
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
@@ -1042,7 +1042,7 @@ export default function S4HanaPublicEditionPage() {
                     Contact Sales <Arrow />
                   </Link>
                   <Link
-                    href="/contact/book-a-consultation"
+                    href="/contact/customer-support?intent=consultation"
                     style={{
                       display: 'inline-flex',
                       alignItems: 'center',

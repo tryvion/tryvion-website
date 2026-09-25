@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'motion/react';
 import { ChevronDown, CheckCircle2, ArrowUp } from 'lucide-react';
 import { useSiteTheme } from '@/providers/SiteThemeProvider';
+import { getSiteOrigin } from '@/lib/seo/config';
 
 interface AccessibilitySection {
   id: string;
@@ -14,6 +15,7 @@ interface AccessibilitySection {
 }
 
 export default function AccessibilityStatementPage() {
+  const SITE_URL = getSiteOrigin();
   const { theme } = useSiteTheme();
   const isDark = theme === 'dark';
 
@@ -284,7 +286,7 @@ export default function AccessibilityStatementPage() {
             <p>
               <strong>Website:</strong>{' '}
               <a
-                href="https://www.thetryvion.com"
+                href={SITE_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-600 dark:text-blue-400 hover:underline"

@@ -517,8 +517,9 @@ export default function EnterpriseAIPlatformsPage() {
                       WebkitTextFillColor: 'transparent',
                     }}
                   >
-                    Enterprise AI.
+                    Enterprise AI
                   </span>
+                  .
                 </h1>
               </Reveal>
 
@@ -541,7 +542,7 @@ export default function EnterpriseAIPlatformsPage() {
               <Reveal delay={320}>
                 <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
                   <Link
-                    href="/contact"
+                    href="/contact/customer-support?intent=expert"
                     style={{
                       backgroundColor: '#2563EB',
                       color: '#FFFFFF',
@@ -560,7 +561,7 @@ export default function EnterpriseAIPlatformsPage() {
                   </Link>
 
                   <Link
-                    href="#stack-architecture"
+                    href="/contact/customer-support?intent=consultation"
                     style={{
                       backgroundColor: 'rgba(255, 255, 255, 0.08)',
                       border: '1px solid rgba(255, 255, 255, 0.2)',
@@ -1679,7 +1680,7 @@ export default function EnterpriseAIPlatformsPage() {
                 style={{ display: 'flex', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap' }}
               >
                 <Link
-                  href="/contact"
+                  href="/contact/customer-support?intent=consultation"
                   style={{
                     backgroundColor: '#2563EB',
                     color: '#FFFFFF',
@@ -1694,7 +1695,7 @@ export default function EnterpriseAIPlatformsPage() {
                     boxShadow: '0 12px 30px -6px rgba(37, 99, 235, 0.6)',
                   }}
                 >
-                  Schedule Architecture Review <ArrowRight size={20} />
+                  Book a Consultation <ArrowRight size={20} />
                 </Link>
               </div>
             </Reveal>

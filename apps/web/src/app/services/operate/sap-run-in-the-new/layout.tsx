@@ -1,9 +1,16 @@
-import type { Metadata } from 'next'
-import type { ReactNode } from 'react'
-import { pageMetadata } from '@/lib/seo/pages'
+import type { Metadata } from 'next';
+import type { ReactNode } from 'react';
 
-export const metadata: Metadata = pageMetadata.sapRunInTheNew
+import { PageStructuredData } from '@/components/seo/PageStructuredData';
+import { pageMetadata, pageSeo } from '@/lib/seo/pages';
+
+export const metadata: Metadata = pageMetadata.sapRunInTheNew;
 
 export default function SapRunInTheNewLayout({ children }: { children: ReactNode }) {
-  return children
+  return (
+    <>
+      {children}
+      <PageStructuredData page={pageSeo.sapRunInTheNew} />
+    </>
+  );
 }

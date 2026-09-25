@@ -101,6 +101,7 @@ const OFFICE_GROUPS: { heading: string; offices: { city: string; country: string
 /* ── Drawer sections (right rail → left content panel) ── */
 interface DrawerCol {
   heading?: string;
+  href?: string;
   links: { label: string; href: string }[];
 }
 interface DrawerSection {
@@ -115,28 +116,13 @@ const DRAWER_SECTIONS: DrawerSection[] = [
     key: 'services',
     label: 'Services',
     href: '/services',
-    columns: SERVICES_GROUPS.map((g) => ({ heading: g.heading, links: g.links })),
+    columns: SERVICES_GROUPS.map((g) => ({ heading: g.heading, href: g.href, links: g.links })),
   },
   {
     key: 'industries',
     label: 'Industries',
     href: '/industries',
     columns: [{ links: INDUSTRY_LINKS }],
-  },
-  {
-    key: 'insights',
-    label: 'Our Insights',
-    href: '/insights',
-    columns: [
-      {
-        links: [
-          { label: 'All Insights', href: '/insights' },
-          { label: 'Enterprise Strategy', href: '/insights/strategy' },
-          { label: 'Tryvion AI', href: '/insights/ai' },
-          { label: 'Talent & Academy', href: '/insights/talent' },
-        ],
-      },
-    ],
   },
   {
     key: 'careers',
@@ -1177,7 +1163,7 @@ export function ScrollHeader({ theme: themeProp }: ScrollHeaderProps) {
                       {g.offices.map((o) => (
                         <NextLink
                           key={o.city}
-                          href="/about/locations"
+                          href="/contact/global-offices"
                           style={{
                             display: 'flex',
                             alignItems: 'baseline',
@@ -2061,9 +2047,36 @@ export function ScrollHeader({ theme: themeProp }: ScrollHeaderProps) {
             >
               {activeDrawer.columns.map((col, ci) => (
                 <div key={ci}>
-                  {col.heading && (
-                    <span style={{ ...groupHead, display: 'block' }}>{col.heading}</span>
-                  )}
+                  {col.heading &&
+                    (col.href ? (
+                      <NextLink
+                        href={col.href}
+                        onClick={() => {
+                          setMobileDrawerSubmenuOpen(false);
+                          setDrawerOpen(false);
+                        }}
+                        style={{
+                          ...groupHead,
+                          display: 'block',
+                          userSelect: 'none',
+                          WebkitUserSelect: 'none',
+                        }}
+                        {...linkHover}
+                      >
+                        {col.heading}
+                      </NextLink>
+                    ) : (
+                      <span
+                        style={{
+                          ...groupHead,
+                          display: 'block',
+                          userSelect: 'none',
+                          WebkitUserSelect: 'none',
+                        }}
+                      >
+                        {col.heading}
+                      </span>
+                    ))}
                   {col.links.map((l) => (
                     <NextLink
                       key={l.label}
@@ -2152,43 +2165,88 @@ export function ScrollHeader({ theme: themeProp }: ScrollHeaderProps) {
             >
               {DRAWER_SECTIONS.map((s) => {
                 const active = drawerSection === s.key;
+                const hasSubmenu = s.columns.some((column) => column.links.length > 0);
+
                 return (
-                  <button
+                  <div
                     key={s.key}
-                    type="button"
-                    onClick={() => {
-                      setDrawerSection(s.key);
-                      setMobileDrawerSubmenuOpen(true);
-                    }}
                     style={{
                       display: 'flex',
-                      flexDirection: 'row-reverse',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                      padding: '1.125rem 2rem',
+                      alignItems: 'stretch',
+                      width: '100%',
                       background: active ? 'rgba(255,255,255,0.08)' : 'transparent',
-                      border: 'none',
-                      cursor: 'pointer',
-                      color: '#fff',
                       transition:
                         'background var(--motion-duration-fast) var(--motion-easing-standard)',
                     }}
                   >
-                    <span
+                    {/* Main section link */}
+                    <NextLink
+                      href={s.href}
+                      onClick={() => {
+                        setActiveMenu(null);
+                        setMobileDrawerSubmenuOpen(false);
+                        setDrawerOpen(false);
+                      }}
                       style={{
+                        flex: 1,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'flex-end',
+                        minWidth: 0,
+                        padding: '1.125rem 0 1.125rem 2rem',
+                        color: '#fff',
+                        fontFamily: 'var(--family-text)',
                         fontSize: '1.0625rem',
                         fontWeight: 700,
                         letterSpacing: '-0.005em',
-                        borderBottom: active ? '2px solid #fff' : '2px solid transparent',
-                        paddingBottom: 2,
+                        lineHeight: 1.3,
+                        textDecoration: 'none',
+                        userSelect: 'none',
+                        WebkitUserSelect: 'none',
                       }}
                     >
-                      {s.label}
-                    </span>
-                    <span style={{ color: 'rgba(255,255,255,0.7)', display: 'flex' }}>
-                      <ChevronLeft />
-                    </span>
-                  </button>
+                      <span
+                        style={{
+                          borderBottom: active ? '2px solid #fff' : '2px solid transparent',
+                          paddingBottom: 2,
+                          userSelect: 'none',
+                          WebkitUserSelect: 'none',
+                        }}
+                      >
+                        {s.label}
+                      </span>
+                    </NextLink>
+
+                    {/* Open submenu only when child links exist */}
+                    {hasSubmenu && (
+                      <button
+                        type="button"
+                        aria-label={`Open ${s.label} submenu`}
+                        aria-expanded={active && mobileDrawerSubmenuOpen}
+                        onClick={() => {
+                          setActiveMenu(null);
+                          setDrawerSection(s.key);
+                          setMobileDrawerSubmenuOpen(true);
+                        }}
+                        style={{
+                          width: '3.75rem',
+                          flexShrink: 0,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          padding: 0,
+                          background: 'transparent',
+                          border: 'none',
+                          color: 'rgba(255,255,255,0.7)',
+                          cursor: 'pointer',
+                          userSelect: 'none',
+                          WebkitUserSelect: 'none',
+                        }}
+                      >
+                        <ChevronLeft />
+                      </button>
+                    )}
+                  </div>
                 );
               })}
             </nav>

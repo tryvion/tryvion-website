@@ -352,7 +352,7 @@ export default function TryvionOperateCategoryPage() {
               <Reveal delay={320}>
                 <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
                   <Link
-                    href="#contact"
+                    href="/contact/customer-support?intent=expert"
                     style={{
                       backgroundColor: '#F59E0B',
                       color: '#03050C',
@@ -1293,7 +1293,7 @@ export default function TryvionOperateCategoryPage() {
                 style={{ display: 'flex', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap' }}
               >
                 <Link
-                  href="#contact"
+                  href="/contact/customer-support?intent=consultation"
                   style={{
                     backgroundColor: '#F59E0B',
                     color: '#03050C',
@@ -1307,7 +1307,7 @@ export default function TryvionOperateCategoryPage() {
                     boxShadow: '0 10px 25px -5px rgba(245, 158, 11, 0.5)',
                   }}
                 >
-                  Talk to an Expert <ArrowRight size={18} />
+                  Book a Consultation <ArrowRight size={18} />
                 </Link>
 
                 <Link

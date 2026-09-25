@@ -670,7 +670,7 @@ export default function LifeAtTryvionPage() {
               </div>
               <div className="life-skillverse-button-wrap" style={{ flexShrink: 0 }}>
                 <Link
-                  href="/get-started"
+                  href="/services/academy"
                   className="life-skillverse-button"
                   style={{
                     display: 'inline-flex',
@@ -690,7 +690,7 @@ export default function LifeAtTryvionPage() {
                   onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(20,88,242,0.4)')}
                   onMouseLeave={(e) => (e.currentTarget.style.background = 'rgba(20,88,242,0.25)')}
                 >
-                  Explore SkillVerse
+                  Explore TRYVION Academy
                 </Link>
               </div>
             </motion.div>
@@ -752,7 +752,7 @@ export default function LifeAtTryvionPage() {
                 View open roles
               </Link>
               <Link
-                href="/about/values"
+                href="/about/our-values"
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',

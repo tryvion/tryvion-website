@@ -238,7 +238,7 @@ function Hero() {
 
             <div className="mt-10 flex flex-wrap gap-4">
               <Link
-                href="/contact"
+                href="/contact/customer-support?intent=expert"
                 className="inline-flex min-h-[50px] items-center justify-center bg-[#1458F2] px-7 text-[11px] font-bold uppercase tracking-[0.1em] text-white transition-colors hover:bg-[#0444D4]"
               >
                 Talk to an Expert
@@ -862,7 +862,7 @@ function CTA() {
 
           <div className="mt-12 flex flex-wrap justify-center gap-6 p-6">
             <Link
-              href="/contact"
+              href="/contact/customer-support?intent=expert"
               className="inline-flex min-h-[50px] items-center justify-center bg-[#1458F2] px-6 text-[11px] font-bold uppercase tracking-[0.1em] text-white transition-colors hover:bg-[#0444D4]"
             >
               Talk to an Expert
@@ -870,7 +870,7 @@ function CTA() {
             </Link>
 
             <Link
-              href="/contact/book-a-consultation"
+              href="/contact/customer-support?intent=consultation"
               className="inline-flex min-h-[50px] items-center justify-center border border-[#1458F2] px-6 text-[11px] font-bold uppercase tracking-[0.1em] transition-colors hover:bg-[#F0F4FF]"
               style={{ color: isDark ? '#3B7BFF' : '#1458F2' }}
             >

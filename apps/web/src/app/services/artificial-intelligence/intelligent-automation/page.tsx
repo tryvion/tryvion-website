@@ -521,8 +521,9 @@ export default function IntelligentAutomationPage() {
                       WebkitTextFillColor: 'transparent',
                     }}
                   >
-                    Business Processes.
+                    Business Processes
                   </span>
+                  .
                 </h1>
               </Reveal>
 
@@ -545,7 +546,7 @@ export default function IntelligentAutomationPage() {
               <Reveal delay={320}>
                 <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
                   <Link
-                    href="/contact"
+                    href="/contact/customer-support?intent=expert"
                     style={{
                       backgroundColor: '#2563EB',
                       color: '#FFFFFF',
@@ -1681,7 +1682,7 @@ export default function IntelligentAutomationPage() {
                 style={{ display: 'flex', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap' }}
               >
                 <Link
-                  href="/contact"
+                  href="/contact/customer-support?intent=consultation"
                   style={{
                     backgroundColor: '#2563EB',
                     color: '#FFFFFF',

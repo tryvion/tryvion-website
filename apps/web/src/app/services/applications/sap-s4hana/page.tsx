@@ -1343,7 +1343,7 @@ export default function S4HanaPage() {
                   }}
                 >
                   <Link
-                    href="/contact/talk-to-an-expert"
+                    href="/contact/customer-support?intent=expert"
                     style={{
                       display: 'inline-flex',
                       alignItems: 'center',
@@ -1362,7 +1362,7 @@ export default function S4HanaPage() {
                     Talk to an SAP Expert <Arrow />
                   </Link>
                   <Link
-                    href="/contact/book-a-consultation"
+                    href="/contact/customer-support?intent=consultation"
                     style={{
                       display: 'inline-flex',
                       alignItems: 'center',

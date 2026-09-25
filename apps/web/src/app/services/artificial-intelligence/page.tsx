@@ -839,7 +839,7 @@ export default function ArtificialIntelligencePage() {
               that run the enterprise.
             </p>
             <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-              <Link href="/contact/talk-to-an-expert" style={btnPrimary}>
+              <Link href="/contact/customer-support?intent=expert" style={btnPrimary}>
                 Talk to an AI Expert <Arrow />
               </Link>
               <Link
@@ -1635,7 +1635,7 @@ export default function ArtificialIntelligencePage() {
               Contact Sales <Arrow />
             </Link>
             <Link
-              href="/contact/book-a-consultation"
+              href="/contact/customer-support?intent=consultation"
               style={{ ...btnOutline, color: '#fff', borderColor: 'rgba(255,255,255,0.3)' }}
             >
               Book a Consultation <Arrow />

@@ -584,7 +584,7 @@ function FooterCTA({ isDark }: { isDark: boolean }) {
                 href="mailto:vr@thetryvion.com"
                 className={`text-[16px] transition-colors ${isDark ? 'text-[#7C3AED] hover:text-[#9333EA]' : 'text-[#1458F2] hover:text-[#0f46c9]'}`}
               >
-                careers@tryvion.com
+                careers@thetryvion.com
               </a>
             </div>
           </div>

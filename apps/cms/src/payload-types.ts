@@ -781,7 +781,7 @@ export interface SalesEnquiry {
   createdAt: string;
 }
 /**
- * Customer support requests submitted through the TRYVION Customer Support page.
+ * Contact, consultation and customer support requests submitted through the TRYVION website.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "customer-support".
@@ -789,26 +789,95 @@ export interface SalesEnquiry {
 export interface CustomerSupport {
   id: number;
   /**
-   * Public-facing support ticket identifier.
+   * Public-facing contact request identifier.
    */
   ticketId: string;
+  /**
+   * The type of engagement requested by the website visitor.
+   */
+  intent: 'expert' | 'consultation' | 'support';
   fullName: string;
   company: string;
   workEmail: string;
   phone?: string | null;
   /**
-   * Primary support service area used for routing.
+   * Area of interest for Talk to an Expert and Book a Consultation requests.
    */
-  supportArea: 'SAP Applications' | 'AI & Automation' | 'Integration & Technology' | 'Operate' | 'Other Enquiry';
+  serviceInterest?:
+    | (
+        | 'SAP S/4HANA'
+        | 'SAP SuccessFactors'
+        | 'SAP Business Technology Platform (BTP)'
+        | 'SAP Ariba'
+        | 'SAP Customer Experience'
+        | 'Enterprise AI Strategy'
+        | 'Enterprise AI Platforms'
+        | 'Intelligent Automation'
+        | 'Data & Analytics'
+        | 'Cloud Transformation'
+        | 'Enterprise Integration'
+        | 'Digital Engineering'
+        | 'SAP Talent Solutions'
+        | 'Permanent Hiring'
+        | 'Executive Search'
+        | 'TRYVION Academy / Learning'
+        | 'Managed Services / SAP Run in the New'
+        | 'Business Transformation'
+        | 'Multiple / Cross-Capability'
+        | 'Other'
+      )
+    | null;
+  /**
+   * Business challenge or objective for Expert and Consultation requests.
+   */
+  businessChallenge?: string | null;
+  /**
+   * Preferred date for a consultation.
+   */
+  preferredConsultationDate?: string | null;
+  /**
+   * Preferred time for a consultation.
+   */
+  preferredConsultationTime?: string | null;
+  /**
+   * Preferred method for TRYVION to contact the requester.
+   */
+  preferredContactMethod?: ('email' | 'phone' | 'video_call') | null;
+  /**
+   * Affected TRYVION service, technology or operational support area.
+   */
+  supportArea?:
+    | (
+        | 'SAP S/4HANA'
+        | 'SAP SuccessFactors'
+        | 'SAP Business Technology Platform (BTP)'
+        | 'SAP Ariba'
+        | 'SAP Customer Experience'
+        | 'Enterprise AI & Automation'
+        | 'Data & Analytics'
+        | 'Cloud & Infrastructure'
+        | 'Enterprise Integration'
+        | 'Digital Engineering'
+        | 'Managed Services / SAP Run in the New'
+        | 'Talent & Learning Platforms'
+        | 'Security & Access'
+        | 'Performance & Availability'
+        | 'Incident / Service Disruption'
+        | 'Other Support Enquiry'
+      )
+    | null;
   /**
    * Priority selected by the customer based on business impact.
    */
-  supportPriority: 'Low' | 'Medium' | 'High' | 'Critical / Urgent';
+  supportPriority?: ('Low' | 'Medium' | 'High' | 'Critical / Urgent') | null;
   /**
    * Optional customer, project, contract or reference identifier.
    */
   customerProjectReference?: string | null;
-  issue: string;
+  /**
+   * Issue or support request description. Required for Customer Support requests.
+   */
+  issue?: string | null;
   /**
    * Private Vercel Blob metadata. Files are uploaded directly to Blob and verified before the ticket is created.
    */
@@ -830,7 +899,7 @@ export interface CustomerSupport {
    */
   website?: string | null;
   /**
-   * Support team selected automatically from the support area.
+   * Support team assigned automatically based on the request intent and support area.
    */
   routingTeam: 'SAP Applications' | 'AI & Automation' | 'Integration & Technology' | 'Operate' | 'Customer Support';
   status: 'new' | 'in_progress' | 'awaiting_customer' | 'resolved' | 'closed' | 'spam';
@@ -1168,10 +1237,16 @@ export interface SalesEnquiriesSelect<T extends boolean = true> {
  */
 export interface CustomerSupportSelect<T extends boolean = true> {
   ticketId?: T;
+  intent?: T;
   fullName?: T;
   company?: T;
   workEmail?: T;
   phone?: T;
+  serviceInterest?: T;
+  businessChallenge?: T;
+  preferredConsultationDate?: T;
+  preferredConsultationTime?: T;
+  preferredContactMethod?: T;
   supportArea?: T;
   supportPriority?: T;
   customerProjectReference?: T;

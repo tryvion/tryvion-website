@@ -1,6 +1,7 @@
 'use client';
 
 import {
+  useEffect,
   useMemo,
   useState,
   type ChangeEvent,
@@ -12,6 +13,7 @@ import type { CSSProperties } from 'react';
 import Link from 'next/link';
 import {
   ArrowRight,
+  Calendar,
   Check,
   ChevronDown,
   FileText,
@@ -30,7 +32,7 @@ import {
 import { motion } from 'framer-motion';
 
 /*
- * TRYVION — CUSTOMER SUPPORT
+ * TRYVION — CONTACT TRYVION
  *
  * Route:
  * /contact/customer-support
@@ -50,15 +52,57 @@ import { motion } from 'framer-motion';
 
 const HERO_IMAGE = '/images/customer-support-hero.png';
 
+const CONTACT_INTENTS = [
+  { value: 'expert', label: 'Talk to an Expert' },
+  { value: 'consultation', label: 'Book a Consultation' },
+  { value: 'support', label: 'Customer Support' },
+] as const;
+
+const SERVICE_INTERESTS = [
+  'SAP S/4HANA',
+  'SAP SuccessFactors',
+  'SAP Business Technology Platform (BTP)',
+  'SAP Ariba',
+  'SAP Customer Experience',
+  'Enterprise AI Strategy',
+  'Enterprise AI Platforms',
+  'Intelligent Automation',
+  'Data & Analytics',
+  'Cloud Transformation',
+  'Enterprise Integration',
+  'Digital Engineering',
+  'SAP Talent Solutions',
+  'Permanent Hiring',
+  'Executive Search',
+  'TRYVION Academy / Learning',
+  'Managed Services / SAP Run in the New',
+  'Business Transformation',
+  'Multiple / Cross-Capability',
+  'Other',
+] as const;
+
 const SUPPORT_AREAS = [
-  'SAP Applications',
-  'AI & Automation',
-  'Integration & Technology',
-  'Operate',
-  'Other Enquiry',
+  'SAP S/4HANA',
+  'SAP SuccessFactors',
+  'SAP Business Technology Platform (BTP)',
+  'SAP Ariba',
+  'SAP Customer Experience',
+  'Enterprise AI & Automation',
+  'Data & Analytics',
+  'Cloud & Infrastructure',
+  'Enterprise Integration',
+  'Digital Engineering',
+  'Managed Services / SAP Run in the New',
+  'Talent & Learning Platforms',
+  'Security & Access',
+  'Performance & Availability',
+  'Incident / Service Disruption',
+  'Other Support Enquiry',
 ] as const;
 
 const SUPPORT_PRIORITIES = ['Low', 'Medium', 'High', 'Critical / Urgent'] as const;
+
+const PREFERRED_CONTACT_METHODS = ['Email', 'Phone', 'Video Call'] as const;
 
 const MAX_FILE_SIZE = 2 * 1024 * 1024;
 const MAX_FILES = 5;
@@ -91,78 +135,58 @@ const CONTENT_TYPE_BY_EXTENSION: Record<string, string> = {
 
 const HERO_POINTS = [
   {
-    title: 'Expert assistance',
-    body: 'Get help from the right support specialists.',
+    title: 'Expert guidance',
+    body: 'Speak with TRYVION specialists who understand enterprise applications, AI, data, cloud, talent and digital transformation.',
     icon: Headphones,
   },
   {
-    title: 'Timely response',
-    body: 'We prioritise and respond as quickly as possible.',
+    title: 'Strategic consultation',
+    body: 'Discuss your business priorities, explore the right approach and identify practical pathways toward measurable outcomes.',
     icon: LifeBuoy,
   },
   {
     title: 'Reliable support',
-    body: 'Count on us to keep your business running.',
+    body: 'Get timely assistance for your existing TRYVION engagement, with the right team focused on resolving your needs.',
     icon: ShieldCheck,
-  },
-] as const;
-
-const HELP_ITEMS = [
-  {
-    title: 'SAP Applications',
-    body: 'S/4HANA, SuccessFactors, BTP and other SAP applications.',
-    icon: FileText,
-  },
-  {
-    title: 'AI & Automation',
-    body: 'AI solutions, intelligent automation and AI platforms.',
-    icon: LifeBuoy,
-  },
-  {
-    title: 'Integration & Technology',
-    body: 'Integration, APIs, middleware and enterprise technology platforms.',
-    icon: Globe2,
-  },
-  {
-    title: 'Operate',
-    body: 'Application support, system operations and managed services.',
-    icon: ShieldCheck,
-  },
-  {
-    title: 'Other Enquiry',
-    body: 'General questions or other support related assistance.',
-    icon: HelpCircle,
   },
 ] as const;
 
 const TRUST_ITEMS = [
   {
     title: 'Experienced Experts',
-    body: 'Certified professionals with in-depth product knowledge.',
+    body: 'Experienced specialists focused on understanding and resolving your business needs.',
     icon: ShieldCheck,
   },
   {
     title: 'Global Support',
-    body: 'Support across time zones and multiple delivery centers.',
+    body: 'Support designed to work across teams, locations and business time zones.',
     icon: Globe2,
   },
   {
     title: 'Proactive Approach',
-    body: 'We monitor, analyse and help prevent issues early.',
+    body: 'Identify potential issues early and take action before they disrupt your operations.',
     icon: LifeBuoy,
   },
   {
     title: 'Customer Focused',
-    body: 'Your success is our priority — always.',
+    body: 'Your business needs remain at the centre of every support interaction.',
     icon: UsersRound,
   },
 ] as const;
 
+type ContactIntent = (typeof CONTACT_INTENTS)[number]['value'];
+
 type FormState = {
+  intent: ContactIntent;
   fullName: string;
   company: string;
   workEmail: string;
   phone: string;
+  serviceInterest: string;
+  businessChallenge: string;
+  preferredConsultationDate: string;
+  preferredConsultationTime: string;
+  preferredContactMethod: string;
   supportArea: string;
   supportPriority: string;
   customerProjectReference: string;
@@ -178,13 +202,20 @@ type UploadedDocument = {
   blobPathname: string;
   contentType: string;
   fileSize: number;
+  uploadedAt: string;
 };
 
 const INITIAL_FORM: FormState = {
+  intent: 'support',
   fullName: '',
   company: '',
   workEmail: '',
   phone: '',
+  serviceInterest: '',
+  businessChallenge: '',
+  preferredConsultationDate: '',
+  preferredConsultationTime: '',
+  preferredContactMethod: '',
   supportArea: '',
   supportPriority: '',
   customerProjectReference: '',
@@ -196,15 +227,15 @@ const INITIAL_FORM: FormState = {
 
 const inputStyle = {
   width: '100%',
-  height: 46,
+  height: 50,
   border: '1px solid var(--border-default)',
   borderRadius: 'var(--radius-xs)',
   background: 'var(--surface-default)',
   color: 'var(--content-primary)',
-  padding: '0 0.85rem',
+  padding: '0 0.95rem',
   outline: 'none',
   fontFamily: 'var(--family-text)',
-  fontSize: '0.875rem',
+  fontSize: '0.95rem',
   boxSizing: 'border-box' as const,
 };
 
@@ -215,7 +246,7 @@ function FieldLabel({ children, required = false }: { children: ReactNode; requi
         display: 'block',
         marginBottom: '0.5rem',
         color: 'var(--content-primary)',
-        fontSize: '0.78rem',
+        fontSize: '0.88rem',
         fontWeight: 700,
         lineHeight: 1.4,
       }}
@@ -349,7 +380,8 @@ function TextArea({
             height: 112,
             minHeight: 112,
             maxHeight: 320,
-            padding: '0.75rem 0.85rem',
+            padding: '0.75rem 0.95rem',
+            fontSize: '0.95rem',
             lineHeight: 1.55,
             resize: 'vertical',
             overflowY: 'auto',
@@ -363,7 +395,7 @@ function TextArea({
           justifyContent: 'flex-end',
           marginTop: 3,
           color: 'var(--content-tertiary)',
-          fontSize: '0.68rem',
+          fontSize: '0.76rem',
         }}
       >
         {value.length}/5000
@@ -392,64 +424,94 @@ function IconCircle({ children }: { children: ReactNode }) {
   );
 }
 
-function SupportCard({
+function IntentButton({
+  active,
+  label,
+  onClick,
+}: {
+  active: boolean;
+  label: string;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-pressed={active}
+      style={{
+        minHeight: 46,
+        padding: '0.65rem 0.9rem',
+        border: active ? '1px solid var(--content-accent)' : '1px solid var(--border-default)',
+        borderRadius: 'var(--radius-xs)',
+        background: active ? 'var(--surface-sunken)' : 'var(--surface-default)',
+        color: 'var(--content-primary)',
+        fontFamily: 'var(--family-text)',
+        fontSize: '0.88rem',
+        fontWeight: active ? 800 : 700,
+        cursor: 'pointer',
+        textAlign: 'left',
+      }}
+    >
+      {label}
+    </button>
+  );
+}
+
+function EngagementCard({
   title,
   body,
+  bullets,
   icon: Icon,
+  active,
+  recommended = false,
+  onClick,
 }: {
   title: string;
   body: string;
+  bullets: readonly string[];
   icon: LucideIcon;
+  active: boolean;
+  recommended?: boolean;
+  onClick: () => void;
 }) {
   return (
-    <motion.div
-      whileHover={{ y: -4 }}
+    <motion.button
+      type="button"
+      className={`cs-engagement-card ${active ? 'is-active' : ''}`}
+      whileHover={{ y: -5 }}
+      whileTap={{ scale: 0.995 }}
       transition={{ duration: 0.2 }}
-      style={{
-        minHeight: 174,
-        padding: '1.25rem',
-        border: '1px solid var(--border-subtle)',
-        borderRadius: 'var(--radius-xs)',
-        background: 'var(--surface-default)',
-        boxShadow: 'var(--elevation-01)',
-        boxSizing: 'border-box',
-      }}
+      onClick={onClick}
+      aria-pressed={active}
     >
-      <IconCircle>
-        <Icon size={26} strokeWidth={1.7} />
-      </IconCircle>
+      <div className="cs-engagement-card-top">
+        <div className="cs-engagement-icon">
+          <Icon size={28} strokeWidth={1.7} />
+        </div>
 
-      <div
-        style={{
-          width: 20,
-          height: 2,
-          background: 'var(--brand-accent)',
-          margin: '0.7rem 0',
-        }}
-      />
+        {recommended && <span className="cs-engagement-badge">Recommended</span>}
+      </div>
 
-      <h3
-        style={{
-          margin: 0,
-          color: 'var(--content-primary)',
-          fontSize: '1rem',
-          fontWeight: 700,
-        }}
-      >
-        {title}
-      </h3>
+      <div className="cs-engagement-gold-line" />
 
-      <p
-        style={{
-          margin: '0.5rem 0 0',
-          color: 'var(--content-secondary)',
-          fontSize: '0.90rem',
-          lineHeight: 1.65,
-        }}
-      >
-        {body}
-      </p>
-    </motion.div>
+      <h3>{title}</h3>
+      <p>{body}</p>
+
+      <div className="cs-engagement-footer">
+        <ul>
+          {bullets.map((bullet) => (
+            <li key={bullet}>
+              <Check size={16} strokeWidth={2.5} />
+              <span>{bullet}</span>
+            </li>
+          ))}
+        </ul>
+
+        <span className="cs-engagement-arrow" aria-hidden="true">
+          <ArrowRight size={21} strokeWidth={1.8} />
+        </span>
+      </div>
+    </motion.button>
   );
 }
 
@@ -484,7 +546,7 @@ function SideResource({
           style={{
             display: 'block',
             color: 'var(--content-primary)',
-            fontSize: '0.78rem',
+            fontSize: '0.88rem',
             lineHeight: 1.35,
           }}
         >
@@ -495,7 +557,7 @@ function SideResource({
             display: 'block',
             marginTop: 2,
             color: 'var(--content-secondary)',
-            fontSize: '0.68rem',
+            fontSize: '0.76rem',
             lineHeight: 1.45,
           }}
         >
@@ -523,26 +585,76 @@ export default function CustomerSupportPage() {
   const [statusMessage, setStatusMessage] = useState('');
   const [ticketId, setTicketId] = useState('');
 
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const requestedIntent = params.get('intent');
+
+    if (
+      requestedIntent === 'expert' ||
+      requestedIntent === 'consultation' ||
+      requestedIntent === 'support'
+    ) {
+      setForm((current) => ({ ...current, intent: requestedIntent }));
+    }
+  }, []);
+
   const update = <K extends keyof FormState>(key: K, value: FormState[K]) => {
-    setForm((current) => ({
-      ...current,
-      [key]: value,
-    }));
+    setForm((current) => ({ ...current, [key]: value }));
   };
 
-  const canSubmit = useMemo(
-    () =>
-      Boolean(
-        form.fullName.trim() &&
-        form.company.trim() &&
-        form.workEmail.trim() &&
-        form.supportArea &&
-        form.supportPriority &&
-        form.issue.trim() &&
-        form.privacyConsent,
-      ),
-    [form],
-  );
+  const selectIntent = (intent: ContactIntent) => {
+    setStatus('idle');
+    setStatusMessage('');
+    setTicketId('');
+    setDocuments([]);
+    setForm((current) => ({
+      ...current,
+      intent,
+      serviceInterest: '',
+      businessChallenge: '',
+      preferredConsultationDate: '',
+      preferredConsultationTime: '',
+      preferredContactMethod: '',
+      supportArea: '',
+      supportPriority: '',
+      customerProjectReference: '',
+      issue: '',
+    }));
+    window.requestAnimationFrame(() => {
+      document.getElementById('support-request')?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    });
+  };
+
+  const isSupport = form.intent === 'support';
+  const isConsultation = form.intent === 'consultation';
+
+  const canSubmit = useMemo(() => {
+    const commonFieldsValid = Boolean(
+      form.fullName.trim() && form.company.trim() && form.workEmail.trim() && form.privacyConsent,
+    );
+    if (!commonFieldsValid) return false;
+
+    if (form.intent === 'support') {
+      return Boolean(form.supportArea && form.supportPriority && form.issue.trim());
+    }
+
+    if (form.intent === 'consultation') {
+      return Boolean(
+        form.serviceInterest &&
+        form.businessChallenge.trim() &&
+        form.preferredConsultationDate &&
+        form.preferredConsultationTime &&
+        form.preferredContactMethod,
+      );
+    }
+
+    return Boolean(
+      form.serviceInterest && form.businessChallenge.trim() && form.preferredContactMethod,
+    );
+  }, [form]);
 
   const uploadDocuments = async (files: File[]) => {
     if (!files.length) return;
@@ -657,6 +769,7 @@ export default function CustomerSupportPage() {
           blobPathname: authorizationResult.pathname,
           contentType: signedContentType,
           fileSize: file.size,
+          uploadedAt: new Date().toISOString(),
         });
       }
 
@@ -731,10 +844,16 @@ export default function CustomerSupportPage() {
           Accept: 'application/json',
         },
         body: JSON.stringify({
+          intent: form.intent,
           fullName: form.fullName.trim(),
           company: form.company.trim(),
           workEmail: form.workEmail.trim().toLowerCase(),
           phone: form.phone.trim(),
+          serviceInterest: form.serviceInterest,
+          businessChallenge: form.businessChallenge.trim(),
+          preferredConsultationDate: form.preferredConsultationDate,
+          preferredConsultationTime: form.preferredConsultationTime,
+          preferredContactMethod: form.preferredContactMethod,
           supportArea: form.supportArea,
           supportPriority: form.supportPriority,
           customerProjectReference: form.customerProjectReference.trim(),
@@ -742,12 +861,15 @@ export default function CustomerSupportPage() {
           privacyConsent: form.privacyConsent,
           marketingConsent: form.marketingConsent,
           website: form.website.trim(),
-          attachments: documents.map((document) => ({
-            fileName: document.fileName,
-            blobPathname: document.blobPathname,
-            contentType: document.contentType,
-            fileSize: document.fileSize,
-          })),
+          attachments: isSupport
+            ? documents.map((document) => ({
+                fileName: document.fileName,
+                blobPathname: document.blobPathname,
+                contentType: document.contentType,
+                fileSize: document.fileSize,
+                uploadedAt: document.uploadedAt,
+              }))
+            : [],
         }),
         cache: 'no-store',
       });
@@ -813,7 +935,7 @@ export default function CustomerSupportPage() {
               <span aria-hidden="true">›</span>
               <Link href="/contact">Contact</Link>
               <span aria-hidden="true">›</span>
-              <span aria-current="page">Customer Support</span>
+              <span aria-current="page">Connect With TRYVION</span>
             </nav>
 
             <motion.div
@@ -824,18 +946,19 @@ export default function CustomerSupportPage() {
             >
               <div className="cs-eyebrow">
                 <span />
-                CUSTOMER SUPPORT
+                Connect With TRYVION
               </div>
 
               <h1 id="customer-support-title">
-                We’re here to
+                Let’s move your
                 <br />
-                keep you moving forward.
+                business forward.
               </h1>
 
               <p>
-                Get assistance with an existing TRYVION engagement, service or supported
-                environment.
+                Whether you’re exploring a new transformation initiative, looking for expert
+                guidance, or need support for an existing TRYVION engagement, our team is here to
+                help you take the next step.
               </p>
             </motion.div>
 
@@ -862,26 +985,57 @@ export default function CustomerSupportPage() {
           </div>
         </section>
 
-        <section className="cs-help-section">
+        <section className="cs-help-section" aria-labelledby="engagement-heading">
           <div className="cs-container">
-            <div className="cs-section-heading">
+            <div className="cs-section-heading cs-engagement-heading">
               <span className="cs-gold-line" />
-              <h2>How can we help?</h2>
+              <h2 id="engagement-heading">How would you like to engage with TRYVION?</h2>
               <p>
-                Tell us the area you need help with and we’ll connect you with the right support
-                team.
+                Choose the type of engagement that best matches your needs and we’ll connect you
+                with the right team.
               </p>
             </div>
 
-            <div className="cs-help-grid">
-              {HELP_ITEMS.map((item) => (
-                <SupportCard
-                  key={item.title}
-                  title={item.title}
-                  body={item.body}
-                  icon={item.icon}
-                />
-              ))}
+            <div className="cs-engagement-grid">
+              <EngagementCard
+                title="Talk to an Expert"
+                body="Connect with a TRYVION specialist to explore your requirements, objectives and potential solutions."
+                bullets={[
+                  'Get expert guidance',
+                  'Explore solution possibilities',
+                  'Discuss your specific needs',
+                ]}
+                icon={UsersRound}
+                active={form.intent === 'expert'}
+                recommended
+                onClick={() => selectIntent('expert')}
+              />
+
+              <EngagementCard
+                title="Book a Consultation"
+                body="Discuss a specific business challenge with our team and schedule a focused consultation."
+                bullets={[
+                  'Schedule a convenient time',
+                  'Deep-dive into your business challenge',
+                  'Get tailored recommendations',
+                ]}
+                icon={Calendar}
+                active={form.intent === 'consultation'}
+                onClick={() => selectIntent('consultation')}
+              />
+
+              <EngagementCard
+                title="Customer Support"
+                body="Get assistance with an existing TRYVION engagement, service or supported environment."
+                bullets={[
+                  'Raise a support request',
+                  'Get help from our support team',
+                  'Track and resolve your issue',
+                ]}
+                icon={Headphones}
+                active={form.intent === 'support'}
+                onClick={() => selectIntent('support')}
+              />
             </div>
           </div>
         </section>
@@ -889,13 +1043,29 @@ export default function CustomerSupportPage() {
         <section className="cs-form-section" id="support-request">
           <div className="cs-container">
             <div className="cs-form-heading">
-              <h2>Submit a support request</h2>
-              <p>Please provide the details below and our team will get back to you.</p>
+              <h2>How can we help?</h2>
+              <p>
+                Select how you would like to engage with TRYVION and provide the relevant details.
+              </p>
             </div>
 
             <form onSubmit={handleSubmit} noValidate>
               <div className="cs-form-layout">
                 <div className="cs-form-card">
+                  <div className="cs-intent-block">
+                    <FieldLabel required>How can we help?</FieldLabel>
+                    <div className="cs-intent-grid">
+                      {CONTACT_INTENTS.map((item) => (
+                        <IntentButton
+                          key={item.value}
+                          label={item.label}
+                          active={form.intent === item.value}
+                          onClick={() => selectIntent(item.value)}
+                        />
+                      ))}
+                    </div>
+                  </div>
+
                   <div className="cs-form-grid">
                     <TextInput
                       label="Full Name"
@@ -904,7 +1074,6 @@ export default function CustomerSupportPage() {
                       onChange={(value) => update('fullName', value)}
                       placeholder="Enter your full name"
                     />
-
                     <TextInput
                       label="Company"
                       required
@@ -912,7 +1081,6 @@ export default function CustomerSupportPage() {
                       onChange={(value) => update('company', value)}
                       placeholder="Enter your company name"
                     />
-
                     <TextInput
                       label="Work Email"
                       required
@@ -921,7 +1089,6 @@ export default function CustomerSupportPage() {
                       onChange={(value) => update('workEmail', value)}
                       placeholder="name@company.com"
                     />
-
                     <TextInput
                       label="Phone (Optional)"
                       type="tel"
@@ -930,119 +1097,173 @@ export default function CustomerSupportPage() {
                       placeholder="+1 (555) 000-0000"
                     />
 
-                    <SelectInput
-                      label="Support Area"
-                      required
-                      value={form.supportArea}
-                      onChange={(value) => update('supportArea', value)}
-                      options={SUPPORT_AREAS}
-                      placeholder="Select support area"
-                    />
+                    {!isSupport && (
+                      <>
+                        <SelectInput
+                          label="Area of Interest"
+                          required
+                          value={form.serviceInterest}
+                          onChange={(value) => update('serviceInterest', value)}
+                          options={SERVICE_INTERESTS}
+                          placeholder="Select area of interest"
+                        />
+                        <SelectInput
+                          label="Preferred Contact Method"
+                          required
+                          value={form.preferredContactMethod}
+                          onChange={(value) => update('preferredContactMethod', value)}
+                          options={PREFERRED_CONTACT_METHODS}
+                          placeholder="Select contact method"
+                        />
+                        <div className="cs-business-challenge-field">
+                          <TextArea
+                            label={
+                              isConsultation
+                                ? 'Business Challenge'
+                                : 'What are you looking to achieve?'
+                            }
+                            required
+                            value={form.businessChallenge}
+                            onChange={(value) => update('businessChallenge', value)}
+                            placeholder={
+                              isConsultation
+                                ? 'Tell us about the business challenge you would like to discuss.'
+                                : 'Tell us what you would like to achieve and where you need expert support.'
+                            }
+                          />
+                        </div>
+                        {isConsultation && (
+                          <>
+                            <TextInput
+                              label="Preferred Consultation Date"
+                              required
+                              type="date"
+                              value={form.preferredConsultationDate}
+                              onChange={(value) => update('preferredConsultationDate', value)}
+                            />
+                            <TextInput
+                              label="Preferred Consultation Time"
+                              required
+                              type="time"
+                              value={form.preferredConsultationTime}
+                              onChange={(value) => update('preferredConsultationTime', value)}
+                            />
+                          </>
+                        )}
+                      </>
+                    )}
 
-                    <div className="cs-priority-field">
-                      <SelectInput
-                        label="Support Priority"
-                        required
-                        value={form.supportPriority}
-                        onChange={(value) => update('supportPriority', value)}
-                        options={SUPPORT_PRIORITIES}
-                        placeholder="Select priority"
-                      />
-                      <span
-                        className="cs-priority-info"
-                        title="Choose the priority based on the business impact of the issue."
-                        aria-label="Support priority information"
-                      >
-                        <Info size={13} />
-                      </span>
-                    </div>
-
-                    <div className="cs-reference-field">
-                      <TextInput
-                        label="Customer / Project Reference (Optional)"
-                        value={form.customerProjectReference}
-                        onChange={(value) => update('customerProjectReference', value)}
-                        placeholder="Enter reference number, project ID, contract ID, etc."
-                      />
-                    </div>
-
-                    <div className="cs-issue-field">
-                      <TextArea
-                        label="Tell us about the issue"
-                        required
-                        value={form.issue}
-                        onChange={(value) => update('issue', value)}
-                        placeholder="Please describe the issue or assistance you need."
-                      />
-                    </div>
-                  </div>
-
-                  <div className="cs-upload-block">
-                    <FieldLabel>Attach files (Optional)</FieldLabel>
-
-                    <label
-                      className={`cs-dropzone ${isDraggingFiles ? 'is-dragging' : ''}`}
-                      onDragEnter={(event) => {
-                        event.preventDefault();
-                        event.stopPropagation();
-                        if (!uploadingDocuments && !submitting) setIsDraggingFiles(true);
-                      }}
-                      onDragOver={(event) => {
-                        event.preventDefault();
-                        event.stopPropagation();
-                        event.dataTransfer.dropEffect = 'copy';
-                      }}
-                      onDragLeave={(event) => {
-                        event.preventDefault();
-                        event.stopPropagation();
-                        if (event.currentTarget === event.target) setIsDraggingFiles(false);
-                      }}
-                      onDrop={(event) => {
-                        void handleDocumentDrop(event);
-                      }}
-                      aria-busy={uploadingDocuments}
-                    >
-                      <Upload size={21} />
-                      <span>
-                        <strong>Drag and drop files here or browse</strong>
-                        <small>
-                          Max file size 2MB. Supported formats: PDF, DOC, DOCX, XLS, XLSX, TXT, PNG,
-                          JPG, JPEG, ZIP
-                        </small>
-                      </span>
-
-                      <input
-                        type="file"
-                        multiple
-                        disabled={uploadingDocuments || submitting}
-                        onChange={handleDocuments}
-                        accept=".pdf,.doc,.docx,.xls,.xlsx,.txt,.png,.jpg,.jpeg,.zip"
-                      />
-                    </label>
-
-                    {documents.length > 0 && (
-                      <div className="cs-file-list">
-                        {documents.map((document) => (
-                          <div className="cs-file-row" key={document.id}>
-                            <Paperclip size={16} />
-
-                            <div>
-                              <strong>{document.fileName}</strong>
-                              <span>{(document.fileSize / 1024 / 1024).toFixed(2)} MB</span>
-                            </div>
-
-                            <button
-                              type="button"
-                              onClick={() => removeDocument(document.id)}
-                              disabled={uploadingDocuments || submitting}
-                            >
-                              Remove
-                            </button>
-                          </div>
-                        ))}
-                      </div>
+                    {isSupport && (
+                      <>
+                        <SelectInput
+                          label="Support Area"
+                          required
+                          value={form.supportArea}
+                          onChange={(value) => update('supportArea', value)}
+                          options={SUPPORT_AREAS}
+                          placeholder="Select support area"
+                        />
+                        <div className="cs-priority-field">
+                          <SelectInput
+                            label="Support Priority"
+                            required
+                            value={form.supportPriority}
+                            onChange={(value) => update('supportPriority', value)}
+                            options={SUPPORT_PRIORITIES}
+                            placeholder="Select priority"
+                          />
+                          <span
+                            className="cs-priority-info"
+                            title="Choose the priority based on the business impact of the issue."
+                            aria-label="Support priority information"
+                          >
+                            <Info size={13} />
+                          </span>
+                        </div>
+                        <div className="cs-reference-field">
+                          <TextInput
+                            label="Customer / Project Reference (Optional)"
+                            value={form.customerProjectReference}
+                            onChange={(value) => update('customerProjectReference', value)}
+                            placeholder="Enter reference number, project ID, contract ID, etc."
+                          />
+                        </div>
+                        <div className="cs-issue-field">
+                          <TextArea
+                            label="Issue / Description"
+                            required
+                            value={form.issue}
+                            onChange={(value) => update('issue', value)}
+                            placeholder="Please describe the issue or assistance you need."
+                          />
+                        </div>
+                      </>
                     )}
                   </div>
+
+                  {isSupport && (
+                    <div className="cs-upload-block">
+                      <FieldLabel>Attach files (Optional)</FieldLabel>
+                      <label
+                        className={`cs-dropzone ${isDraggingFiles ? 'is-dragging' : ''}`}
+                        onDragEnter={(event) => {
+                          event.preventDefault();
+                          event.stopPropagation();
+                          if (!uploadingDocuments && !submitting) setIsDraggingFiles(true);
+                        }}
+                        onDragOver={(event) => {
+                          event.preventDefault();
+                          event.stopPropagation();
+                          event.dataTransfer.dropEffect = 'copy';
+                        }}
+                        onDragLeave={(event) => {
+                          event.preventDefault();
+                          event.stopPropagation();
+                          if (event.currentTarget === event.target) setIsDraggingFiles(false);
+                        }}
+                        onDrop={(event) => {
+                          void handleDocumentDrop(event);
+                        }}
+                        aria-busy={uploadingDocuments}
+                      >
+                        <Upload size={21} />
+                        <span>
+                          <strong>Drag and drop files here or browse</strong>
+                          <small>
+                            Max file size 2MB. Supported formats: PDF, DOC, DOCX, XLS, XLSX, TXT,
+                            PNG, JPG, JPEG, ZIP
+                          </small>
+                        </span>
+                        <input
+                          type="file"
+                          multiple
+                          disabled={uploadingDocuments || submitting}
+                          onChange={handleDocuments}
+                          accept=".pdf,.doc,.docx,.xls,.xlsx,.txt,.png,.jpg,.jpeg,.zip"
+                        />
+                      </label>
+                      {documents.length > 0 && (
+                        <div className="cs-file-list">
+                          {documents.map((document) => (
+                            <div className="cs-file-row" key={document.id}>
+                              <Paperclip size={16} />
+                              <div>
+                                <strong>{document.fileName}</strong>
+                                <span>{(document.fileSize / 1024 / 1024).toFixed(2)} MB</span>
+                              </div>
+                              <button
+                                type="button"
+                                onClick={() => removeDocument(document.id)}
+                                disabled={uploadingDocuments || submitting}
+                              >
+                                Remove
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  )}
 
                   <div className="cs-consent">
                     <label>
@@ -1094,7 +1315,11 @@ export default function CustomerSupportPage() {
                       ? 'Uploading…'
                       : submitting
                         ? 'Submitting…'
-                        : 'Submit Request'}
+                        : form.intent === 'expert'
+                          ? 'Talk to an Expert'
+                          : form.intent === 'consultation'
+                            ? 'Request Consultation'
+                            : 'Submit Support Request'}
                     {!submitting && !uploadingDocuments && <ArrowRight size={16} />}
                   </button>
 
@@ -1109,7 +1334,7 @@ export default function CustomerSupportPage() {
                       <Check size={18} />
                       <div>
                         <strong>{statusMessage}</strong>
-                        {ticketId && <span>Support Ticket: {ticketId}</span>}
+                        {ticketId && <span>Reference: {ticketId}</span>}
                       </div>
                     </div>
                   )}
@@ -1183,8 +1408,11 @@ export default function CustomerSupportPage() {
             </div>
 
             <div>
-              <h2>Need to talk to a support expert?</h2>
-              <p>If you prefer to speak with someone directly, our team is here to help.</p>
+              <h2>Need to speak with an expert?</h2>
+              <p>
+                Our team is ready to help with your questions, issues and ongoing TRYVION
+                engagements.
+              </p>
             </div>
 
             <a className="cs-cta-button" href="tel:+44(0) 79517 85497">
@@ -1292,7 +1520,7 @@ const responsiveStyles = `
     gap: 0.65rem;
     margin-bottom: 1rem;
     color: #c9a24b;
-    font-size: 0.72rem;
+    font-size: 0.80rem;
     font-weight: 800;
     letter-spacing: 0.09em;
   }
@@ -1408,10 +1636,172 @@ const responsiveStyles = `
     line-height: 1.6;
   }
 
-  .cs-help-grid {
+
+  .cs-engagement-heading {
+    margin-bottom: 2.75rem;
+  }
+
+  .cs-engagement-heading h2 {
+    font-size: clamp(1.8rem, 3.4vw, 2.65rem);
+  }
+
+  .cs-engagement-heading p {
+    max-width: 900px;
+    font-size: 1.08rem;
+    line-height: 1.65;
+  }
+
+  .cs-engagement-grid {
     display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+
+  .cs-engagement-card {
+    position: relative;
+    min-height: 365px;
+    display: flex;
+    flex-direction: column;
+    padding: 1.6rem;
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+    background:
+      radial-gradient(circle at 90% 8%, rgba(201, 162, 75, 0.055), transparent 30%),
+      var(--surface-default);
+    color: var(--content-primary);
+    box-shadow: 0 10px 30px rgba(11, 30, 61, 0.055);
+    text-align: left;
+    font: inherit;
+    cursor: pointer;
+    overflow: hidden;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  }
+
+  .cs-engagement-card:hover {
+    border-color: rgba(201, 162, 75, 0.55);
+    box-shadow: 0 16px 36px rgba(11, 30, 61, 0.09);
+  }
+
+  .cs-engagement-card.is-active {
+    border-color: var(--brand-accent);
+    background:
+      radial-gradient(circle at 90% 8%, rgba(201, 162, 75, 0.10), transparent 34%),
+      var(--surface-default);
+    box-shadow:
+      0 16px 38px rgba(11, 30, 61, 0.10),
+      0 0 0 1px rgba(201, 162, 75, 0.16);
+  }
+
+  .cs-engagement-card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
     gap: 1rem;
+  }
+
+  .cs-engagement-icon {
+    width: 58px;
+    height: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #eef0f4;
+    color: #866600;
+    flex-shrink: 0;
+  }
+
+  .cs-engagement-badge {
+    display: inline-flex;
+    align-items: center;
+    min-height: 30px;
+    padding: 0 0.8rem;
+    border-radius: 999px;
+    background: rgba(201, 162, 75, 0.12);
+    color: #755900;
+    font-size: 0.74rem;
+    font-weight: 800;
+  }
+
+  .cs-engagement-gold-line {
+    width: 28px;
+    height: 3px;
+    margin: 1.05rem 0 0.9rem;
+    background: var(--brand-accent);
+  }
+
+  .cs-engagement-card h3 {
+    margin: 0;
+    color: var(--content-primary);
+    font-family: var(--family-display);
+    font-size: 1.28rem;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+  }
+
+  .cs-engagement-card > p {
+    min-height: 78px;
+    margin: 0.7rem 0 0;
+    color: var(--content-secondary);
+    font-size: 0.96rem;
+    line-height: 1.55;
+  }
+
+  .cs-engagement-footer {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 48px;
+    align-items: end;
+    gap: 1rem;
+    margin-top: auto;
+    padding-top: 1.25rem;
+  }
+
+  .cs-engagement-footer ul {
+    display: grid;
+    gap: 0.62rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .cs-engagement-footer li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.55rem;
+    color: var(--content-secondary);
+    font-size: 0.82rem;
+    line-height: 1.4;
+  }
+
+  .cs-engagement-footer li svg {
+    margin-top: 1px;
+    color: var(--brand-accent);
+    flex-shrink: 0;
+  }
+
+  .cs-engagement-arrow {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #edf0f5;
+    color: var(--content-primary);
+    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  }
+
+  .cs-engagement-card:hover .cs-engagement-arrow,
+  .cs-engagement-card.is-active .cs-engagement-arrow {
+    background: var(--brand-accent);
+    color: #fff;
+    transform: translateX(2px);
+  }
+
+  [data-theme="dark"] .cs-engagement-icon,
+  [data-theme="dark"] .cs-engagement-arrow {
+    background: var(--surface-sunken);
+    color: var(--content-accent);
   }
 
   .cs-form-section {
@@ -1431,7 +1821,8 @@ const responsiveStyles = `
   .cs-form-heading p {
     margin: 0.5rem 0 0;
     color: var(--content-secondary);
-    font-size: 1rem;
+    font-size: 1.05rem;
+    line-height: 1.6;
   }
 
   .cs-form-layout {
@@ -1454,6 +1845,21 @@ const responsiveStyles = `
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1rem 1.15rem;
   }
+
+  .cs-intent-block {
+    margin-bottom: 1.25rem;
+  }
+
+  .cs-intent-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  .cs-business-challenge-field {
+    grid-column: 1 / -1;
+  }
+
 
   .cs-reference-field,
   .cs-issue-field {
@@ -1503,13 +1909,13 @@ const responsiveStyles = `
 
   .cs-dropzone strong {
     color: var(--content-primary);
-    font-size: 0.72rem;
+    font-size: 0.80rem;
   }
 
   .cs-dropzone small {
     margin-top: 0.25rem;
     color: var(--content-tertiary);
-    font-size: 0.63rem;
+    font-size: 0.70rem;
     line-height: 1.45;
   }
 
@@ -1558,13 +1964,13 @@ const responsiveStyles = `
     text-overflow: ellipsis;
     white-space: nowrap;
     color: var(--content-primary);
-    font-size: 0.72rem;
+    font-size: 0.80rem;
   }
 
   .cs-file-row span {
     margin-top: 2px;
     color: var(--content-tertiary);
-    font-size: 0.62rem;
+    font-size: 0.70rem;
   }
 
   .cs-file-row button {
@@ -1572,7 +1978,7 @@ const responsiveStyles = `
     background: transparent;
     color: var(--content-tertiary);
     font: inherit;
-    font-size: 0.66rem;
+    font-size: 0.74rem;
     font-weight: 700;
     cursor: pointer;
   }
@@ -1588,8 +1994,8 @@ const responsiveStyles = `
     align-items: flex-start;
     gap: 0.55rem;
     color: var(--content-secondary);
-    font-size: 0.68rem;
-    line-height: 1.55;
+    font-size: 0.76rem;
+    line-height: 1.6;
     cursor: pointer;
   }
 
@@ -1880,6 +2286,14 @@ const responsiveStyles = `
   }
 
   @media (max-width: 1000px) {
+    .cs-engagement-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .cs-engagement-card {
+      min-height: 0;
+    }
+
     .cs-help-grid {
       grid-template-columns: repeat(2, minmax(0,1fr));
     }
@@ -1894,6 +2308,20 @@ const responsiveStyles = `
   }
 
   @media (max-width: 760px) {
+    .cs-engagement-heading h2 {
+      font-size: clamp(1.65rem, 7vw, 2.15rem);
+    }
+
+    .cs-engagement-heading p {
+      font-size: 0.98rem;
+    }
+
+    .cs-engagement-card {
+      padding: 1.35rem;
+    }
+
+    .cs-intent-grid { grid-template-columns: 1fr; }
+
     .cs-container {
       width: min(100% - 2rem, var(--layout-content-wide));
     }
@@ -1935,7 +2363,8 @@ const responsiveStyles = `
     }
 
     .cs-reference-field,
-    .cs-issue-field {
+    .cs-issue-field,
+    .cs-business-challenge-field {
       grid-column: auto;
     }
 

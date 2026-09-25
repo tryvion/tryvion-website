@@ -1,9 +1,15 @@
-import type { Metadata } from 'next'
-import type { ReactNode } from 'react'
-import { pageMetadata } from '@/lib/seo/pages'
+import type { Metadata } from 'next';
+import type { ReactNode } from 'react';
+import { PageStructuredData } from '@/components/seo/PageStructuredData';
+import { pageMetadata, pageSeo } from '@/lib/seo/pages';
 
-export const metadata: Metadata = pageMetadata.whatWeBelieve
+export const metadata: Metadata = pageMetadata.whatWeBelieve;
 
 export default function WhatWeBelieveLayout({ children }: { children: ReactNode }) {
-  return children
+  return (
+    <>
+      {children}
+      <PageStructuredData page={pageSeo.whatWeBelieve} />
+    </>
+  );
 }

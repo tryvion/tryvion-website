@@ -1005,7 +1005,7 @@ export default function ServicesPage() {
             </div>
             <div className="cta-actions">
               <Link
-                href="/contact"
+                href="/contact/customer-support?intent=expert"
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
@@ -1024,7 +1024,7 @@ export default function ServicesPage() {
                 Talk to an Expert <ArrowRight color="var(--ink-950)" />
               </Link>
               <Link
-                href="/contact/book-a-consultation"
+                href="/contact/customer-support?intent=consultation"
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',

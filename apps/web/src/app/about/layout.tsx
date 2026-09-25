@@ -1,9 +1,10 @@
-import type { Metadata } from 'next'
-import type { ReactNode } from 'react'
-import { pageMetadata } from '@/lib/seo/pages'
+import type { Metadata } from 'next';
+import type { ReactNode } from 'react';
 
-export const metadata: Metadata = pageMetadata.about
+import { pageMetadata } from '@/lib/seo/pages';
+
+export const metadata: Metadata = pageMetadata.about;
 
 export default function AboutLayout({ children }: { children: ReactNode }) {
-  return children
+  return <>{children}</>;
 }

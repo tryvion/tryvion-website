@@ -1,13 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'motion/react';
 import {
-  GraduationCap,
-  BookOpen,
   Award,
-  ShieldCheck,
   Zap,
   ChevronRight,
   ArrowRight,
@@ -19,19 +16,14 @@ import {
   Target,
   Layers,
   Terminal,
-  FileText,
-  BarChart3,
   Check,
   Clock,
   UserCheck,
   TrendingUp,
   BrainCircuit,
-  Compass,
   PlayCircle,
   Globe,
-  Users,
   Briefcase,
-  Bell,
   CheckCircle,
   MessageSquare,
   FileCheck,
@@ -217,10 +209,6 @@ export default function TryvionAcademyPage() {
   const { theme } = useSiteTheme();
   const isDark = theme === 'dark';
 
-  // Interactive state for the Hero HUD preview card
-  const [activeHudTab, setActiveHudTab] = useState('My Learning');
-  const [hudProgress, setHudProgress] = useState(60);
-
   return (
     <div
       style={{
@@ -242,9 +230,7 @@ export default function TryvionAcademyPage() {
         }
         .hero-academy-bg {
           background-color: #03050C !important;
-          background-image:
-            radial-gradient(circle at 75% 25%, rgba(37, 99, 235, 0.22) 0%, transparent 55%),
-            radial-gradient(circle at 25% 75%, rgba(147, 51, 234, 0.14) 0%, transparent 55%);
+          background-image: url('/images/talent-cta-bg.png');
         }
         .interactive-card {
           transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
@@ -259,13 +245,6 @@ export default function TryvionAcademyPage() {
         .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
         .grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.25rem; }
 
-        /* HUD Card Grid Layout */
-        .hero-hud-card {
-          display: grid;
-          grid-template-columns: 170px 1fr;
-          gap: 1.5rem;
-        }
-
         @media (max-width: 1200px) {
           .grid-5 { grid-template-columns: repeat(2, 1fr); }
           .grid-4 { grid-template-columns: repeat(2, 1fr); }
@@ -274,32 +253,12 @@ export default function TryvionAcademyPage() {
           .grid-2, .grid-3, .grid-4, .grid-5 { grid-template-columns: 1fr; }
         }
         @media (max-width: 640px) {
-          .hero-hud-card {
-            grid-template-columns: 1fr !important;
-          }
-          .hero-hud-sidebar {
-            border-right: none !important;
-            border-bottom: 1px solid rgba(255,255,255,0.08);
-            padding-right: 0 !important;
-            padding-bottom: 1rem;
-            margin-bottom: 1rem;
-          }
-          .hud-journey-grid {
-            grid-template-columns: 1fr !important;
-          }
-        }
-
-        .hud-content {
-          animation: fadeIn 0.3s ease-in-out;
-        }
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(5px); }
-          to { opacity: 1; transform: translateY(0); }
+          /* Mobile layout */
         }
       `}</style>
 
       <main>
-        {/* ── 1. HERO SECTION WITH SKILLVERSE PREVIEW HUD ── */}
+        {/* ── 1. HERO SECTION ── */}
         <section
           className="hero-academy-bg"
           style={{
@@ -307,6 +266,11 @@ export default function TryvionAcademyPage() {
             paddingBottom: '6rem',
             paddingLeft: 'clamp(1rem, 4vw, 3rem)',
             paddingRight: 'clamp(1rem, 4vw, 3rem)',
+            backgroundImage:
+              "linear-gradient(90deg, rgba(3,5,12,0.72) 0%, rgba(3,5,12,0.58) 42%, rgba(3,5,12,0.28) 60%, rgba(3,5,12,0) 72%), url('/images/tryvion-academy.png')",
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
             borderBottom: '1px solid rgba(255,255,255,0.08)',
             position: 'relative',
           }}
@@ -392,7 +356,7 @@ export default function TryvionAcademyPage() {
                 <Reveal delay={320}>
                   <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
                     <Link
-                      href="#skillverse-platform"
+                      href="/contact/customer-support?intent=expert"
                       style={{
                         backgroundColor: '#2563EB',
                         color: '#FFFFFF',
@@ -406,7 +370,7 @@ export default function TryvionAcademyPage() {
                         boxShadow: '0 8px 20px -4px rgba(37, 99, 235, 0.4)',
                       }}
                     >
-                      Explore TRYVION SkillVerse <ArrowRight size={18} />
+                      Talk to an Expert <ArrowRight size={18} />
                     </Link>
 
                     <Link
@@ -429,804 +393,6 @@ export default function TryvionAcademyPage() {
                   </div>
                 </Reveal>
               </div>
-
-              {/* Right Side: SkillVerse Dashboard HUD Preview */}
-              <Reveal delay={200}>
-                <div
-                  className="hero-hud-card"
-                  style={{
-                    backgroundColor: '#0A0F1D',
-                    borderRadius: '16px',
-                    border: '1px solid rgba(37, 99, 235, 0.35)',
-                    padding: 'clamp(1rem, 3vw, 1.75rem)',
-                    boxShadow: '0 30px 70px rgba(0,0,0,0.85)',
-                    width: '100%',
-                    maxWidth: '100%',
-                    overflow: 'hidden',
-                  }}
-                >
-                  {/* Left Sidebar inside HUD */}
-                  <div
-                    className="hero-hud-sidebar"
-                    style={{
-                      borderRight: '1px solid rgba(255,255,255,0.08)',
-                      paddingRight: '1rem',
-                    }}
-                  >
-                    <div
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '0.5rem',
-                        marginBottom: '1.5rem',
-                        color: '#60A5FA',
-                      }}
-                    >
-                      <GraduationCap size={22} />
-                      <span
-                        style={{
-                          fontWeight: 800,
-                          fontSize: '0.9rem',
-                          color: '#FFFFFF',
-                          letterSpacing: '-0.01em',
-                        }}
-                      >
-                        SKILLVERSE
-                      </span>
-                    </div>
-
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rm' }}>
-                      {[
-                        { label: 'My Learning', icon: <BookOpen size={15} /> },
-                        { label: 'Learning Paths', icon: <Compass size={15} /> },
-                        { label: 'Assessments', icon: <FileText size={15} /> },
-                        { label: 'Certifications', icon: <Award size={15} /> },
-                        { label: 'Progress', icon: <BarChart3 size={15} /> },
-                        { label: 'Community', icon: <Users size={15} /> },
-                      ].map((item, iIdx) => {
-                        const isActive = activeHudTab === item.label;
-                        return (
-                          <button
-                            key={iIdx}
-                            onClick={() => setActiveHudTab(item.label)}
-                            style={{
-                              display: 'flex',
-                              alignItems: 'center',
-                              gap: '0.6rem',
-                              padding: '0.6rem 0.75rem',
-                              borderRadius: '8px',
-                              border: 'none',
-                              backgroundColor: isActive ? '#2563EB' : 'transparent',
-                              color: isActive ? '#FFFFFF' : '#94A3B8',
-                              fontSize: '0.8rem',
-                              fontWeight: isActive ? 700 : 500,
-                              cursor: 'pointer',
-                              textAlign: 'left',
-                              width: '100%',
-                              transition: 'all 0.2s ease',
-                            }}
-                          >
-                            {item.icon}
-                            <span>{item.label}</span>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-
-                  {/* Main Content Area inside HUD - DYNAMIC BASED ON ACTIVE TAB */}
-                  <div className="hud-content" key={activeHudTab} style={{ minWidth: 0 }}>
-                    {/* Header bar inside HUD */}
-                    <div
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        marginBottom: '1.25rem',
-                        borderBottom: '1px solid rgba(255,255,255,0.08)',
-                        paddingBottom: '0.75rem',
-                      }}
-                    >
-                      <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#FFFFFF' }}>
-                        Welcome back, Learner
-                      </span>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                        <div style={{ position: 'relative', cursor: 'pointer', color: '#94A3B8' }}>
-                          <Bell size={16} />
-                          <span
-                            style={{
-                              position: 'absolute',
-                              top: -2,
-                              right: -2,
-                              width: 6,
-                              height: 6,
-                              backgroundColor: '#2563EB',
-                              borderRadius: '50%',
-                            }}
-                          />
-                        </div>
-                        <div
-                          style={{
-                            width: '28px',
-                            height: '28px',
-                            borderRadius: '50%',
-                            backgroundColor: '#2563EB',
-                            color: '#FFFFFF',
-                            fontSize: '0.75rem',
-                            fontWeight: 800,
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                          }}
-                        >
-                          AK
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* DYNAMIC SCREENS */}
-
-                    {/* 1. MY LEARNING TAB */}
-                    {activeHudTab === 'My Learning' && (
-                      <>
-                        <div style={{ marginBottom: '1.25rem' }}>
-                          <span
-                            style={{
-                              fontSize: '0.75rem',
-                              fontWeight: 700,
-                              color: '#94A3B8',
-                              display: 'block',
-                              marginBottom: '0.6rem',
-                            }}
-                          >
-                            My Learning Journey
-                          </span>
-                          <div
-                            className="hud-journey-grid"
-                            style={{
-                              display: 'grid',
-                              gridTemplateColumns: '1.2fr 1fr',
-                              gap: '0.75rem',
-                            }}
-                          >
-                            <div
-                              style={{
-                                backgroundColor: '#03050C',
-                                border: '1px solid rgba(37, 99, 235, 0.3)',
-                                borderRadius: '10px',
-                                padding: '1rem',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                justifyContent: 'space-between',
-                              }}
-                            >
-                              <div>
-                                <strong
-                                  style={{
-                                    fontSize: '0.85rem',
-                                    color: '#FFFFFF',
-                                    display: 'block',
-                                    marginBottom: '0.2rem',
-                                  }}
-                                >
-                                  SAP S/4HANA
-                                </strong>
-                                <span
-                                  style={{
-                                    fontSize: '0.78rem',
-                                    color: '#94A3B8',
-                                    display: 'block',
-                                    marginBottom: '0.75rem',
-                                  }}
-                                >
-                                  Clean Core Principles
-                                </span>
-                                <div
-                                  style={{
-                                    display: 'flex',
-                                    justifyContent: 'space-between',
-                                    fontSize: '0.7rem',
-                                    color: '#60A5FA',
-                                    marginBottom: '0.3rem',
-                                    fontFamily: 'monospace',
-                                  }}
-                                >
-                                  <span>{hudProgress}% Complete</span>
-                                  <span>Module 4/6</span>
-                                </div>
-                                <div
-                                  style={{
-                                    height: '5px',
-                                    backgroundColor: 'rgba(255,255,255,0.1)',
-                                    borderRadius: '3px',
-                                    overflow: 'hidden',
-                                    marginBottom: '0.75rem',
-                                  }}
-                                >
-                                  <div
-                                    style={{
-                                      width: `${hudProgress}%`,
-                                      height: '100%',
-                                      backgroundColor: '#2563EB',
-                                      borderRadius: '3px',
-                                    }}
-                                  />
-                                </div>
-                              </div>
-                              <button
-                                onClick={() =>
-                                  setHudProgress((prev) => (prev >= 90 ? 60 : prev + 10))
-                                }
-                                style={{
-                                  backgroundColor: '#2563EB',
-                                  color: '#FFFFFF',
-                                  border: 'none',
-                                  padding: '0.4rem 0.75rem',
-                                  borderRadius: '6px',
-                                  fontSize: '0.72rem',
-                                  fontWeight: 700,
-                                  cursor: 'pointer',
-                                  textAlign: 'center',
-                                }}
-                              >
-                                Continue Learning
-                              </button>
-                            </div>
-
-                            <div
-                              style={{
-                                backgroundColor: '#03050C',
-                                border: '1px solid rgba(255,255,255,0.08)',
-                                borderRadius: '10px',
-                                padding: '1rem',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                justifyContent: 'space-between',
-                              }}
-                            >
-                              <div>
-                                <span
-                                  style={{
-                                    fontSize: '0.7rem',
-                                    color: '#94A3B8',
-                                    display: 'block',
-                                    marginBottom: '0.2rem',
-                                    fontFamily: 'monospace',
-                                  }}
-                                >
-                                  Next Up
-                                </span>
-                                <strong
-                                  style={{
-                                    fontSize: '0.82rem',
-                                    color: '#FFFFFF',
-                                    display: 'block',
-                                    marginBottom: '0.3rem',
-                                  }}
-                                >
-                                  S/4HANA Extension Strategy
-                                </strong>
-                                <span style={{ fontSize: '0.7rem', color: '#60A5FA' }}>
-                                  Module 5 - 40m
-                                </span>
-                              </div>
-                              <span
-                                style={{
-                                  fontSize: '0.75rem',
-                                  color: '#60A5FA',
-                                  fontWeight: 700,
-                                  display: 'inline-flex',
-                                  alignItems: 'center',
-                                  gap: '0.2rem',
-                                  cursor: 'pointer',
-                                }}
-                              >
-                                View Details &rarr;
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div style={{ marginBottom: '1.25rem' }}>
-                          <span
-                            style={{
-                              fontSize: '0.75rem',
-                              fontWeight: 700,
-                              color: '#94A3B8',
-                              display: 'block',
-                              marginBottom: '0.5rem',
-                            }}
-                          >
-                            Skills in Progress
-                          </span>
-                          <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
-                            {[
-                              'Business Process',
-                              'Configuration',
-                              'Architecture',
-                              'Transformation',
-                            ].map((tag, tIdx) => (
-                              <span
-                                key={tIdx}
-                                style={{
-                                  fontSize: '0.7rem',
-                                  backgroundColor: 'rgba(255,255,255,0.05)',
-                                  border: '1px solid rgba(255,255,255,0.1)',
-                                  color: '#CBD5E1',
-                                  padding: '0.25rem 0.55rem',
-                                  borderRadius: '6px',
-                                }}
-                              >
-                                {tag}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-
-                        <div>
-                          <span
-                            style={{
-                              fontSize: '0.75rem',
-                              fontWeight: 700,
-                              color: '#94A3B8',
-                              display: 'block',
-                              marginBottom: '0.5rem',
-                            }}
-                          >
-                            Recent Achievements
-                          </span>
-                          <div
-                            style={{
-                              display: 'grid',
-                              gridTemplateColumns: '1fr 1fr',
-                              gap: '0.5rem',
-                            }}
-                          >
-                            <div
-                              style={{
-                                backgroundColor: '#03050C',
-                                padding: '0.6rem',
-                                borderRadius: '6px',
-                                border: '1px solid rgba(255,255,255,0.06)',
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '0.5rem',
-                              }}
-                            >
-                              <ShieldCheck size={16} style={{ color: '#10B981' }} />
-                              <div>
-                                <span
-                                  style={{
-                                    fontSize: '0.65rem',
-                                    color: '#10B981',
-                                    display: 'block',
-                                    fontWeight: 700,
-                                  }}
-                                >
-                                  Assessment Passed
-                                </span>
-                                <span
-                                  style={{ fontSize: '0.7rem', color: '#FFFFFF', fontWeight: 600 }}
-                                >
-                                  Clean Core Principles
-                                </span>
-                              </div>
-                            </div>
-                            <div
-                              style={{
-                                backgroundColor: '#03050C',
-                                padding: '0.6rem',
-                                borderRadius: '6px',
-                                border: '1px solid rgba(255,255,255,0.06)',
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '0.5rem',
-                              }}
-                            >
-                              <Award size={16} style={{ color: '#60A5FA' }} />
-                              <div>
-                                <span
-                                  style={{
-                                    fontSize: '0.65rem',
-                                    color: '#60A5FA',
-                                    display: 'block',
-                                    fontWeight: 700,
-                                  }}
-                                >
-                                  Certificate Earned
-                                </span>
-                                <span
-                                  style={{ fontSize: '0.7rem', color: '#FFFFFF', fontWeight: 600 }}
-                                >
-                                  SAP S/4HANA Found.
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </>
-                    )}
-
-                    {/* 2. LEARNING PATHS TAB */}
-                    {activeHudTab === 'Learning Paths' && (
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                        <span
-                          style={{
-                            fontSize: '0.75rem',
-                            fontWeight: 700,
-                            color: '#94A3B8',
-                            display: 'block',
-                          }}
-                        >
-                          Recommended For You
-                        </span>
-                        {[
-                          { title: 'SAP BTP Integration', mods: 8, time: '12h' },
-                          { title: 'SuccessFactors HCM Core', mods: 5, time: '8h' },
-                        ].map((path, idx) => (
-                          <div
-                            key={idx}
-                            style={{
-                              backgroundColor: '#03050C',
-                              padding: '1rem',
-                              borderRadius: '8px',
-                              border: '1px solid rgba(37, 99, 235, 0.2)',
-                              display: 'flex',
-                              justifyContent: 'space-between',
-                              alignItems: 'center',
-                            }}
-                          >
-                            <div>
-                              <strong
-                                style={{
-                                  fontSize: '0.85rem',
-                                  color: '#FFFFFF',
-                                  display: 'block',
-                                  marginBottom: '0.2rem',
-                                }}
-                              >
-                                {path.title}
-                              </strong>
-                              <span style={{ fontSize: '0.7rem', color: '#94A3B8' }}>
-                                {path.mods} Modules • Est. {path.time}
-                              </span>
-                            </div>
-                            <button
-                              style={{
-                                backgroundColor: 'rgba(37, 99, 235, 0.1)',
-                                color: '#60A5FA',
-                                border: '1px solid rgba(37,99,235,0.3)',
-                                padding: '0.4rem 0.8rem',
-                                borderRadius: '6px',
-                                fontSize: '0.7rem',
-                                fontWeight: 700,
-                                cursor: 'pointer',
-                              }}
-                            >
-                              Enroll
-                            </button>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-
-                    {/* 3. ASSESSMENTS TAB */}
-                    {activeHudTab === 'Assessments' && (
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                        <span
-                          style={{
-                            fontSize: '0.75rem',
-                            fontWeight: 700,
-                            color: '#94A3B8',
-                            display: 'block',
-                          }}
-                        >
-                          Pending & Completed
-                        </span>
-                        <div
-                          style={{
-                            backgroundColor: '#03050C',
-                            padding: '1rem',
-                            borderRadius: '8px',
-                            border: '1px solid rgba(245, 158, 11, 0.3)',
-                            borderLeft: '3px solid #F59E0B',
-                          }}
-                        >
-                          <div
-                            style={{
-                              display: 'flex',
-                              justifyContent: 'space-between',
-                              alignItems: 'flex-start',
-                              marginBottom: '0.5rem',
-                            }}
-                          >
-                            <strong style={{ fontSize: '0.85rem', color: '#FFFFFF' }}>
-                              S/4HANA Finance Quiz
-                            </strong>
-                            <span
-                              style={{
-                                fontSize: '0.65rem',
-                                backgroundColor: 'rgba(245, 158, 11, 0.1)',
-                                color: '#FCD34D',
-                                padding: '0.2rem 0.4rem',
-                                borderRadius: '4px',
-                              }}
-                            >
-                              Due in 2 days
-                            </span>
-                          </div>
-                          <button
-                            style={{
-                              backgroundColor: '#F59E0B',
-                              color: '#000',
-                              border: 'none',
-                              padding: '0.3rem 0.8rem',
-                              borderRadius: '4px',
-                              fontSize: '0.7rem',
-                              fontWeight: 700,
-                              cursor: 'pointer',
-                            }}
-                          >
-                            Take Now
-                          </button>
-                        </div>
-                        <div
-                          style={{
-                            backgroundColor: '#03050C',
-                            padding: '1rem',
-                            borderRadius: '8px',
-                            border: '1px solid rgba(16, 185, 129, 0.2)',
-                            borderLeft: '3px solid #10B981',
-                          }}
-                        >
-                          <strong
-                            style={{
-                              fontSize: '0.85rem',
-                              color: '#FFFFFF',
-                              display: 'block',
-                              marginBottom: '0.2rem',
-                            }}
-                          >
-                            Clean Core Assessment
-                          </strong>
-                          <span
-                            style={{
-                              fontSize: '0.7rem',
-                              color: '#10B981',
-                              display: 'flex',
-                              alignItems: 'center',
-                              gap: '0.3rem',
-                            }}
-                          >
-                            <CheckCircle2 size={12} /> Completed • Score: 92%
-                          </span>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* 4. CERTIFICATIONS TAB */}
-                    {activeHudTab === 'Certifications' && (
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                        <span
-                          style={{
-                            fontSize: '0.75rem',
-                            fontWeight: 700,
-                            color: '#94A3B8',
-                            display: 'block',
-                          }}
-                        >
-                          Earned Badges
-                        </span>
-                        <div
-                          style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}
-                        >
-                          {[
-                            { name: 'S/4HANA Foundation', date: 'Aug 2026' },
-                            { name: 'Business AI Specialist', date: 'Jul 2026' },
-                          ].map((cert, idx) => (
-                            <div
-                              key={idx}
-                              style={{
-                                backgroundColor: '#03050C',
-                                padding: '1rem',
-                                borderRadius: '8px',
-                                border: '1px solid rgba(255,255,255,0.08)',
-                                textAlign: 'center',
-                              }}
-                            >
-                              <Award
-                                size={28}
-                                style={{ color: '#2563EB', margin: '0 auto 0.5rem' }}
-                              />
-                              <strong
-                                style={{ fontSize: '0.75rem', color: '#FFFFFF', display: 'block' }}
-                              >
-                                {cert.name}
-                              </strong>
-                              <span style={{ fontSize: '0.65rem', color: '#94A3B8' }}>
-                                Issued: {cert.date}
-                              </span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* 5. PROGRESS TAB */}
-                    {activeHudTab === 'Progress' && (
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                        <span
-                          style={{
-                            fontSize: '0.75rem',
-                            fontWeight: 700,
-                            color: '#94A3B8',
-                            display: 'block',
-                          }}
-                        >
-                          Performance Overview
-                        </span>
-                        <div
-                          style={{
-                            display: 'grid',
-                            gridTemplateColumns: '1fr 1fr',
-                            gap: '0.75rem',
-                            marginBottom: '0.5rem',
-                          }}
-                        >
-                          <div
-                            style={{
-                              backgroundColor: '#03050C',
-                              padding: '1rem',
-                              borderRadius: '8px',
-                              border: '1px solid rgba(37,99,235,0.2)',
-                            }}
-                          >
-                            <span
-                              style={{
-                                fontSize: '0.7rem',
-                                color: '#60A5FA',
-                                display: 'block',
-                                marginBottom: '0.2rem',
-                              }}
-                            >
-                              Total Hours
-                            </span>
-                            <strong style={{ fontSize: '1.25rem', color: '#FFFFFF' }}>45h</strong>
-                          </div>
-                          <div
-                            style={{
-                              backgroundColor: '#03050C',
-                              padding: '1rem',
-                              borderRadius: '8px',
-                              border: '1px solid rgba(16,185,129,0.2)',
-                            }}
-                          >
-                            <span
-                              style={{
-                                fontSize: '0.7rem',
-                                color: '#34D399',
-                                display: 'block',
-                                marginBottom: '0.2rem',
-                              }}
-                            >
-                              Avg. Score
-                            </span>
-                            <strong style={{ fontSize: '1.25rem', color: '#FFFFFF' }}>88%</strong>
-                          </div>
-                        </div>
-                        <div
-                          style={{
-                            backgroundColor: '#03050C',
-                            padding: '1rem',
-                            borderRadius: '8px',
-                            border: '1px solid rgba(255,255,255,0.08)',
-                          }}
-                        >
-                          <span
-                            style={{
-                              fontSize: '0.75rem',
-                              color: '#FFFFFF',
-                              display: 'block',
-                              marginBottom: '0.5rem',
-                            }}
-                          >
-                            Modules Completed
-                          </span>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                            <div
-                              style={{
-                                flexGrow: 1,
-                                height: '6px',
-                                backgroundColor: 'rgba(255,255,255,0.1)',
-                                borderRadius: '3px',
-                              }}
-                            >
-                              <div
-                                style={{
-                                  width: '75%',
-                                  height: '100%',
-                                  backgroundColor: '#2563EB',
-                                  borderRadius: '3px',
-                                }}
-                              ></div>
-                            </div>
-                            <span style={{ fontSize: '0.7rem', color: '#94A3B8', fontWeight: 700 }}>
-                              12/16
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* 6. COMMUNITY TAB */}
-                    {activeHudTab === 'Community' && (
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                        <span
-                          style={{
-                            fontSize: '0.75rem',
-                            fontWeight: 700,
-                            color: '#94A3B8',
-                            display: 'block',
-                          }}
-                        >
-                          Recent Discussions
-                        </span>
-                        {[
-                          {
-                            title: 'Best practices for Joule Agents?',
-                            replies: 12,
-                            time: '2h ago',
-                          },
-                          { title: 'S/4HANA Public vs Private Cloud', replies: 34, time: '5h ago' },
-                        ].map((thread, idx) => (
-                          <div
-                            key={idx}
-                            style={{
-                              backgroundColor: '#03050C',
-                              padding: '0.85rem 1rem',
-                              borderRadius: '8px',
-                              border: '1px solid rgba(255,255,255,0.08)',
-                            }}
-                          >
-                            <strong
-                              style={{
-                                fontSize: '0.8rem',
-                                color: '#FFFFFF',
-                                display: 'block',
-                                marginBottom: '0.4rem',
-                              }}
-                            >
-                              {thread.title}
-                            </strong>
-                            <div
-                              style={{
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                                alignItems: 'center',
-                              }}
-                            >
-                              <span
-                                style={{
-                                  fontSize: '0.65rem',
-                                  color: '#60A5FA',
-                                  display: 'flex',
-                                  alignItems: 'center',
-                                  gap: '0.3rem',
-                                }}
-                              >
-                                <MessageSquare size={10} /> {thread.replies} Replies
-                              </span>
-                              <span style={{ fontSize: '0.65rem', color: '#94A3B8' }}>
-                                {thread.time}
-                              </span>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </Reveal>
             </div>
           </div>
         </section>
@@ -2425,20 +1591,20 @@ export default function TryvionAcademyPage() {
               <p
                 style={{
                   fontSize: '1.15rem',
-                  color: '#94A3B8',
+                  color: '#fff',
                   marginBottom: '2.5rem',
                   lineHeight: 1.7,
                 }}
               >
-                Join TRYVION SkillVerse and build transformation-ready capabilities with guidance
-                from experienced enterprise practitioners.
+                Join TRYVION SkillVerse and build transformation-ready capabilities
+                <br /> with guidance from experienced enterprise practitioners.
               </p>
 
               <div
                 style={{ display: 'flex', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap' }}
               >
                 <Link
-                  href="#skillverse-platform"
+                  href="/contact/customer-support?intent=consultation"
                   style={{
                     backgroundColor: '#2563EB',
                     color: '#FFFFFF',
@@ -2452,11 +1618,11 @@ export default function TryvionAcademyPage() {
                     boxShadow: '0 10px 25px -5px rgba(37, 99, 235, 0.5)',
                   }}
                 >
-                  Explore TRYVION SkillVerse <ArrowRight size={18} />
+                  Book a Consultation <ArrowRight size={18} />
                 </Link>
 
                 <Link
-                  href="#learning-paths"
+                  href="/contact"
                   style={{
                     backgroundColor: 'rgba(255,255,255,0.08)',
                     border: '1px solid rgba(255,255,255,0.25)',
@@ -2470,7 +1636,7 @@ export default function TryvionAcademyPage() {
                     textDecoration: 'none',
                   }}
                 >
-                  Explore Learning Paths <ArrowRight size={18} />
+                  Contact Us Now <ArrowRight size={18} />
                 </Link>
               </div>
             </Reveal>
